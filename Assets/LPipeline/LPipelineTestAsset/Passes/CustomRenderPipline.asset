@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a046c49aef773244fa9f45238292cfc9, type: 3}
+  m_Name: CustomRenderPipline
+  m_EditorClassIdentifier: 
+  setting:
+    passes:
+    - {fileID: 11400000, guid: 33d5adc6e87ad5244a3df4eccd125c61, type: 2}
+    - {fileID: 11400000, guid: b14cff1e34769034080e21059012cc7c, type: 2}
+    - {fileID: 11400000, guid: e57bf469b21418543ab1ce271f465baf, type: 2}
+    - {fileID: 11400000, guid: e3f371ec1f944ed41a9f671de6b72af0, type: 2}
+    - {fileID: 11400000, guid: a7b6d6d227432534ba673d9e11c15029, type: 2}
+    - {fileID: 11400000, guid: 33f888a04dede084087660b9581b01f8, type: 2}
+    enableDynamicBatching: 0

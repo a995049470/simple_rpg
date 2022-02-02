@@ -1,0 +1,18 @@
+{
+    "name": "NullFramework.Editor",
+    "references": [
+        "GUID:466972b9a24113c42a2768d4c9c0d374",
+        "GUID:b8e24fd1eb19b4226afebb2810e3c19b",
+        "GUID:002c1bbed08fa44d282ef34fd5edb138",
+        "GUID:ce685fc1fc7d61b459754e930ad0929d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
