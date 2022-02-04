@@ -63,6 +63,7 @@ namespace {assembly_name}.Editor
                 var floder = GetFloder(name);
                 ClearFloder(floder);
                 var assembly = Assembly.Load(name);
+                if(assembly == null) continue;
                 var types = assembly.GetTypes();
                 var baseType = typeof(NullFramework.Runtime.ByteCodeBehaviorVM);
                 foreach (var type in types)
