@@ -5,8 +5,12 @@ namespace NullFramework.Runtime
 {
     public static class LitJsonUtility
     {
+        private static bool isLitJsonExpand = false;
+
         public static void LitJsonExpand()
         {
+            if(isLitJsonExpand) return;
+            isLitJsonExpand = true;
             JsonMapper.RegisterImporter<string, float>(str =>
             {
                 return float.Parse(str);

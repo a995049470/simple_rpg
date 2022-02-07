@@ -13,7 +13,7 @@ namespace NullFramework.Runtime
             return ((double)jsonData);
         }
 
-        public static double ConvertToFloat(this JsonData jsonData)
+        public static float ConvertToFloat(this JsonData jsonData)
         {
             return (float)(double)jsonData;
         }
