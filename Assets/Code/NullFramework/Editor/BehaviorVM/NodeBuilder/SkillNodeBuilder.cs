@@ -15,7 +15,7 @@ namespace NullFramework.Editor
         //private static string m_saveFloder = $"{Application.dataPath}/Code/NullFramework/Game/BehaviorVM/Editor/Auto";
         private static string[] m_assemblyNames = new string[]
         {
-            "MainPart",
+            //"MainPart",
             "NullFramework",
         };
         public static string DefalutContent()
