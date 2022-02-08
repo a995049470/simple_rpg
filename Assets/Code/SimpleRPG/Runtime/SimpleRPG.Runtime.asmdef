@@ -1,3 +1,15 @@
-﻿{
-	"name": "SimpleRPG.Runtime"
+{
+    "name": "SimpleRPG.Runtime",
+    "references": [
+        "GUID:ce685fc1fc7d61b459754e930ad0929d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

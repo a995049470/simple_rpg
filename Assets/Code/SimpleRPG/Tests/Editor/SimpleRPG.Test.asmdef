@@ -5,7 +5,9 @@
         "UnityEditor.TestRunner",
         "NullFramework.Editor",
         "NullFramework.Runtime",
-        "ThirdPart"
+        "ThirdPart",
+        "SimpleRPG.Editor",
+        "SimpleRPG.Runtime"
     ],
     "includePlatforms": [
         "Editor"
