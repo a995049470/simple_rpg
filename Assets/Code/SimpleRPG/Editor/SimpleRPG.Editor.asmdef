@@ -1,3 +1,15 @@
-﻿{
-	"name": "SimpleRPG.Editor"
+{
+    "name": "SimpleRPG.Editor",
+    "references": [
+        "GUID:5ffbba6ff0731304fbe770e1d159c74e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

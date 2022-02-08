@@ -53,7 +53,7 @@ namespace NullFramework.Editor
             }
             if(!data.ContainsKey(key))
             {
-                return default;
+                throw new Exception($"{file}.json miss key : {key}");
             }
             var value = data[key];
             object res = null;
@@ -72,6 +72,12 @@ namespace NullFramework.Editor
             else if(type == typeof(string))
             {
                 res = value.ConvertToString();
+            }
+            else if(typeof(UnityEngine.Object).IsAssignableFrom(type))
+            {
+                var guid = value.ConvertToString();
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                res = AssetDatabase.LoadAssetAtPath(path, type);
             }
             else
             {

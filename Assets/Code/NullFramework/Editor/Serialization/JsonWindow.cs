@@ -4,8 +4,20 @@ using System.Reflection;
 namespace NullFramework.Editor
 {
     //序列化数据会存在一个Json文件里
-    public abstract class JsonWindow
+    public abstract class JsonWindow<T> where T : new()
     {
+        private static T instance;
+        public static T Instance
+        {
+            get
+            {
+                if(instance == null)
+                {
+                    instance = new T();
+                }
+                return instance;
+            }
+        }
         private List<FieldInfo> cacheFields;
         public void LoadData(string cacheFile = null)
         {
