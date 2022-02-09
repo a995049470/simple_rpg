@@ -16,7 +16,12 @@ namespace NullFramework.Runtime
                 return float.Parse(str);
             });
 
-             JsonMapper.RegisterImporter<double, float>(d =>
+            JsonMapper.RegisterImporter<double, float>(d =>
+            {
+                return (float)d;
+            });
+
+            JsonMapper.RegisterImporter<int, float>(d =>
             {
                 return (float)d;
             });

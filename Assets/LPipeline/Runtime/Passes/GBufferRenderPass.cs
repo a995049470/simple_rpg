@@ -5,7 +5,6 @@ using UnityEngine.Rendering.Universal;
 
 namespace LPipeline.Runtime
 {
-
     //暂定三张GBuffer + depthTexture
     //1.depth 2.albedo 3.normal 4.metallic + roughness + ao
     [CreateAssetMenu(fileName = "GBufferRenderPass", menuName = "LPipeline/Passes/GBufferRenderPass")]

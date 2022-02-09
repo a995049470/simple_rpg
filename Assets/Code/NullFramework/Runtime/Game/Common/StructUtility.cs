@@ -35,7 +35,7 @@ namespace NullFramework.Runtime
         public static byte[] ArrayToBytes<T>(T[] array) where T : unmanaged
         {
             int len = array.Length;
-            int size = Marshal.SizeOf(array[0]);
+            int size = Marshal.SizeOf<T>();
             byte[] res = new byte[size * len];
             IntPtr ptr = Marshal.AllocHGlobal(size);
             for (int i = 0; i < len; i++)
@@ -47,16 +47,16 @@ namespace NullFramework.Runtime
             return res;
         }
 
-        public static T[] BytesToArray<T>(byte[] arr) where T : unmanaged
+        public static T[] BytesToArray<T>(byte[] bytes) where T : unmanaged
         {
-            var total = arr.Length;
+            var total = bytes.Length;
             var size = Marshal.SizeOf<T>();
             var len = total / size;
             var res = new T[len];
             IntPtr ptr = Marshal.AllocHGlobal(size);
             for (int i = 0; i < len; i++)
             {
-                Marshal.Copy(arr, i * size, ptr, size);
+                Marshal.Copy(bytes, i * size, ptr, size);
                 var value = Marshal.PtrToStructure<T>(ptr);
                 res[i] = value;
             }

@@ -1,9 +1,10 @@
 {
-    "name": "SimpleRPG.Editor",
+    "name": "LPipeline.Runtime",
     "references": [
-        "GUID:5ffbba6ff0731304fbe770e1d159c74e",
-        "GUID:466972b9a24113c42a2768d4c9c0d374",
-        "GUID:457ac30741d0d4242b01b0b562e2c245"
+        "GUID:15fc0a57446b3144c949da3e2b9737a9",
+        "GUID:df380645f10b7bc4b97d4f5eb6303d95",
+        "GUID:457ac30741d0d4242b01b0b562e2c245",
+        "GUID:466972b9a24113c42a2768d4c9c0d374"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

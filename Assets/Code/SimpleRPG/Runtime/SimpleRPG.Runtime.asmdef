@@ -1,7 +1,8 @@
 {
     "name": "SimpleRPG.Runtime",
     "references": [
-        "GUID:ce685fc1fc7d61b459754e930ad0929d"
+        "GUID:ce685fc1fc7d61b459754e930ad0929d",
+        "GUID:466972b9a24113c42a2768d4c9c0d374"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
