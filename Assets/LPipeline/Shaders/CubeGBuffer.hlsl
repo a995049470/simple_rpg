@@ -40,8 +40,10 @@ Varyings Vertex(Attributes i, uint instanceID : SV_InstanceID)
     float4 positionWS = mul(data.localToWorldMatrix, i.positionOS);
     o.positionCS = TransformWorldToHClip(positionWS.xyz);
     o.uv = i.texcoord;
-    VertexNormalInputs vni = GetVertexNormalInputs(i.normalOS, i.tangentOS);
-    o.normalWS = vni.normalWS;
+    float3 normalWS = mul((float3x3)data.localToWorldMatrix, i.normalOS);
+    SafeNormalize(normalWS);
+    o.normalWS = normalWS;
+    // VertexNormalInputs vni = GetVertexNormalInputs(i.normalOS, i.tangentOS);
     // o.tangentWS = vni.tangentWS;
     // o.bitangentWS = vni.bitangentWS;
 
