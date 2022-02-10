@@ -22,7 +22,8 @@ struct Varyings
 struct CubeGBuffer
 {
     float4x4 localToWorldMatrix;
-    float4 albedo;
+    float3 albedo;
+    float3 normalTS;
     float metallic;
     float roughness;
     float ao;

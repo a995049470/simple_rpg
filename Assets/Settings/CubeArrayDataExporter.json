@@ -1,5 +1,5 @@
 {
-    "texture" : "eb1d8b9adf0d252478617a7c1c8d9ceb",
+    "sourceFloder" : "Assets/ArtAsset/Texture",
     "step" : 1.00,
     "exportFloder" : "Assets/ArtAsset/Data",
     "alphaThreshold" : 0.5,

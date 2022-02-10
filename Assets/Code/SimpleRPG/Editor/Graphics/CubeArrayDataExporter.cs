@@ -9,10 +9,11 @@ using UnityEditor;
 
 namespace SimpleRPG.Editor
 {
+
     public class CubeArrayDataExporter : JsonWindow<CubeArrayDataExporter>
     {
         [SerializeField]
-        private Texture2D texture;
+        private string sourceFloder;
         [SerializeField]
         private float step;
         [SerializeField]
@@ -23,24 +24,23 @@ namespace SimpleRPG.Editor
         private int width;
         [SerializeField]
         private int height;
-
+        
         [MenuItem("Tool/图片转积木")]
         private static void TestTextureToCube()
         {
             Instance.LoadData();
-            Instance.TextureToCube();
+            Instance.ExporterAllCubeArrayData();
             AssetDatabase.Refresh();
             CubeRendererCenter.Instance.Refresh();
         }
 
-        private void TextureToCube()
+        private Texture2D ConvertToFixedSizeTexture(Texture2D _source)
         {
-            //转换成适合大小的texture
             var des = new RenderTextureDescriptor(width, height, RenderTextureFormat.ARGBFloat);
             var rt = new RenderTexture(des);
             rt.filterMode = FilterMode.Point;
             rt.Create();
-            Graphics.Blit(texture, rt);
+            Graphics.Blit(_source, rt);
             var suitTexture = new Texture2D(width, height);
             var active = RenderTexture.active;
             RenderTexture.active = rt;
@@ -48,7 +48,63 @@ namespace SimpleRPG.Editor
             suitTexture.Apply();
             rt.Release();
             RenderTexture.active = active;
+            return suitTexture;
+        }
 
+        private const string albedo = "albedo";
+        private const string normal = "normal";
+        private const string roughness = "roughness";
+        private const string metallic = "metallic";
+        private const string ao = "ao";
+
+        private void ExporterAllCubeArrayData()
+        {
+            var dic = new Dictionary<string, GBufferTextures>();
+            var textures = AssetDatabaseHelper.LoadAllAsset<Texture2D>(sourceFloder, "*.png");
+            foreach (var texture in textures)
+            {
+                var res = texture.name.Split('_');
+                if(res.Length < 2) continue;
+                var name = res[0];
+                var kind = res[res.Length - 1].ToLower();
+                var suitTexture = ConvertToFixedSizeTexture(texture);
+                if(!dic.ContainsKey(name))
+                {
+                    var gbuffer = new GBufferTextures();
+                    gbuffer.name = name;
+                    dic[name] = gbuffer;
+                }
+                var gbufferTextures = dic[name];
+                
+                switch (kind)
+                {
+                    case albedo:
+                        gbufferTextures.albedoTexture = suitTexture;
+                        break;
+                    case normal:
+                        gbufferTextures.normalTexture = suitTexture;
+                        break;
+                    case roughness:
+                        gbufferTextures.roughnessTexture = suitTexture;
+                        break;
+                    case metallic:
+                        gbufferTextures.metallicTexture = suitTexture;
+                        break;
+                    case ao:
+                        gbufferTextures.aoTexture = suitTexture;
+                        break;
+                }
+            }
+            foreach (var value in dic.Values)
+            {
+                CreateCubeDataFromGbufferTextures(value);
+            }
+        }
+
+        private void CreateCubeDataFromGbufferTextures(GBufferTextures gbufferTextures)
+        {
+            //转换成适合大小的texture
+            
             var num = width * height;
             var data = new List<CubeGBuffer>();
             for (int i = 0; i < width; i++) 
@@ -57,28 +113,26 @@ namespace SimpleRPG.Editor
                 for (int j = 0; j < height; j++)
                 {
                     var v = (j + 0.5f) * (1.0f / height);
-                    var pixel = suitTexture.GetPixel(i, j);
+                    var pixel = gbufferTextures.GetAlbedo(i, j);
                     if(pixel.a < alphaThreshold)
                     {
                         continue;
                     }
-                    //float gamma = 2.2f;
-                    // pixel.r = Mathf.Pow(pixel.r, gamma);
-                    // pixel.g = Mathf.Pow(pixel.g, gamma);
-                    // pixel.b = Mathf.Pow(pixel.b, gamma);
                     var id = i + j * width;
                     var pos = new Vector3(step * (i + 0.5f), step * (j + 0.5f), 0);
                     var matrix = Matrix4x4.TRS(pos, Quaternion.identity, Vector3.one);
                     var buffer = new CubeGBuffer();
-                    buffer.albedo = pixel;
+                    buffer.albedo = new Vector3(pixel.r, pixel.g, pixel.b);
+                    //buffer.albedo = pixel;
                     buffer.localToWorldMatrix = matrix;
-                    buffer.ao = 1;
-                    buffer.metallic = 0.5f;
-                    buffer.roughness = 0.5f;
+                    buffer.normalTS = gbufferTextures.GetNormalTS(i, j);
+                    buffer.ao = gbufferTextures.GetAO(i, j);
+                    buffer.metallic = gbufferTextures.GetMetallic(i, j);
+                    buffer.roughness = gbufferTextures.GetRoughness(i, j);
                     data.Add(buffer);
                 }
             }
-            var localPath = $"{exportFloder}/{texture.name}.bytes";
+            var localPath = $"{exportFloder}/{gbufferTextures.name}.bytes";
             var absPath = FileUtility.LocalPathToAbsPath(localPath);
             var bytes = StructUtility.ArrayToBytes(data.ToArray());
             File.WriteAllBytes(absPath, bytes);

@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace NullFramework.Runtime
@@ -12,8 +11,19 @@ namespace NullFramework.Runtime
             {
                 return null;
             }
-            return Application.dataPath + path.Substring(6);
+            var absPath = Application.dataPath + path.Substring(6);
+            absPath = absPath.Replace('/','\\');
+            return absPath;
         }
+
+        public static string AbsPathToLocalPath(string path)
+        {
+            var len = Application.dataPath.Length - 6;
+            
+            return path.Substring(len);
+        }
+
+        
     }
 }
 
