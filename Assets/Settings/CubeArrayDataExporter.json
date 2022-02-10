@@ -1,6 +1,6 @@
 {
     "sourceFloder" : "Assets/ArtAsset/Texture",
-    "step" : 1.00,
+    "step" : 1.0,
     "exportFloder" : "Assets/ArtAsset/Data",
     "alphaThreshold" : 0.5,
     "width" : 16,

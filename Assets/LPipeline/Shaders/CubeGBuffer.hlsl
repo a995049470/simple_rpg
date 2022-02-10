@@ -52,7 +52,7 @@ Varyings Vertex(Attributes i, uint instanceID : SV_InstanceID)
     float3 bitangentWS = cross(normalWS, tangentWS) * sign;
     float3x3 t2w = float3x3(tangentWS, bitangentWS, normalWS);
     float3 normalTS = data.normalTS * 2.0 - 1.0;
-    o.normalWS = normalWS;
+    o.normalWS = mul(normalTS, t2w);
 
 
     o.albedo = data.albedo.xyz;

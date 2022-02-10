@@ -10,8 +10,8 @@ namespace SimpleRPG.Editor
         public Texture2D metallicTexture;
         public Texture2D roughnessTexture;
         public Texture2D aoTexture;
-        
 
+        
         public Color GetAlbedo(int i, int j)
         {
             var pixel = albedoTexture == null ? Color.white : albedoTexture.GetPixel(i, j);

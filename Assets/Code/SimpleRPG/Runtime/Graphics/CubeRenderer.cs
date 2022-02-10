@@ -12,6 +12,8 @@ namespace SimpleRPG.Runtime
     {
         [SerializeField]
         private TextAsset data;
+
+
         //增量刷新
         private CubeGBuffer[] cubeBuffers;
         private static CubeGBuffer[] emptyGBuffer = new CubeGBuffer[0];
@@ -67,6 +69,7 @@ namespace SimpleRPG.Runtime
             {
                 cubeBuffers = StructUtility.BytesToArray<CubeGBuffer>(data.bytes);
             }
+            
             lastLocalToWorldMatrix = Matrix4x4.identity;
         }
 

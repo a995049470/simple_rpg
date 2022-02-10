@@ -9,7 +9,7 @@ using UnityEditor;
 
 namespace SimpleRPG.Editor
 {
-
+   
     public class CubeArrayDataExporter : JsonWindow<CubeArrayDataExporter>
     {
         [SerializeField]
@@ -38,7 +38,7 @@ namespace SimpleRPG.Editor
         {
             var des = new RenderTextureDescriptor(width, height, RenderTextureFormat.ARGBFloat);
             var rt = new RenderTexture(des);
-            rt.filterMode = FilterMode.Point;
+            rt.filterMode = FilterMode.Bilinear;
             rt.Create();
             Graphics.Blit(_source, rt);
             var suitTexture = new Texture2D(width, height);
@@ -61,13 +61,13 @@ namespace SimpleRPG.Editor
         {
             var dic = new Dictionary<string, GBufferTextures>();
             var textures = AssetDatabaseHelper.LoadAllAsset<Texture2D>(sourceFloder, "*.png");
-            foreach (var texture in textures)
+            foreach (var gbufferTexture in textures)
             {
-                var res = texture.name.Split('_');
+                var res = gbufferTexture.name.Split('_');
                 if(res.Length < 2) continue;
                 var name = res[0];
                 var kind = res[res.Length - 1].ToLower();
-                var suitTexture = ConvertToFixedSizeTexture(texture);
+                var suitTexture = ConvertToFixedSizeTexture(gbufferTexture);
                 if(!dic.ContainsKey(name))
                 {
                     var gbuffer = new GBufferTextures();
@@ -92,6 +92,9 @@ namespace SimpleRPG.Editor
                         break;
                     case ao:
                         gbufferTextures.aoTexture = suitTexture;
+                        break;
+                    default:
+                        Debug.Log($"{gbufferTexture.name} 名称非法");
                         break;
                 }
             }
