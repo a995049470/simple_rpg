@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace NullFramework.Runtime
@@ -26,7 +25,7 @@ namespace NullFramework.Runtime
         public const int JundgeCode = 3;
 
         protected static object[] s_param0 = new object[0];
-        private static System.Type s_uniTaskType = typeof(UniTask);
+        //private static System.Type s_uniTaskType = typeof(UniTask);
 
         //字节码对应的方法  所有方法的返回类型只会是void 或者 UniTask
         private Dictionary<int, MethodInfo> m_methodDic;
@@ -166,6 +165,7 @@ namespace NullFramework.Runtime
         [ByteCode(103, "等待", false, true, "time")]
         private static void Wait(ByteCodeBehavior behavior)
         {
+            //TODO:需要改善方法中临时变量的储存
             int key_waitTime = 10;
             var ptr_code = behavior.GetCodePtr() - 1;
             var ptr_value = behavior.GetValuePtr();

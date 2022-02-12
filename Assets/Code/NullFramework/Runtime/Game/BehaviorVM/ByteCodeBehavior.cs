@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace NullFramework.Runtime
@@ -91,7 +90,7 @@ namespace NullFramework.Runtime
             m_dataHeap.Remove(key);
         }
         /// <summary>
-        /// 获取数据
+        /// 获取数据 --没必要这么存数据
         /// </summary>
         /// <typeparam name="T"></typeparam>
         public T GetData<T>(int key) where T : class
@@ -116,10 +115,10 @@ namespace NullFramework.Runtime
             m_isStop = false;
         }
 
-        public async UniTask AsynceExecute()
-        {
-           throw new System.Exception("");
-        }
+        // public async UniTask AsynceExecute()
+        // {
+        //    throw new System.Exception("");
+        // }
         
         public void SyncExecute()
         {
