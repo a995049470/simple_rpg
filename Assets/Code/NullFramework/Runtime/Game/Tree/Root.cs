@@ -7,7 +7,7 @@ using UnityEngine;
 namespace NullFramework.Runtime
 {
     //所有节点的根节点 暂时只会有一个
-    public class Root : Tress
+    public class Root : Tress 
     {
         
         private static Root m_instance;
@@ -26,25 +26,40 @@ namespace NullFramework.Runtime
         private RingArray<Msg> msgRingArray;
         private int m_frame;
         private int Frame { get => m_frame; }
+        private int fps = 30;
+        public float deltaTime { get => 1.0f / fps; }
+        private float time = 0;
+        
         
         public Root() : base()
         {
+            m_instance = this;
             msgRingArray = new RingArray<Msg>(msgSize);
             m_frame = 0;
             OnEnter();
         }
 
         //用于外界调用的Update
-        public void Update()
+        public virtual void Update(float deltaTime)
         {
-            var msgs = msgRingArray.GetArray();
-            msgRingArray.Clear();
-            foreach (var msg in msgs)
+            time += deltaTime;
+            while (time > deltaTime)
             {
-                OnUpdate(msg);
+                time -= deltaTime;   
+                HandleInputEvent();
+                var msgs = msgRingArray.GetArray();
+                msgRingArray.Clear();
+                foreach (var msg in msgs)
+                {
+                    OnUpdate(msg);
+                }
+                m_frame ++;
             }
-            m_frame ++;
-            
+        }
+
+        protected virtual void HandleInputEvent()
+        {
+
         }
 
         //立马执行Msg

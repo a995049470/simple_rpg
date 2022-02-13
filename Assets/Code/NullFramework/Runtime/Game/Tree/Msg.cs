@@ -28,6 +28,10 @@ namespace NullFramework.Runtime
             return m_data as T;
         }
 
+        public object GetData()
+        {
+            return m_data;
+        }
        
     }
 }

@@ -25,6 +25,7 @@ namespace NullFramework.Runtime
         {
             m_msgRespondMap = new Dictionary<int, MsgRespond>();
             HandleManager.Instance.Put(this);
+            IntListeners();
         }
 
         //激活或进入运行栈
@@ -32,6 +33,10 @@ namespace NullFramework.Runtime
         {
             m_wake = true;
             m_active = true;
+        }
+
+        protected virtual void IntListeners()
+        {
         }
 
         /// <summary>
