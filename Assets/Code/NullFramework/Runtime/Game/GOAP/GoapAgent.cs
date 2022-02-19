@@ -39,12 +39,12 @@ namespace NullFramework.Runtime
             var executeState = new GoapFSMState(); 
             executeState.AddMsgListener(MsgKind.Update, Update_Execute);
 
-            fsm.AddLeaf(LeafKind.Idle, idleState);
-            fsm.AddLeaf(LeafKind.Move, moveState);
-            fsm.AddLeaf(LeafKind.Execute, executeState);
-            fsm.PushLeaf(LeafKind.Idle);
+            fsm.AddFSMLeaf(LeafKind.Idle, idleState);
+            fsm.AddFSMLeaf(LeafKind.Move, moveState);
+            fsm.AddFSMLeaf(LeafKind.Execute, executeState);
+            fsm.PushFSMLeaf(LeafKind.Idle);
             
-            this.AddLeaf(LeafKind.FSM, fsm);
+            this.AddFSMLeaf(LeafKind.FSM, fsm);
         }
 
         

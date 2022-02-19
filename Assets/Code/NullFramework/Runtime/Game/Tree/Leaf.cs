@@ -4,11 +4,11 @@ using System.Collections.Generic;
 namespace NullFramework.Runtime
 {
     //实际生效的叶子节点
-    public class Leaf : IHandle
+    public class Leaf 
     {
         protected static Root m_root { get => Root.Instance; }
 
-        protected Handle<Tress> m_parentHandle;
+        protected Tress m_parent;
         protected Dictionary<int, MsgRespond> m_msgRespondMap;
         protected int m_handle;
         //叶节点种类
@@ -24,8 +24,6 @@ namespace NullFramework.Runtime
         public Leaf()
         {
             m_msgRespondMap = new Dictionary<int, MsgRespond>();
-            HandleManager.Instance.Put(this);
-            IntListeners();   
         }
 
         public void LoadData(LeafData data)
@@ -45,7 +43,7 @@ namespace NullFramework.Runtime
         }
 
         //激活或进入运行栈
-        public virtual void OnEnter(Leaf lastHandle = default)
+        public virtual void OnEnter(Leaf lastLeaf = null)
         {
             m_wake = true;
             m_active = true;
@@ -82,7 +80,7 @@ namespace NullFramework.Runtime
         }
 
         //失去活力或退出运行栈时
-        public virtual void OnExit(Handle<Leaf> nextHandle = default)
+        public virtual void OnExit(Leaf nextHandle = default)
         {   
             m_wake = false;
             m_active = false;
@@ -107,11 +105,7 @@ namespace NullFramework.Runtime
             m_kind = kind;
         }
 
-        //获取句柄
-        public Handle<Leaf> GetHandle()
-        {
-            return new Handle<Leaf>(m_handle);
-        }
+        
 
         public void SetHandle(int handle)
         {
@@ -128,7 +122,7 @@ namespace NullFramework.Runtime
 
         }
 
-        public virtual void AddMsgListener(int msgKind, Action<Msg> action)
+        public void AddMsgListener(int msgKind, Action<Msg> action)
         {
             if (m_msgRespondMap.TryGetValue(msgKind, out var result_respond))
             {
@@ -139,59 +133,74 @@ namespace NullFramework.Runtime
                 var msgRespond = new MsgRespond();
                 msgRespond.AddMsgAction(action);
                 m_msgRespondMap[msgKind] = msgRespond;
-                m_parentHandle.Get()?.AddMsgLeafHandle(msgKind, this.GetHandle());
+                m_parent?.AddMsgLeaf(msgKind, this);
             }
         }
 
-        public virtual void RemoveMsgListener(int msgKind, Action<Msg> action)
+        public void RemoveMsgListener(int msgKind, Action<Msg> action)
         {
             if (m_msgRespondMap.TryGetValue(msgKind, out var respond))
             {
                 respond.RemoveMsgAction(action);
                 if (respond.IsEmpty())
                 {
-                    m_msgRespondMap.Remove(msgKind);             
+                    m_msgRespondMap.Remove(msgKind);  
                 }
             }
         }
+
+        public void ClearMsgListeners()
+        {
+            foreach (var key in m_msgRespondMap.Keys)
+            {
+                m_parent.RemoveMsgLeaf(key, this);
+            }
+            m_msgRespondMap.Clear();
+        }
+
         //成为信息流动节点
-        private void RegisterMsgHandle()
+        private void RegisterMsgForParent()
         {
             if(m_isRegisterMsgHandle) return;
-            var parent = m_parentHandle.Get();
+            var parent = m_parent;
             if (parent != null)
             {
                 m_isRegisterMsgHandle = true;
                 foreach (var key in m_msgRespondMap.Keys)
                 {
-                    parent.AddMsgLeafHandle(key, this.GetHandle());
+                    parent.AddMsgLeaf(key, this);
                 }
 
             }
         }
 
-        
         //TODO:考虑切换父物体的问题
         //考虑切换父物体是 改变handle
-        public void SetParent(Handle<Tress> parentHandle)
+        public void SetParent(Tress parent)
         {
-            if (m_parentHandle == parentHandle)
+            if (m_parent == parent)
             {
                 return;
             }  
-            
-            m_parentHandle = parentHandle;
-            //只在设置父物体的时候注册一次
-            RegisterMsgHandle();
+            if(m_parent != null)
+            {
+                ClearMsgListeners();
+            }
+            m_parent = parent;
+            IntListeners();
             if(this is IUnityObjectSetter setter)
             {
-                var tress = parentHandle.Get();
-                if(tress is IUnityObjectGetter getter)
+                if(parent is IUnityObjectGetter getter)
                 {
                     setter.SetUnityObject(getter.GetUnityObject());
                 }
             }
-          
+        }
+
+        //释放
+        public void Free()
+        {
+
         }
     }
 }

@@ -7,14 +7,14 @@ namespace SimpleRPG.Runtime
         protected override void HandleInputEvent()
         {
             base.HandleInputEvent();
-            Vector2 dir = Vector2.zero;
+            Vector3 dir = Vector3.zero;
             if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
             {
-                dir.y += 1;
+                dir.z += 1;
             }
             if(Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
             {
-                dir.y -= 1;
+                dir.z -= 1;
             }
             if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
             {

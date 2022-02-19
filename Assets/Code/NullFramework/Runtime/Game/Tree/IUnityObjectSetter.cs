@@ -6,6 +6,5 @@ namespace NullFramework.Runtime
     {
         void SetUnityObject(UnityEngine.Object obj);
     }
-    
 }
 

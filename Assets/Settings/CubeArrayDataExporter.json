@@ -1,7 +1,7 @@
 {
     "sourceFloder" : "Assets/GameResource/Texture",
     "step" : 1.0,
-    "exportFloder" : "Assets/GameResource/Data",
+    "exportFloder" : "Assets/GameResource/CubeData",
     "alphaThreshold" : 0.5,
     "width" : 16,
     "height" : 16

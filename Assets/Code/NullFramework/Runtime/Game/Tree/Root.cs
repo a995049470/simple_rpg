@@ -23,18 +23,18 @@ namespace NullFramework.Runtime
             }
         }
         private const int msgSize = 256;
-        private RingArray<Msg> msgRingArray;
+        private Queue<Msg> msgQueue;
         private int m_frame;
         private int Frame { get => m_frame; }
         private int fps = 30;
-        public float deltaTime { get => 1.0f / fps; }
+        public float DeltaTime { get => 1.0f / fps; }
         private float time = 0;
         
         
         public Root() : base()
         {
             m_instance = this;
-            msgRingArray = new RingArray<Msg>(msgSize);
+            msgQueue = new Queue<Msg>();
             m_frame = 0;
             OnEnter();
         }
@@ -43,14 +43,13 @@ namespace NullFramework.Runtime
         public virtual void Update(float deltaTime)
         {
             time += deltaTime;
-            while (time > deltaTime)
+            while (time > DeltaTime)
             {
-                time -= deltaTime;   
+                time -= DeltaTime;   
                 HandleInputEvent();
-                var msgs = msgRingArray.GetArray();
-                msgRingArray.Clear();
-                foreach (var msg in msgs)
+                while(msgQueue.Count > 0)
                 {
+                    var msg = msgQueue.Dequeue();
                     OnUpdate(msg);
                 }
                 m_frame ++;
@@ -72,13 +71,7 @@ namespace NullFramework.Runtime
         //最大接受256条 之后的会被丢弃  之后在考虑丢弃问题..
         public void AddMsg(Msg msg)
         {
-        #if UNITY_EDITOR
-            if(msgRingArray.IsFull())
-            {
-                Debug.LogError("命令列表满了....考虑扩容或者换个存储列表...");
-            }
-        #endif
-            msgRingArray.Push(msg);
+            msgQueue.Enqueue(msg);
         }        
     }
 }

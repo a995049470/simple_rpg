@@ -29,8 +29,10 @@ namespace SimpleRPG.Runtime
         private void Move(Msg msg)
         {
             var msgData = msg.GetData<MsgData_Move>();
-            var speed = leafData.moveSpeed * msgData.strength * msgData.dir;
-            var dis = speed * Root.Instance.deltaTime;
+            
+            var speed = leafData.MoveSpeed * msgData.strength * msgData.dir;
+            var dis = speed * Root.Instance.DeltaTime;
+            this.transform.Translate(dis, Space.World);
         }
         
     }

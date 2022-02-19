@@ -24,7 +24,7 @@ namespace NullFramework.Runtime
         private bool m_isSuccess;
         //外界传输的数据字典 key:类型 value: int值 或者句柄
         //相当于堆 key相当变量名
-        private Dictionary<int, int> m_dataHeap;
+        private Dictionary<int, object> m_dataHeap;
         //是否中止 用于实现异步
         private bool m_isStop = false;
         
@@ -34,7 +34,7 @@ namespace NullFramework.Runtime
             m_codes = codes ?? new int[0];
             m_valueStack = new RingArray<int>(max_size);
             m_continuityStack = new RingArray<int>(max_size);
-            m_dataHeap = new Dictionary<int, int>();
+            m_dataHeap = new Dictionary<int, object>();
         }
 
         public ByteCodeBehavior()
@@ -43,7 +43,7 @@ namespace NullFramework.Runtime
             m_codes = new int[0];
             m_valueStack = new RingArray<int>(max_size);
             m_continuityStack = new RingArray<int>(max_size);
-            m_dataHeap = new Dictionary<int, int>();
+            m_dataHeap = new Dictionary<int, object>();
         }
 
         public void Stop()
@@ -61,15 +61,11 @@ namespace NullFramework.Runtime
             return m_isStop;
         }
 
-        /// <summary>
-        /// 向外源数据字典中增加值
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="handle"></param>
-        public void SetData(int type, int handle)
+
+        public void SetData(int key, object value)
         {
-            m_dataHeap[type] = handle;
-        }        
+            m_dataHeap[key] = value;
+        }
 
         /// <summary>
         /// 获取数据
@@ -78,11 +74,11 @@ namespace NullFramework.Runtime
         /// <returns></returns>
         public int GetData(int key)
         {
-            if(!m_dataHeap.TryGetValue(key,out int value))
+            if(!m_dataHeap.TryGetValue(key, out object value))
             {
                 value = 0;
             }
-            return value;
+            return (int)value;
         }
 
         public void RemoveData(int key)
@@ -95,11 +91,12 @@ namespace NullFramework.Runtime
         /// <typeparam name="T"></typeparam>
         public T GetData<T>(int key) where T : class
         {
-            if(!m_dataHeap.TryGetValue(key,out int value))
+            if(!m_dataHeap.TryGetValue(key,out object value))
             {
-                value = 0;
+                return null;
             }
-            return HandleManager.Instance.Get<T>(value);
+            return value as T;
+
         }
         
 

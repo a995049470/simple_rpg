@@ -17,7 +17,7 @@ namespace NullFramework.Runtime
     {
         public virtual Leaf CreateLeaf()
         {
-           return null;
+           return default;
         }
     }
 }

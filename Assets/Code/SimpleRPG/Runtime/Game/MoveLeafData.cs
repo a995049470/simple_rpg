@@ -3,10 +3,13 @@ using UnityEngine;
 
 namespace SimpleRPG.Runtime
 {
-    [CreateAssetMenu(fileName = "MoveLeaf", menuName = "SimpleRPG/MoveLeaf")]
+    [CreateAssetMenu(fileName = "MoveLeafData", menuName = "SimpleRPG/MoveLeafData")]
     public class MoveLeafData : LeafData<MoveLeaf>
     {
-        public float moveSpeed = 4;
+        [SerializeField]
+        private float moveSpeed = 4;
+        public float MoveSpeed { get => moveSpeed; }
+
     }
 }
 

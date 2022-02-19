@@ -13,11 +13,28 @@ namespace SimpleRPG.Runtime
         [SerializeField]
         private bool isRoot = false;
         public bool IsRoot { get => isRoot;}
+        private Leaf leaf;
+        public Leaf Leaf
+        {
+            get
+            {
+                if(leaf == null) leaf = data?.CreateLeaf();
+                return leaf;
+            }
+        }
+
 
         private void OnValidate() {
-            if(data == null) isRoot = false;
+            if(data == null)
+            {
+                isRoot = false;
+                return;
+            } 
             isRoot = data.GetType().Name.ToLower().Contains("root");
+            this.name = data.name.Substring(0, data.name.Length - 4);
         }
+
+        
     }
 }
 
