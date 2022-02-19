@@ -1,7 +1,7 @@
 using UnityEngine;
 namespace SimpleRPG.Runtime
 {
-    public class MoveData
+    public class MsgData_Move
     {
         //角度
         public Vector2 dir;

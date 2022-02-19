@@ -58,6 +58,15 @@ namespace NullFramework.Runtime
             return HandleManager.Instance.IsInvalidHandle(this);
         }
 
+        
+
+        public override int GetHashCode()
+        {
+            return this.GetHandle_I32();
+        }
+
+
+
         public static bool operator == (Handle<T> left, Handle<T> right)
         {
             return left.GetHandle_I32() == right.GetHandle_I32();
@@ -67,6 +76,17 @@ namespace NullFramework.Runtime
         {
             return left.GetHandle_I32() != right.GetHandle_I32();
         }
+
+        public static bool operator == (Handle<T> left, int right)
+        {
+            return left.GetHandle_I32() == right;
+        }
+
+         public static bool operator != (Handle<T> left, int right)
+        {
+            return left.GetHandle_I32() != right;
+        }
+
     }
     
 }

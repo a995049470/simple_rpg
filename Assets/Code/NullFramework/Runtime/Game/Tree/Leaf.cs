@@ -25,11 +25,27 @@ namespace NullFramework.Runtime
         {
             m_msgRespondMap = new Dictionary<int, MsgRespond>();
             HandleManager.Instance.Put(this);
-            IntListeners();
+            IntListeners();   
+        }
+
+        public void LoadData(LeafData data)
+        {
+            if(this is ILeafDataSetter setter)
+            {
+                setter.SetLeafData(data);
+            }
+        }
+
+        public void AfterLoadData()
+        {
+            if(this is IUnityObjectLoader loader)
+            {
+                loader.LoadUnityObject();
+            }
         }
 
         //激活或进入运行栈
-        public virtual void OnEnter(Handle<Leaf> lastHandle = default)
+        public virtual void OnEnter(Leaf lastHandle = default)
         {
             m_wake = true;
             m_active = true;
@@ -167,6 +183,15 @@ namespace NullFramework.Runtime
             m_parentHandle = parentHandle;
             //只在设置父物体的时候注册一次
             RegisterMsgHandle();
+            if(this is IUnityObjectSetter setter)
+            {
+                var tress = parentHandle.Get();
+                if(tress is IUnityObjectGetter getter)
+                {
+                    setter.SetUnityObject(getter.GetUnityObject());
+                }
+            }
+          
         }
     }
 }

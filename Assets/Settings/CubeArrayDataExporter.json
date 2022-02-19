@@ -1,7 +1,7 @@
 {
-    "sourceFloder" : "Assets/ArtAsset/Texture",
+    "sourceFloder" : "Assets/GameResource/Texture",
     "step" : 1.0,
-    "exportFloder" : "Assets/ArtAsset/Data",
+    "exportFloder" : "Assets/GameResource/Data",
     "alphaThreshold" : 0.5,
     "width" : 16,
     "height" : 16

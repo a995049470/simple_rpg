@@ -6,11 +6,21 @@ using UnityEngine;
 namespace SimpleRPG.Runtime
 {
 
-    public class MoveLeaf : Leaf
+    public class MoveLeaf : Leaf, IUnityObjectSetter, ILeafDataSetter
     {
         private Transform transform;
-        private float moveSpeed = 4;
-        
+        private MoveLeafData leafData;
+
+        public void SetLeafData(LeafData data)
+        {
+            this.leafData = data as MoveLeafData;
+        }
+
+        public void SetUnityObject(Object obj)
+        {
+            this.transform = (obj as GameObject)?.transform;
+        }
+
         protected override void IntListeners()
         {
             AddMsgListener(MsgKind.move, Move);
@@ -18,11 +28,10 @@ namespace SimpleRPG.Runtime
 
         private void Move(Msg msg)
         {
-            var data = msg.GetData<MoveData>();
-            var speed = moveSpeed * data.strength * data.dir;
+            var msgData = msg.GetData<MsgData_Move>();
+            var speed = leafData.moveSpeed * msgData.strength * msgData.dir;
             var dis = speed * Root.Instance.deltaTime;
         }
-
         
     }
 }

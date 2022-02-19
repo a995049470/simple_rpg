@@ -2,7 +2,7 @@ using NullFramework.Runtime;
 using UnityEngine;
 namespace SimpleRPG.Runtime
 {
-    public class Root_SimpleRPG : Root
+    public class SimpleRPGRoot : Root
     {
         protected override void HandleInputEvent()
         {
@@ -25,7 +25,7 @@ namespace SimpleRPG.Runtime
                 dir.x += 1;
             }
             if(dir.magnitude > 1) dir = dir.normalized;
-            var data = new MoveData();
+            var data = new MsgData_Move();
             data.dir = dir;
             data.strength = 1;
             AddMsg(new Msg(MsgKind.move, data));
