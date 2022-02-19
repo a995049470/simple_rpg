@@ -60,7 +60,7 @@ namespace SimpleRPG.Editor
         private void ExporterAllCubeArrayData()
         {
             var dic = new Dictionary<string, GBufferTextures>();
-            var textures = AssetDatabaseHelper.LoadAllAsset<Texture2D>(sourceFloder, "*.png");
+            var textures = EditorHelper.LoadAllAsset<Texture2D>(sourceFloder, "*.png");
             foreach (var gbufferTexture in textures)
             {
                 var res = gbufferTexture.name.Split('_');
