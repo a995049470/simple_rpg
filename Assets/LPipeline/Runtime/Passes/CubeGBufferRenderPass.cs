@@ -57,9 +57,8 @@ namespace LPipeline.Runtime
             
             material.SetBuffer(id_cubeGBuffer, cubeGbuffers);
             int subMeshIndex = 0;
-            
             cmd.DrawMeshInstancedProcedural(cubeMesh, subMeshIndex, material, 0, instanceCount);
-           
+            
             cmd.SetRenderTarget(data.activeCameraColorAttachment, depthTexture.Identifier());
             cmd.DrawMeshInstancedProcedural(cubeMesh, subMeshIndex, material, 1, instanceCount);
             context.ExecuteCommandBuffer(cmd);

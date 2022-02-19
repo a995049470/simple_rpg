@@ -38,7 +38,7 @@ Varyings Vertex(Attributes i)
     return o;
 }
 
-#define LIGHT_AMBINE 0.03
+#define LIGHT_AMBINE 0.00
 
 //加点基色 不至于太黑
 float4 Fragment(Varyings i) : SV_TARGET

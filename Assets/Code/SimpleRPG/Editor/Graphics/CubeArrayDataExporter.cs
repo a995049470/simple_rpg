@@ -94,10 +94,11 @@ namespace SimpleRPG.Editor
                         gbufferTextures.aoTexture = suitTexture;
                         break;
                     default:
-                        Debug.Log($"{gbufferTexture.name} 名称非法");
+                        Debug.Log($"{gbufferTexture.name} 名称非法", gbufferTexture);
                         break;
                 }
             }
+            
             foreach (var value in dic.Values)
             {
                 CreateCubeDataFromGbufferTextures(value);

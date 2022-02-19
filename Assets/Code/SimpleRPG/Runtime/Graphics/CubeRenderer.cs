@@ -32,10 +32,11 @@ namespace SimpleRPG.Runtime
             CubeRendererCenter.Instance.Add(this);
         }
 
-        private void OnDisable() {
+        private void OnDisable() 
+        {
             CubeRendererCenter.Instance.Remove(this);   
         }
-
+        
         public CubeGBuffer[] GetCubeGBuffer()
         {
             var current = this.transform.localToWorldMatrix;
