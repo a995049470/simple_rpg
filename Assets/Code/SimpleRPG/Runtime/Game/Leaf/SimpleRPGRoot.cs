@@ -4,9 +4,10 @@ namespace SimpleRPG.Runtime
 {
     public class SimpleRPGRoot : Root
     {
-        protected override void HandleInputEvent()
+        
+        protected override void BeforeUpdate()
         {
-            base.HandleInputEvent();
+            base.BeforeUpdate();
             Vector3 dir = Vector3.zero;
             if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
             {
@@ -29,6 +30,7 @@ namespace SimpleRPG.Runtime
             data.dir = dir;
             data.strength = 1;
             AddMsg(new Msg(MsgKind.move, data));
+            AddMsg(new Msg(MsgKind.custom));
         }
     }
 }

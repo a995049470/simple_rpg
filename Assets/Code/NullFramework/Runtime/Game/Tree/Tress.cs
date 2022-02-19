@@ -5,6 +5,14 @@ using System;
 
 namespace NullFramework.Runtime
 {
+    public class Tress<T> : Tress, ILeafDataSetter where T : LeafData
+    {
+        protected T data;
+        public void SetLeafData(LeafData data)
+        {
+            this.data = data as T;
+        }
+    }
     //状态机+普通的父子节点
     public class Tress : Leaf
     {

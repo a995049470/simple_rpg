@@ -15,9 +15,6 @@ namespace NullFramework.Runtime
     
     public abstract class LeafData : ScriptableObject 
     {
-        public virtual Leaf CreateLeaf()
-        {
-           return default;
-        }
+        public abstract Leaf CreateLeaf();
     }
 }

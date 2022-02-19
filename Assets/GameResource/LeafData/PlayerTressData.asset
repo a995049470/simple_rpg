@@ -9,7 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3327955164c0b54e9280de648d41ec8, type: 3}
-  m_Name: MoveLeafData
+  m_Script: {fileID: 11500000, guid: 9b84e817fb652cd43bcdc943e7e9a82d, type: 3}
+  m_Name: PlayerTressData
   m_EditorClassIdentifier: 
-  moveSpeed: 20
+  playerPrefab: {fileID: 1546927844982933137, guid: 5a3c3a0947bd5184e9c17180a6dfe1ba,
+    type: 3}
+  bornPos: {x: 0, y: 0, z: 0}

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9e5f21123d24314798d94a070964270, type: 3}
+  m_Name: CameraFollowLeafData
+  m_EditorClassIdentifier: 
+  cameraPrefab: {fileID: 6166413263060680258, guid: 1a8b5ad69c20dce47849dd6c8988cf63,
+    type: 3}
+  zdistance: 30
+  smoothTime: 0.2
+  maxSpeed: 1024

@@ -13,7 +13,7 @@ namespace SimpleRPG.Runtime
 
         public GameObject InstantiatePlayer()
         {
-            var go = Instantiate(playerPrefab);
+            var go = UObjectUtility.InstantiateGameObject(playerPrefab);
             go.transform.SetPositionAndRotation(bornPos, Quaternion.identity);
             return go;
         }

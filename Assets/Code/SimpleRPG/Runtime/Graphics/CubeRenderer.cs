@@ -39,6 +39,9 @@ namespace SimpleRPG.Runtime
         public CubeGBuffer[] GetCubeGBuffer()
         {
             var current = this.transform.localToWorldMatrix;
+            if (current[0, 0] == 0) current[0, 0] = 0.001f;
+            if (current[1, 1] == 0) current[1, 1] = 0.001f;
+            if (current[2, 2] == 0) current[2, 2] = 0.001f;
             var offset = current * lastLocalToWorldMatrix.inverse;
             lastLocalToWorldMatrix = current;
             if(offset != Matrix4x4.identity)

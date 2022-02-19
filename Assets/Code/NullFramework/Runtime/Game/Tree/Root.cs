@@ -27,6 +27,7 @@ namespace NullFramework.Runtime
         private int m_frame;
         private int Frame { get => m_frame; }
         private int fps = 30;
+        public int FPS { get => fps; set => fps = value; }
         public float DeltaTime { get => 1.0f / fps; }
         private float time = 0;
         
@@ -40,13 +41,14 @@ namespace NullFramework.Runtime
         }
 
         //用于外界调用的Update
-        public virtual void Update(float deltaTime)
+        public void Update(float deltaTime)
         {
             time += deltaTime;
             while (time > DeltaTime)
             {
-                time -= DeltaTime;   
-                HandleInputEvent();
+                time -= DeltaTime; 
+                
+                BeforeUpdate();
                 while(msgQueue.Count > 0)
                 {
                     var msg = msgQueue.Dequeue();
@@ -56,7 +58,8 @@ namespace NullFramework.Runtime
             }
         }
 
-        protected virtual void HandleInputEvent()
+
+        protected virtual void BeforeUpdate()
         {
 
         }

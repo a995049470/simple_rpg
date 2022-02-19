@@ -3,8 +3,16 @@ using System.Collections.Generic;
 
 namespace NullFramework.Runtime
 {
+    public class Leaf<T> : Leaf, ILeafDataSetter where T : LeafData
+    {
+        protected T data;
+        public void SetLeafData(LeafData data)
+        {
+            this.data = data as T;
+        }
+    }
     //实际生效的叶子节点
-    public class Leaf 
+    public abstract class Leaf 
     {
         protected static Root m_root { get => Root.Instance; }
 
@@ -49,9 +57,7 @@ namespace NullFramework.Runtime
             m_active = true;
         }
 
-        protected virtual void IntListeners()
-        {
-        }
+        protected virtual void InitListeners() {}
 
         /// <summary>
         /// 在激活的状态下是否存在回应
@@ -187,7 +193,7 @@ namespace NullFramework.Runtime
                 ClearMsgListeners();
             }
             m_parent = parent;
-            IntListeners();
+            InitListeners();
             if(this is IUnityObjectSetter setter)
             {
                 if(parent is IUnityObjectGetter getter)

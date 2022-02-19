@@ -6,12 +6,20 @@ namespace SimpleRPG.Runtime
 {
     public class TreeManager : SingleMono<TreeManager>
     {
+        [SerializeField]
+        [Range(1, 60)]
+        private int fps = 30;
         private void Start() {
             InitTree();
+            OnValidate();
         }
 
         private void Update() {
             Root.Instance.Update(Time.deltaTime);
+        }
+
+        private void OnValidate() {
+            Root.Instance.FPS = fps;
         }
 
         public void InitTree()

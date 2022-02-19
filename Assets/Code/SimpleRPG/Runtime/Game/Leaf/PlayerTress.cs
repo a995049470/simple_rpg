@@ -3,10 +3,9 @@ using UnityEngine;
 
 namespace SimpleRPG.Runtime
 {
-    public class PlayerTress : Tress, IUnityObjectLoader, IUnityObjectGetter, ILeafDataSetter
+    public class PlayerTress : Tress<PlayerTressData>, IUnityObjectLoader, IUnityObjectGetter
     {
         private GameObject player;
-        private PlayerTressData data;
 
         public Object GetUnityObject()
         {
@@ -17,11 +16,7 @@ namespace SimpleRPG.Runtime
         {
             player = data.InstantiatePlayer();
         }
-
-        public void SetLeafData(LeafData data)
-        {
-            this.data = data as PlayerTressData;
-        }
+        
     }
 }
 

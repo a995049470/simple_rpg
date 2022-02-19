@@ -9,6 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2430d9cc83150b2499d5ae9e851b517b, type: 3}
-  m_Name: SimpleRPGRootData
+  m_Script: {fileID: 11500000, guid: f4c2ecdf6bb74074aa5714b2e73092f5, type: 3}
+  m_Name: MoveLeafData
   m_EditorClassIdentifier: 
+  moveSpeed: 20
