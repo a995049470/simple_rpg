@@ -6,7 +6,7 @@ namespace LPipeline
     public class Light_Directional : MonoBehaviour
     {
         [SerializeField]
-        [Range(0, 1)]
+        [Range(0, 2)]
         private float intensity;
         [SerializeField]
         private Color lightColor;

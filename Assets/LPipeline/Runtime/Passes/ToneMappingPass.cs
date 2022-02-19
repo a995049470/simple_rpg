@@ -14,7 +14,7 @@ namespace LPipeline.Runtime
             {
                 throw new System.Exception("没ToneMaping材质啊!");
             }
-            var tempDes = new RenderTextureDescriptor(data.renderWidth, data.renderHeight, RenderTextureFormat.ARGB2101010);
+            var tempDes = data.colorDescriptor;
             var cmd = CommandBufferPool.Get(nameof(ToneMappingPass));
             cmd.GetTemporaryRT(TempRT.id, tempDes, FilterMode.Bilinear);
             cmd.Blit(data.activeCameraColorAttachment, TempRT.Identifier(), toneMappingMaterail);

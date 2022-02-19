@@ -45,7 +45,9 @@ Varyings Vertex(Attributes i)
 float GetLightIntensity(float dis)
 {
     float intensity = 1.0 / (_LightParameter.y * dis * dis + _LightParameter.z * dis + _LightParameter.w);
+    intensity = max(intensity, _IntensityBias);
     intensity = (intensity - _IntensityBias) / (1.0 - _IntensityBias) * _LightParameter.x;
+    
     return intensity; 
 }
 

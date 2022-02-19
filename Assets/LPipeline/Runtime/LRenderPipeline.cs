@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
@@ -15,6 +16,7 @@ namespace LPipeline.Runtime
         public int renderHeight;
         public RenderTargetIdentifier activeCameraColorAttachment;
         public RenderTargetIdentifier activeCameraDepthAttachment;
+        public RenderTextureDescriptor colorDescriptor;
         public bool enableDynamicBatching;
         public Matrix4x4 viewMatrix;
         public Matrix4x4 projectionMatrix;
@@ -79,10 +81,12 @@ namespace LPipeline.Runtime
             
             //生成颜色缓冲和深度模板缓冲并清理
             var cmd = CommandBufferPool.Get("Render Camera");
-            var colorDes = new RenderTextureDescriptor(data.renderWidth, data.renderHeight, RenderTextureFormat.ARGB64);
+            var colorDes = new RenderTextureDescriptor(data.renderWidth, data.renderHeight, RenderTextureFormat.RGB111110Float);
+            colorDes.graphicsFormat = GraphicsFormat.B10G11R11_UFloatPack32;
             var depthDes = new RenderTextureDescriptor(data.renderWidth, data.renderHeight, RenderTextureFormat.Depth);
             depthDes.depthBufferBits = 32;
             depthDes.msaaSamples = 1;
+
             cmd.GetTemporaryRT(cameraColorAttachment.id, colorDes);
             cmd.GetTemporaryRT(cameraDepthAttachment.id, depthDes, FilterMode.Point);
             //清理
@@ -94,6 +98,7 @@ namespace LPipeline.Runtime
             //赋值data
             data.activeCameraColorAttachment = cameraColorAttachment.Identifier();
             data.activeCameraDepthAttachment = cameraDepthAttachment.Identifier();
+            data.colorDescriptor = colorDes;
 
             //开始运行运行各个pass
             var passes = pipelineRenderSetting.passes;
@@ -133,6 +138,7 @@ namespace LPipeline.Runtime
             
         }
 
+        
 
         private void DrawGizmos(ScriptableRenderContext context, Camera camera) {
     #if UNITY_EDITOR

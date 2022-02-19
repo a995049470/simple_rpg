@@ -64,6 +64,7 @@ float4 Fragment(Varyings i) : SV_TARGET
 
     float3 color = brdf;
     
+    
     return float4(color, 1);
 }
 

@@ -18,7 +18,7 @@
             ZWrite Off
             //ZTest Less
             //Cull back
-            ZTest Always
+            ZTest Less
             Blend One One
             Cull Front
             HLSLPROGRAM

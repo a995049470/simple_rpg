@@ -41,11 +41,13 @@ float GeometrySchlickGGX(float NdotV, float k)
 //Smith法几何函数
 float GeometrySmith(float3 N, float3 V, float3 L, float k)
 {
-    float NdotV = max(dot(N, V), 0.0);
-    float NdotL = max(dot(N, L), 0.0);
+    //奇怪的bug ??? max(dot(N, V), 0.0) 就出错.....
+    float NdotV = max(dot(N, V), 0.00001);
+    float NdotL = max(dot(N, L), 0.00001);
+    
     float ggx1 = GeometrySchlickGGX(NdotV, k);
     float ggx2 = GeometrySchlickGGX(NdotL, k);
-
+    
     return ggx1 * ggx2;
 }
 
@@ -66,6 +68,7 @@ float3 BDRF(float3 lightDir, float3 viewDir,
     float3 f0 = 0.04f;
     f0 = lerp(f0, albedo, metallic); 
     float3 halfDir = normalize(lightDir + viewDir);
+    
     float NDF = DistributionGGX(normal, halfDir, roughness);
     float G = GeometrySmith(normal, viewDir, lightDir, roughness);
     float HDotV = max(dot(halfDir, viewDir), 0);
@@ -73,14 +76,14 @@ float3 BDRF(float3 lightDir, float3 viewDir,
     float3 ks = F;
     float3 kd = 1.0 - ks;
     kd *= 1.0 - metallic;
-
     float3 nominator = NDF * G * F;
     float NDotV = max(dot(normal, viewDir), 0);
     float NDotL = max(dot(normal, lightDir), 0);
     float denominator = 4.0 * NDotV * NDotL + 0.001;
     float3 specular = nominator / denominator;
-    
-    float3 lo = (kd * albedo / PI + specular) * lightColor * NDotL;
+    float3 a = (kd * albedo / PI + specular);
+    float3 lo = a * lightColor * NDotL;
+    //??? 好像有负数...
     return lo;
 
 }

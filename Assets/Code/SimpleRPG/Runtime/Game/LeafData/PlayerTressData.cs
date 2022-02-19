@@ -8,13 +8,10 @@ namespace SimpleRPG.Runtime
     {
         [SerializeField]
         private GameObject playerPrefab;
-        [SerializeField]
-        private Vector3 bornPos;
 
         public GameObject InstantiatePlayer()
         {
             var go = UObjectUtility.InstantiateGameObject(playerPrefab);
-            go.transform.SetPositionAndRotation(bornPos, Quaternion.identity);
             return go;
         }
 
