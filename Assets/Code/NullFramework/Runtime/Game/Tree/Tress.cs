@@ -13,6 +13,7 @@ namespace NullFramework.Runtime
             this.data = data as T;
         }
     }
+    //考虑把状态机拆出来 以更加好的方式实现...
     //状态机+普通的父子节点
     public class Tress : Leaf
     {
@@ -74,12 +75,12 @@ namespace NullFramework.Runtime
         #endif
             m_FSMLeafs[kind] = leaf;
             leaf.SetLeafKind(kind);
+            leaf.SetParent(this);
             if(isActive)
             {
-                leaf.OnEnter();
+                PushFSMLeaf(kind);
             }
             
-            leaf.SetParent(this);
         }
 
         public void RemoveFSMLeaf(int kind)

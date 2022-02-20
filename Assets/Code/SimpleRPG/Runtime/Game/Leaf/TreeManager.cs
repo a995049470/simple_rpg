@@ -72,8 +72,7 @@ namespace SimpleRPG.Runtime
                     var childLeafMono = leafMono.transform.GetChild(i).GetComponent<LeafMono>();
                     bool isActive = childLeafMono.gameObject.activeSelf;
                     var leaf = childLeafMono.Leaf;
-                    leaf.SetParent(tress);
-                    if(childLeafMono.Data is IFSMLeaf fsmLeaf)
+                    if(childLeafMono.Data is IFSMLeafData fsmLeaf)
                     {
                         tress.AddFSMLeaf(fsmLeaf.GetLeafKind(), leaf, isActive);
                     }
@@ -83,6 +82,7 @@ namespace SimpleRPG.Runtime
                         {
                             leaf.OnEnter();
                         }
+                        leaf.SetParent(tress);
                     }
                     stack.Push(childLeafMono);
                 }

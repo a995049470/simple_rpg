@@ -1,6 +1,6 @@
 namespace NullFramework.Runtime
 {
-    public interface IFSMLeaf
+    public interface IFSMLeafData
     {
         int GetLeafKind();
     }
