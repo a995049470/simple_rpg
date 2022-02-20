@@ -52,7 +52,7 @@ float4 Fragment(Varyings i) : SV_TARGET
 
     float depth = _DepthTexture.Sample(sampler_DepthTexture, uvSS).r;
     float3 positionWS = ScreenPosToWorldPosition(uvSS, depth, _InvVP);
-    //float visiable = Visiable(positionWS);
+    float visiable = Visiable(positionWS);
     float3 viewDir = normalize(GetCameraPositionWS() - positionWS);
     float3 gbuffer2 = _GBuffer2.Sample(sampler_GBuffer2, uvSS);
     float metallic = gbuffer2.x;
@@ -62,7 +62,7 @@ float4 Fragment(Varyings i) : SV_TARGET
 
     float3 brdf = BDRF(lightDir, viewDir, normalWS, albedo, lightColor, roughness, metallic, ao);
 
-    float3 color = brdf;
+    float3 color = brdf * visiable;
     
     
     return float4(color, 1);

@@ -5,8 +5,10 @@ using UnityEngine.Rendering.Universal;
 
 namespace LPipeline.Runtime
 {
-    [CreateAssetMenu(fileName = "CubeGBufferRenderPass", menuName = "LPipeline/Passes/CubeGBufferRenderPass")]
-    public class CubeGBufferRenderPass : RenderPass
+
+    //必须跟在gbuffer 和 shadowrendererpass之后
+    [CreateAssetMenu(fileName = "CubeRenderPass", menuName = "LPipeline/Passes/CubeRenderPass")]
+    public class CubeRenderPass : RenderPass
     {
         [SerializeField]
         private Mesh cubeMesh;
@@ -20,6 +22,9 @@ namespace LPipeline.Runtime
         private RenderTargetHandle gbuffer2;
         //depth
         private RenderTargetHandle depthTexture;
+
+        private RenderTargetHandle shadowMap;
+
         private int id_cubeGBuffer = Shader.PropertyToID("_CubeGBuffer");
         private ComputeBuffer cubeGbuffers;
 
@@ -29,7 +34,7 @@ namespace LPipeline.Runtime
             gbuffer1.Init("_GBuffer1");
             gbuffer2.Init("_GBuffer2");
             depthTexture.Init("_DepthTexture");
-
+            shadowMap.Init("_ShadowMap");
         }
 
         public override void Execute(ScriptableRenderContext context, RenderData data)
@@ -46,7 +51,7 @@ namespace LPipeline.Runtime
             {
                 return;
             }
-            var cmd = CommandBufferPool.Get(nameof(CubeGBufferRenderPass));
+            var cmd = CommandBufferPool.Get(nameof(CubeRenderPass));
             var colorRTs = new RenderTargetIdentifier[]
             {
                 gbuffer0.Identifier(),
@@ -61,10 +66,11 @@ namespace LPipeline.Runtime
             
             cmd.SetRenderTarget(data.activeCameraColorAttachment, depthTexture.Identifier());
             cmd.DrawMeshInstancedProcedural(cubeMesh, subMeshIndex, material, 1, instanceCount);
+            cmd.SetRenderTarget(shadowMap.Identifier(), shadowMap.Identifier());
+            cmd.DrawMeshInstancedProcedural(cubeMesh, subMeshIndex, material, 2, instanceCount);
             context.ExecuteCommandBuffer(cmd);
             cmd.Clear();
             CommandBufferPool.Release(cmd);
-            
         }
 
         public override void FrameCleanup(CommandBuffer cmd)

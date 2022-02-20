@@ -66,8 +66,8 @@ namespace LPipeline.Runtime
             var to = GetLookTarget(data.camera);
             var from = GetStartPoint(to, shadowLight.transform.forward);
             //var view = Matrix4x4.LookAt(from, to, Vector3.up);
-            var view = shadowLight.transform.worldToLocalMatrix;
-            //好像是哪里反了...
+             var view = Matrix4x4.TRS(from, shadowLight.transform.rotation, Vector3.one);
+            view = view.inverse;
             for (int i = 0; i < 4; i++)
             {
                 view[2, i] *= -1;
@@ -86,7 +86,6 @@ namespace LPipeline.Runtime
             context.DrawRenderers(data.cullingResults, ref drawingSettings, ref filteringSettings);
             
             CommandBufferPool.Release(cmd);
-            
         }
         
         private Vector3 GetStartPoint(Vector3 to, Vector3 forward)
@@ -96,8 +95,17 @@ namespace LPipeline.Runtime
 
         private Vector3 GetLookTarget(Camera camera)
         {
-            //TODO:阴影相机看向的点 暂时用0向量
-            return Vector3.zero;
+            //用相机z轴方向与零平面的交点作为目标点
+            var dir = camera.transform.forward;
+            if(Mathf.Abs(dir.y) < 0.0001f)
+            {
+                dir.y = (dir.y > 0 ? 1 : -1) * 0.0001f;
+            }
+
+            var y = -camera.transform.position.y / dir.y;
+            var landPosition = camera.transform.position + y * dir;
+            return landPosition;
+
         }
 
         public override void FrameCleanup(CommandBuffer cmd)

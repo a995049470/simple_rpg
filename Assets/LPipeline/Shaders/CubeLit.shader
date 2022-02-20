@@ -66,31 +66,31 @@
             ENDHLSL
         }
         
-        // //产生shadowMap
-        // pass
-        // {
-        //     Name "ShadowCaster"
-        //     Tags
-        //     {
-        //         "RenderType"="Opaque"
-        //         "LightMode"="ShadowCaster"
-        //     }
-        //     ZWrite On
-        //     ZTest Less
-        //     //ColorMask 0
-        //     Cull Front
-        //     HLSLPROGRAM
-        //     #pragma prefer_hlslcc gles
-        //     #pragma exclude_renderers d3d11_9x
-        //     #pragma target 2.0
+        //产生shadowMap
+        pass
+        {
+            Name "ShadowCaster"
+            Tags
+            {
+                "RenderType"="Opaque"
+                "LightMode"="ShadowCaster"
+            }
+            ZWrite On
+            ZTest Less
+            ColorMask 0
+            Cull Front
+            HLSLPROGRAM
+            #pragma prefer_hlslcc gles
+            #pragma exclude_renderers d3d11_9x
+            #pragma target 2.0
 
-        //     #pragma vertex Vertex
-        //     #pragma fragment Fragment
-        //     #pragma multi_compile_instancing
+            #pragma vertex Vertex
+            #pragma fragment Fragment
+            #pragma multi_compile_instancing
 
-        //     #include "ShadowCaster.hlsl"
+            #include "CubeShadowCaster.hlsl"
 
-        //     ENDHLSL
-        // }
+            ENDHLSL
+        }
     }
 }

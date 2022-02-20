@@ -76,7 +76,7 @@
             }
             ZWrite On
             ZTest Less
-            //ColorMask 0
+            ColorMask 0
             Cull Front
             HLSLPROGRAM
             #pragma prefer_hlslcc gles
