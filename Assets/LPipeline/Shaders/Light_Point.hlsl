@@ -22,7 +22,7 @@ Texture2D _DepthTexture; SamplerState sampler_DepthTexture;
 Texture2D _GBuffer0; SamplerState sampler_GBuffer0;
 Texture2D _GBuffer1; SamplerState sampler_GBuffer1;
 Texture2D _GBuffer2; SamplerState sampler_GBuffer2;
-//Texture2D _LightMask; SamplerState sampler_LightMask;
+TextureCube _LightMask; SamplerState sampler_LightMask;
 
 float4 _LightParameter;
 float4 _LightColor;
@@ -51,6 +51,15 @@ float GetLightIntensity(float dis)
     return intensity; 
 }
 
+#define PI 3.1415926
+float2 PositionToUV(float3 position)
+{
+    float r = sqrt(position.x * position.x + position.y * position.y + position.z * position.z);
+    float u = atan(position.y / position.x) / 2.000f / PI;
+    float v = asin(position.z / r) / PI + 0.500f;
+    return float2(u, v);
+}
+
 float4 Fragment(Varyings i) : SV_TARGET
 {
     float2 uvSS = i.positionSS.xy / i.positionSS.w;
@@ -71,7 +80,11 @@ float4 Fragment(Varyings i) : SV_TARGET
     float metallic = gbuffer2.x;
     float roughness = gbuffer2.y;
     float ao = gbuffer2.z;
-    float3 lightColor = _LightColor * intensity;
+
+    float3 uv_mask = normalize(TransformWorldToObject(positionWS));
+    float3 mask = _LightMask.Sample(sampler_LightMask, uv_mask).rgb;
+    
+    float3 lightColor = _LightColor * intensity * mask;
     
     float3 brdf = BDRF(lightDir, viewDir, normalWS, albedo, lightColor, roughness, metallic, ao);
     

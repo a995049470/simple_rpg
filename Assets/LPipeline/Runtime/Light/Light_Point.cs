@@ -28,6 +28,7 @@ namespace LPipeline
         [SerializeField] 
         private static Mesh defalutMesh;
         //没想明白 暂时搁置
+        // [SerializeField]
         private Texture2D lightMask;
         private static Texture2D defalutTexture; 
 
@@ -37,6 +38,7 @@ namespace LPipeline
         private static int id_lightColor = Shader.PropertyToID("_LightColor");
         private static int id_lightPosition = Shader.PropertyToID("_LightPosition");
         private static int id_lightDirection = Shader.PropertyToID("_LightDirection");
+        private static int id_lightMask = Shader.PropertyToID("_LightMask");
 
         //微小的数
         public const float IntensityBias = 0.01f;
@@ -71,6 +73,7 @@ namespace LPipeline
             materialPropertyBlock = materialPropertyBlock ?? new MaterialPropertyBlock();
             materialPropertyBlock.SetColor(id_lightColor, lightColor);
             materialPropertyBlock.SetVector(id_lightParameter, lightParameter);
+            //materialPropertyBlock.SetTexture(id_lightMask, GetLightMask());
             cacheRenderer.SetPropertyBlock(materialPropertyBlock);
             
         }
