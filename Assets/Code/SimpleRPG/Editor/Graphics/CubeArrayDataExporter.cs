@@ -6,11 +6,12 @@ using SimpleRPG.Runtime;
 using NullFramework.Runtime;
 using System.IO;
 using UnityEditor;
+using Sirenix.OdinInspector;
 
 namespace SimpleRPG.Editor
 {
-   
-    public class CubeArrayDataExporter : JsonWindow<CubeArrayDataExporter>
+    [CreateAssetMenu(fileName = "CubeArrayDataExporter", menuName = "SimpleWindow/CubeArrayDataExporter")]
+    public class CubeArrayDataExporter : SimpleWindow
     {
         [SerializeField]
         private string sourceFloder;
@@ -25,11 +26,10 @@ namespace SimpleRPG.Editor
         [SerializeField]
         private int height;
         
-        [MenuItem("Tool/图片转积木")]
-        private static void TestTextureToCube()
+        [Button("Cube转数据")]
+        private void TestTextureToCube()
         {
-            Instance.LoadData();
-            Instance.ExporterAllCubeArrayData();
+            ExporterAllCubeArrayData();
             AssetDatabase.Refresh();
             CubeRendererCenter.Instance.Refresh();
         }

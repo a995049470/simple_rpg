@@ -170,6 +170,7 @@ MonoBehaviour:
   lightColor: {r: 1, g: 1, b: 1, a: 0}
   lightRaidus: 19.3
   lightAttenuation: 0.707
+  lightMask: {fileID: 0}
 --- !u!23 &38151584
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -439,6 +440,7 @@ MonoBehaviour:
   lightColor: {r: 1, g: 0.7971698, b: 0.8332056, a: 0}
   lightRaidus: 18.3
   lightAttenuation: 0.745
+  lightMask: {fileID: 0}
 --- !u!23 &284931198
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -580,99 +582,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 295531814}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &297694631
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 297694635}
-  - component: {fileID: 297694634}
-  - component: {fileID: 297694633}
-  - component: {fileID: 297694632}
-  m_Layer: 0
-  m_Name: Sphere
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!135 &297694632
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 297694631}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &297694633
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 297694631}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 10fbb3fee2313b843a3b33a691060690, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!33 &297694634
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 297694631}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &297694635
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 297694631}
-  m_LocalRotation: {x: -0.055769745, y: -0.7617031, z: -0.5226078, w: 0.37891868}
-  m_LocalPosition: {x: -0.585, y: -1.114, z: 5.469}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 236.972, y: -647.799, z: 1585.196}
 --- !u!1 &398969415
 GameObject:
   m_ObjectHideFlags: 0
@@ -708,6 +617,7 @@ MonoBehaviour:
   lightColor: {r: 1, g: 1, b: 1, a: 0}
   lightRaidus: 24.2
   lightAttenuation: 0.934
+  lightMask: {fileID: 0}
 --- !u!4 &398969417
 Transform:
   m_ObjectHideFlags: 0
@@ -818,6 +728,7 @@ MonoBehaviour:
   lightColor: {r: 0.8301887, g: 0, b: 0.524986, a: 0}
   lightRaidus: 12.3
   lightAttenuation: 0.541
+  lightMask: {fileID: 0}
 --- !u!23 &624367917
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1151,6 +1062,7 @@ MonoBehaviour:
   lightColor: {r: 1, g: 1, b: 1, a: 0}
   lightRaidus: 12.5
   lightAttenuation: 1
+  lightMask: {fileID: 0}
 --- !u!23 &836537522
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1247,6 +1159,7 @@ MonoBehaviour:
   lightColor: {r: 0.40009844, g: 1, b: 0, a: 0}
   lightRaidus: 11.2
   lightAttenuation: 0.983
+  lightMask: {fileID: 0}
 --- !u!23 &854004273
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1343,6 +1256,7 @@ MonoBehaviour:
   lightColor: {r: 1, g: 1, b: 1, a: 0}
   lightRaidus: 27.9
   lightAttenuation: 1
+  lightMask: {fileID: 0}
 --- !u!23 &1007410053
 MeshRenderer:
   m_ObjectHideFlags: 0
