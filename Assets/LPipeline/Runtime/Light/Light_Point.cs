@@ -27,10 +27,9 @@ namespace LPipeline
         private Mesh lightMesh;
         [SerializeField] 
         private static Mesh defalutMesh;
-        //没想明白 暂时搁置
-        // [SerializeField]
-        private Texture2D lightMask;
-        private static Texture2D defalutTexture; 
+        [SerializeField]
+        private Cubemap lightMask;
+        private static Cubemap defalutTexture; 
 
         private MaterialPropertyBlock materialPropertyBlock;
         private Renderer cacheRenderer;
@@ -73,19 +72,25 @@ namespace LPipeline
             materialPropertyBlock = materialPropertyBlock ?? new MaterialPropertyBlock();
             materialPropertyBlock.SetColor(id_lightColor, lightColor);
             materialPropertyBlock.SetVector(id_lightParameter, lightParameter);
-            //materialPropertyBlock.SetTexture(id_lightMask, GetLightMask());
+            materialPropertyBlock.SetTexture(id_lightMask, GetLightMask());
             cacheRenderer.SetPropertyBlock(materialPropertyBlock);
             
         }
 
-        public Texture2D GetLightMask()
+        public Cubemap GetLightMask()
         {   
             if(lightMask == null)
             {
                 if(defalutTexture == null)
                 {
-                    defalutTexture = new Texture2D(1, 1);
-                    defalutTexture.SetPixels(new Color[]{ Color.white });
+                    defalutTexture = new Cubemap(1, TextureFormat.ARGB32, 1);
+                    var colors = new Color[] { Color.white };
+                    defalutTexture.SetPixels(colors, CubemapFace.NegativeX);
+                    defalutTexture.SetPixels(colors, CubemapFace.NegativeY);
+                    defalutTexture.SetPixels(colors, CubemapFace.NegativeZ);
+                    defalutTexture.SetPixels(colors, CubemapFace.PositiveX);
+                    defalutTexture.SetPixels(colors, CubemapFace.PositiveY);
+                    defalutTexture.SetPixels(colors, CubemapFace.PositiveZ);
                     defalutTexture.Apply();
                 }
                 return defalutTexture;
