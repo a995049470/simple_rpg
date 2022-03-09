@@ -28,7 +28,10 @@ namespace NullFramework.Runtime
             else
             {
                 s_instance = this.GetComponent<T>();
-                DontDestroyOnLoad(this.gameObject);
+                if(Application.isPlaying)
+                {
+                    DontDestroyOnLoad(this.gameObject);
+                }
             }
         }
     }

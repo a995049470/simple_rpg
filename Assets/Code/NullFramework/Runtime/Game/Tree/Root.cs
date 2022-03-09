@@ -22,7 +22,7 @@ namespace NullFramework.Runtime
                 return m_instance;
             }
         }
-        private const int msgSize = 256;
+        private const int MaxMsgCount = 32;
         private Queue<Msg> msgQueue;
         private int m_frame;
         private int Frame { get => m_frame; }
@@ -49,13 +49,27 @@ namespace NullFramework.Runtime
                 time -= DeltaTime; 
                 
                 BeforeUpdate();
-                while(msgQueue.Count > 0)
+                int count = Mathf.Min(MaxMsgCount, msgQueue.Count);
+                for (int i = 0; i < count; i++)
                 {
                     var msg = msgQueue.Dequeue();
                     OnUpdate(msg);
                 }
                 m_frame ++;
             }
+        }
+
+        //直接帧驱动
+        public void Update()
+        {
+            BeforeUpdate();
+            int count = Mathf.Min(MaxMsgCount, msgQueue.Count);
+            for (int i = 0; i < count; i++)
+            {
+                var msg = msgQueue.Dequeue();
+                OnUpdate(msg);
+            }
+            m_frame++;
         }
 
 
