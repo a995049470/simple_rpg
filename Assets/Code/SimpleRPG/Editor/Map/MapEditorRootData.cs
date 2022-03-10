@@ -4,7 +4,7 @@ using UnityEngine;
 namespace NullFramework.Editor
 {
     [CreateAssetMenu(fileName = "MapEditorRootData", menuName = "MapEditor/MapEditorRootData")]
-    public class MapEditorRootData : LeafData<MapEditorRoot>
+    public class MapEditorRootData : LeafData<MapEditorRoot>, IRoot
     {
 
     }

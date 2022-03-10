@@ -5,10 +5,10 @@ namespace NullFramework.Runtime
 {
     public class Leaf<T> : Leaf, ILeafDataSetter where T : LeafData
     {
-        protected T data;
+        protected T leafData;
         public void SetLeafData(LeafData data)
         {
-            this.data = data as T;
+            this.leafData = data as T;
         }
     }
     //实际生效的叶子节点
@@ -44,7 +44,7 @@ namespace NullFramework.Runtime
 
         public void AfterLoadData()
         {
-            if(this is IUnityObjectLoader loader)
+            if(this is IUnityObjectLoder loader)
             {
                 loader.LoadUnityObject();
             }
@@ -194,11 +194,13 @@ namespace NullFramework.Runtime
             }
             m_parent = parent;
             InitListeners();
-            if(this is IUnityObjectSetter setter)
+
+            //传输数据
+            if(this is ILeafReciver reciver)
             {
-                if(parent is IUnityObjectGetter getter)
+                if(parent is ILeafSender sender)
                 {
-                    setter.SetUnityObject(getter.GetUnityObject());
+                    reciver.ReciveLeaf(sender.SendLeaf());
                 }
             }
         }

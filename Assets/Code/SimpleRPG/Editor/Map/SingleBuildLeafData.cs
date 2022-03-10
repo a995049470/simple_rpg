@@ -3,8 +3,8 @@ using NullFramework.Runtime;
 
 namespace NullFramework.Editor
 {
-    [CreateAssetMenu(fileName = "BuildLeafData", menuName = "MapEditor/BuildLeafData")]
-    public class BuildLeafData : LeafData<BuildLeaf>
+    [CreateAssetMenu(fileName = "SingleBuildLeafData", menuName = "MapEditor/SingleBuildLeafData")]
+    public class SingleBuildLeafData : LeafData<SingleBuildLeaf>, IFSMLeafData
     {
         [SerializeField]
         private GameObject defalutPrefab;
@@ -12,7 +12,11 @@ namespace NullFramework.Editor
         [SerializeField]
         private Vector3Int spacing;
         public Vector3Int Spacing { get => spacing; }
-        
+
+        public int GetLeafKind()
+        {
+            return ((int)OperateType.SingleBuild);
+        }
     }
 
 }

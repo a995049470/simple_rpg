@@ -3,20 +3,24 @@ using UnityEngine;
 
 namespace SimpleRPG.Runtime
 {
-    public class CameraFollowLeaf : Leaf<CameraFollowLeafData>, IUnityObjectLoader, IUnityObjectSetter
+    public class CameraFollowLeaf : Leaf<CameraFollowLeafData>, IUnityObjectLoder, ILeafReciver
     {
         private GameObject camera;
         private GameObject target;
         private Vector3 currentVelocity;
         public void LoadUnityObject()
         {
-            camera = data.InstantiateCamera();
+            camera = leafData.InstantiateCamera();
         }
 
-        public void SetUnityObject(Object obj)
+        public void ReciveLeaf(Leaf leaf)
         {
-            target = (obj as GameObject).transform.Find("look").gameObject;
+            if(leaf is PlayerTress playerTress)
+            {
+                target = playerTress.Player.transform.Find("look").gameObject;
+            }
         }
+
 
         protected override void InitListeners()
         {
@@ -26,9 +30,9 @@ namespace SimpleRPG.Runtime
         private void FollowTarget(Msg msg)
         {
             var targetPosition = target.transform.position;
-            targetPosition -= camera.transform.forward * data.zdistance;
+            targetPosition -= camera.transform.forward * leafData.zdistance;
             var current = camera.transform.position;
-            current = Vector3.SmoothDamp(current, targetPosition, ref currentVelocity, data.smoothTime, data.maxSpeed, Root.Instance.DeltaTime);
+            current = Vector3.SmoothDamp(current, targetPosition, ref currentVelocity, leafData.smoothTime, leafData.maxSpeed, Root.Instance.DeltaTime);
             camera.transform.position = current;
         }
 

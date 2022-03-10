@@ -49,7 +49,6 @@ namespace SimpleRPG.Runtime
                 #endif
                     continue;
                 }
-                var childs = leafMono.GetComponentsInChildren<LeafMono>(false);
                 var childCount = leafMono.transform.childCount;
                 for (int i = 0; i < childCount; i++)
                 {
