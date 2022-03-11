@@ -8,7 +8,6 @@ namespace NullFramework.Runtime
         {
             var leaf = new T();
             leaf.LoadData(this);
-            leaf.AfterLoadData();
             return leaf;
         }
     }

@@ -6,7 +6,8 @@ namespace NullFramework.Editor
     {
         public Event currentEvent;
         public Camera camera;
-        public Vector3 mousePositionWS;
+        public Vector3 mouseWorldPosition;
+        public Vector3Int mouseWorldIntPosition;
     }
 }
 

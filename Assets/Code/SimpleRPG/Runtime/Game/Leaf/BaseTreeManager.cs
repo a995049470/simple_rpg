@@ -6,6 +6,8 @@ namespace SimpleRPG.Runtime
 {
     public abstract class BaseTreeManager : SingleMono<BaseTreeManager>
     {
+    
+
         protected void InitTree()
         {
             var leafMonos = GameObject.FindObjectsOfType<LeafMono>();
@@ -44,31 +46,35 @@ namespace SimpleRPG.Runtime
                 #if UNITY_EDITOR
                     if(leafMono.transform.childCount > 0)
                     {
-                        throw new System.Exception($"{leafMono.name}为叶结点!子物体将失效!");
+                        Debug.Log($"{leafMono.name}为叶结点!子物体将失效!", leafMono.gameObject);
                     }
                 #endif
-                    continue;
                 }
-                var childCount = leafMono.transform.childCount;
-                for (int i = 0; i < childCount; i++)
+                else
                 {
-                    var childLeafMono = leafMono.transform.GetChild(i).GetComponent<LeafMono>();
-                    bool isActive = childLeafMono.gameObject.activeSelf;
-                    var leaf = childLeafMono.Leaf;
-                    if(childLeafMono.Data is IFSMLeafData fsmLeaf)
+                    var childCount = leafMono.transform.childCount;
+                    for (int i = 0; i < childCount; i++)
                     {
-                        tress.AddFSMLeaf(fsmLeaf.GetLeafKind(), leaf, isActive);
-                    }
-                    else
-                    {
-                        if(isActive)
+                        var childLeafMono = leafMono.transform.GetChild(i).GetComponent<LeafMono>();
+                        bool isActive = childLeafMono.gameObject.activeSelf;
+                        var leaf = childLeafMono.Leaf;
+                        if(childLeafMono.Data is IFSMLeafData fsmLeaf)
                         {
-                            leaf.OnEnter();
+                            tress.AddFSMLeaf(fsmLeaf.GetLeafKind(), leaf, isActive);
                         }
-                        leaf.SetParent(tress);
+                        else
+                        {
+                            if(isActive)
+                            {
+                                leaf.OnEnter();
+                            }
+                            leaf.SetParent(tress);
+                        }
+                        stack.Push(childLeafMono);
                     }
-                    stack.Push(childLeafMono);
                 }
+                //清除缓存
+                leafMono.ClearCache();
                 
 
             }

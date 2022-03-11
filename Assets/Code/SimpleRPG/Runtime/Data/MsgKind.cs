@@ -6,6 +6,7 @@ namespace SimpleRPG.Runtime
         public const int custom = 1000;
         //移动执行
         public const int move = 1001;
+        
     }
 
 }

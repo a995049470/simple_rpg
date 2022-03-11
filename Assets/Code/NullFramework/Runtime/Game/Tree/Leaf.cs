@@ -3,10 +3,13 @@ using System.Collections.Generic;
 
 namespace NullFramework.Runtime
 {
-    public class Leaf<T> : Leaf, ILeafDataSetter where T : LeafData
+    public abstract class Leaf<T> : Leaf, ILeafDataReciver where T : LeafData
     {
         protected T leafData;
-        public void SetLeafData(LeafData data)
+
+        public virtual void OnReciveDataFinish() {}
+
+        public virtual void SetLeafData(LeafData data)
         {
             this.leafData = data as T;
         }
@@ -34,19 +37,13 @@ namespace NullFramework.Runtime
             m_msgRespondMap = new Dictionary<int, MsgRespond>();
         }
 
-        public void LoadData(LeafData data)
+
+        public virtual void LoadData(LeafData data)
         {
-            if(this is ILeafDataSetter setter)
+            if(this is ILeafDataReciver setter)
             {
                 setter.SetLeafData(data);
-            }
-        }
-
-        public void AfterLoadData()
-        {
-            if(this is IUnityObjectLoder loader)
-            {
-                loader.LoadUnityObject();
+                setter.OnReciveDataFinish();
             }
         }
 
@@ -198,15 +195,12 @@ namespace NullFramework.Runtime
             //传输数据
             if(this is ILeafReciver reciver)
             {
-                if(parent is ILeafSender sender)
-                {
-                    reciver.ReciveLeaf(sender.SendLeaf());
-                }
+                reciver.ReciveLeaf(parent);
             }
         }
 
         //释放
-        public void Free()
+        public virtual void Free()
         {
 
         }

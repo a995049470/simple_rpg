@@ -3,21 +3,15 @@ using UnityEngine;
 
 namespace SimpleRPG.Runtime
 {
-    public class PlayerTress : Tress<PlayerTressData>, IUnityObjectLoder, ILeafSender
+    public class PlayerTress : Tress<PlayerTressData>
     {
         private GameObject player;
         public GameObject Player { get => player; }
 
-        
-
-        public void LoadUnityObject()
+    
+        public override void OnReciveDataFinish()
         {
-            player = data.InstantiatePlayer();
-        }
-
-        public Leaf SendLeaf()
-        {
-            return this;
+            player = leafData.InstantiatePlayer();
         }
     }
 }

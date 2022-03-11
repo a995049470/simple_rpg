@@ -10,16 +10,16 @@ namespace NullFramework.Runtime
     public class Root : Tress 
     {
         
-        private static Root m_instance;
+        private static Root instance;
         public static Root Instance
         {
             get
             {
-                if(m_instance == null)
+                if(instance == null)
                 {
-                    m_instance = new Root();
+                    instance = new Root();
                 }
-                return m_instance;
+                return instance;
             }
         }
         private const int MaxMsgCount = 32;
@@ -31,10 +31,14 @@ namespace NullFramework.Runtime
         public float DeltaTime { get => 1.0f / fps; }
         private float time = 0;
         
-        
+        public static void Dispose()
+        {
+            instance = null;
+        }
+
         public Root() : base()
         {
-            m_instance = this;
+            instance = this;
             msgQueue = new Queue<Msg>();
             m_frame = 0;
             OnEnter();
@@ -90,6 +94,8 @@ namespace NullFramework.Runtime
         {
             msgQueue.Enqueue(msg);
         }        
+
+        
     }
 }
 

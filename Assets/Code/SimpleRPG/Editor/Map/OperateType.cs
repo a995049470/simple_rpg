@@ -7,6 +7,9 @@ namespace NullFramework.Editor
         SingleBuild = 1,
         //单击删除
         SingleDelete = 2,
+        //TODO:连续建造 
+        //TODO:连续删除 
+        //TODO:带条件约束的智能
     }
 
 }

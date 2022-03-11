@@ -5,12 +5,15 @@ using System;
 
 namespace NullFramework.Runtime
 {
-    public class Tress<T> : Tress, ILeafDataSetter where T : LeafData
+    public abstract class Tress<T> : Tress, ILeafDataReciver where T : LeafData
     {
-        protected T data;
+        protected T leafData;
+
+        public virtual void OnReciveDataFinish() { }
+
         public void SetLeafData(LeafData data)
         {
-            this.data = data as T;
+            this.leafData = data as T;
         }
     }
     //考虑把状态机拆出来 以更加好的方式实现...

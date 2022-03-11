@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe24c4f8487e37646b4fc7e32fb583f6, type: 3}
   m_Name: OperateManagerTressData
   m_EditorClassIdentifier: 
+  defaultPrefab: {fileID: 1546927844982933137, guid: 5a3c3a0947bd5184e9c17180a6dfe1ba,
+    type: 3}

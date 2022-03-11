@@ -17,6 +17,9 @@ namespace NullFramework.Editor
 
         private void OnDisable() {
             SceneView.duringSceneGui -= DuringSceneGUI;
+            Root.Instance.AddMsg(new Msg(MapEditorMsgKind.EditorFinish));
+            Root.Instance.Update();
+            Root.Dispose();
         }
 
         private void DuringSceneGUI(SceneView view) {
@@ -34,13 +37,15 @@ namespace NullFramework.Editor
             var dir = end - start;
             if(dir.y == 0) return;
             var t = -start.y / dir.y;
-            var positionWS = start + t * dir;
+            var worldPosition = start + t * dir;
+            var worldIntPosition = new Vector3Int(Mathf.RoundToInt(worldPosition.x), Mathf.RoundToInt(worldPosition.y), Mathf.RoundToInt(worldPosition.z));
 
             var data = new MapEditorEventData();
             data.currentEvent = e;
-            data.mousePositionWS = positionWS;
+            data.mouseWorldPosition = worldPosition;
+            data.mouseWorldIntPosition = worldIntPosition;
             data.camera = camera;
-            var msg = new Msg(MapMsgKind.MapEditorEvent, data);
+            var msg = new Msg(MapEditorMsgKind.MapEditorEvent, data);
             Root.Instance.AddMsg(msg);
             Root.Instance.Update();
         }

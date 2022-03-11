@@ -16,16 +16,20 @@ namespace SimpleRPG.Runtime
         private bool isFSMLeaf = false;
         public bool IsFSMLeaf { get => isFSMLeaf; }
         public bool IsRoot { get => isRoot;}
-        private Leaf leaf;
+        private Leaf cacheLeaf;
         public Leaf Leaf
         {
             get
             {
-                if(leaf == null) leaf = data?.CreateLeaf();
-                return leaf;
+                if(cacheLeaf == null) cacheLeaf = data?.CreateLeaf();
+                return cacheLeaf;
             }
         }
 
+        public void ClearCache()
+        {
+            cacheLeaf = null;
+        }
 
         private void OnValidate() {
             if(data == null)

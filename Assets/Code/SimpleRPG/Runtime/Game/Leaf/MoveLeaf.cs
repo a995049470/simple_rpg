@@ -10,6 +10,11 @@ namespace SimpleRPG.Runtime
     {
         private Transform transform;
 
+        public override void OnReciveDataFinish()
+        {
+            
+        }
+
         public void ReciveLeaf(Leaf leaf)
         {
             if(leaf is PlayerTress playerTress)

@@ -3,15 +3,12 @@ using UnityEngine;
 
 namespace SimpleRPG.Runtime
 {
-    public class CameraFollowLeaf : Leaf<CameraFollowLeafData>, IUnityObjectLoder, ILeafReciver
+    public class CameraFollowLeaf : Leaf<CameraFollowLeafData>, ILeafReciver
     {
         private GameObject camera;
         private GameObject target;
         private Vector3 currentVelocity;
-        public void LoadUnityObject()
-        {
-            camera = leafData.InstantiateCamera();
-        }
+        
 
         public void ReciveLeaf(Leaf leaf)
         {
@@ -21,6 +18,10 @@ namespace SimpleRPG.Runtime
             }
         }
 
+        public override void OnReciveDataFinish()
+        {
+            camera = leafData.InstantiateCamera();
+        }
 
         protected override void InitListeners()
         {
@@ -36,7 +37,6 @@ namespace SimpleRPG.Runtime
             camera.transform.position = current;
         }
 
-        
     }
 }
 
