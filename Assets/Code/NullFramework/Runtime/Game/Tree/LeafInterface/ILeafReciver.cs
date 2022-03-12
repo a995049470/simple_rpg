@@ -1,6 +1,6 @@
 namespace NullFramework.Runtime
 {
-    //叶数据接收
+    //叶对象接收者
     public interface ILeafReciver
     {
         void ReciveLeaf(Leaf leaf);

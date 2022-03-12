@@ -3,36 +3,32 @@ using NullFramework.Runtime;
 
 namespace NullFramework.Editor
 {
-
-    //只负责简单的实例化
-    public class SingleBuildLeaf : Leaf, ILeafReciver
+    public class SingleDeleteLeaf : Leaf, ILeafReciver
     {
         private MapData mapData;
-
         public void ReciveLeaf(Leaf leaf)
         {
-            if(leaf is OperateManagerTress tress)
+             if(leaf is OperateManagerTress tress)
             {
                 this.mapData = tress.CurrentMapData;
             }
         }
 
-        protected override void InitListeners()
+         protected override void InitListeners()
         {
             base.InitListeners();
-            AddMsgListener(MapEditorMsgKind.MapEditorEvent, Build);
+            AddMsgListener(MapEditorMsgKind.MapEditorEvent, Delete);
         }
 
-        private void Build(Msg msg)
+        private void Delete(Msg msg)
         {
             var msgData = msg.GetData<MapEditorEventData>();
             var e = msgData.currentEvent;
-            if(e.isMouse && e.button == 0 && e.type == EventType.MouseDown && !e.alt && !e.control && !e.command)
+            if(e.isMouse && e.button == 1 && e.type == EventType.MouseDown && !e.alt && !e.control && !e.command)
             {
-                mapData.TrayAddBuild(msgData.mouseWorldIntPosition);
+                mapData.TrayRmoveBuild(msgData.mouseWorldIntPosition);
             }
         }
-
     }
 
 }

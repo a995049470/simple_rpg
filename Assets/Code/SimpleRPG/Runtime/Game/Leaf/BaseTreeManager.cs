@@ -6,8 +6,6 @@ namespace SimpleRPG.Runtime
 {
     public abstract class BaseTreeManager : SingleMono<BaseTreeManager>
     {
-    
-
         protected void InitTree()
         {
             var leafMonos = GameObject.FindObjectsOfType<LeafMono>();
@@ -58,18 +56,7 @@ namespace SimpleRPG.Runtime
                         var childLeafMono = leafMono.transform.GetChild(i).GetComponent<LeafMono>();
                         bool isActive = childLeafMono.gameObject.activeSelf;
                         var leaf = childLeafMono.Leaf;
-                        if(childLeafMono.Data is IFSMLeafData fsmLeaf)
-                        {
-                            tress.AddFSMLeaf(fsmLeaf.GetLeafKind(), leaf, isActive);
-                        }
-                        else
-                        {
-                            if(isActive)
-                            {
-                                leaf.OnEnter();
-                            }
-                            leaf.SetParent(tress);
-                        }
+                        leaf.SetParent(tress, isActive);
                         stack.Push(childLeafMono);
                     }
                 }

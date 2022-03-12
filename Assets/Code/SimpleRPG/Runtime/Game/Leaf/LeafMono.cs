@@ -12,9 +12,6 @@ namespace SimpleRPG.Runtime
         public LeafData Data { get => data; }
         [SerializeField]
         private bool isRoot = false;
-        [SerializeField]
-        private bool isFSMLeaf = false;
-        public bool IsFSMLeaf { get => isFSMLeaf; }
         public bool IsRoot { get => isRoot;}
         private Leaf cacheLeaf;
         public Leaf Leaf
@@ -38,7 +35,6 @@ namespace SimpleRPG.Runtime
                 return;
             } 
             isRoot = data is IRoot;
-            isFSMLeaf = data is IFSMLeafData;
             this.name = data.name.Substring(0, data.name.Length - 4);
         }
 

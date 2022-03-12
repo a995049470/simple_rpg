@@ -19,13 +19,14 @@ namespace NullFramework.Runtime
     {
         protected static Root m_root { get => Root.Instance; }
 
-        protected Tress m_parent;
+        protected Tress parent;
         protected Dictionary<int, MsgRespond> m_msgRespondMap;
         protected int m_handle;
         //叶节点种类
         private int m_kind;
-        private bool m_active = false;
-        private bool m_wake = false;
+        private bool isActive = false;
+        public bool IsActive { get => isActive; }
+        private bool isWake = false;
 
         public int Kind { get => m_kind; }
         private bool m_isRegisterMsgHandle = false;
@@ -48,10 +49,19 @@ namespace NullFramework.Runtime
         }
 
         //激活或进入运行栈
-        public virtual void OnEnter(Leaf lastLeaf = null)
+        public virtual void OnEnable(Leaf lastLeaf = null)
         {
-            m_wake = true;
-            m_active = true;
+            isWake = true;
+            isActive = true;
+        }
+
+        
+        public void SetActive(bool _active)
+        {
+            if(isActive == _active) return;
+            isActive = _active;
+            if(isActive) OnEnable();
+            else OnDisable();
         }
 
         protected virtual void InitListeners() {}
@@ -65,7 +75,7 @@ namespace NullFramework.Runtime
         {
             bool isHasRespond = true;
             //失活态不除发OnUpdate
-            if(!m_active || !m_wake)
+            if(!isActive || !isWake)
             {
                 return isHasRespond;
             }
@@ -83,22 +93,24 @@ namespace NullFramework.Runtime
         }
 
         //失去活力或退出运行栈时
-        public virtual void OnExit(Leaf nextHandle = default)
+        public virtual void OnDisable(Leaf nextHandle = default)
         {   
-            m_wake = false;
-            m_active = false;
+            isWake = false;
+            isActive = false;
         }
         
+       
+
         //状态机节点休眠 为下弹式状态机设计
         public void Sleep()
         {
-            m_wake = false;
+            isWake = false;
         }
 
         //状态机节点苏醒 为下弹式状态机设计
         public void Wake()
         {
-            m_wake = true;
+            isWake = true;
         }
 
         
@@ -108,7 +120,6 @@ namespace NullFramework.Runtime
             m_kind = kind;
         }
 
-        
 
         public void SetHandle(int handle)
         {
@@ -136,7 +147,7 @@ namespace NullFramework.Runtime
                 var msgRespond = new MsgRespond();
                 msgRespond.AddMsgAction(action);
                 m_msgRespondMap[msgKind] = msgRespond;
-                m_parent?.AddMsgLeaf(msgKind, this);
+                parent?.AddMsgLeaf(msgKind, this);
             }
         }
 
@@ -156,7 +167,7 @@ namespace NullFramework.Runtime
         {
             foreach (var key in m_msgRespondMap.Keys)
             {
-                m_parent.RemoveMsgLeaf(key, this);
+                parent.RemoveMsgLeaf(key, this);
             }
             m_msgRespondMap.Clear();
         }
@@ -165,7 +176,7 @@ namespace NullFramework.Runtime
         private void RegisterMsgForParent()
         {
             if(m_isRegisterMsgHandle) return;
-            var parent = m_parent;
+            var parent = this.parent;
             if (parent != null)
             {
                 m_isRegisterMsgHandle = true;
@@ -179,31 +190,27 @@ namespace NullFramework.Runtime
 
         //TODO:考虑切换父物体的问题
         //考虑切换父物体是 改变handle
-        public void SetParent(Tress parent)
+        public void SetParent(Tress _parent, bool isActive = true)
         {
-            if (m_parent == parent)
+            if (parent == _parent)
             {
                 return;
             }  
-            if(m_parent != null)
+            if(parent != null)
             {
                 ClearMsgListeners();
             }
-            m_parent = parent;
+            parent = _parent;
             InitListeners();
-
             //传输数据
             if(this is ILeafReciver reciver)
             {
-                reciver.ReciveLeaf(parent);
+                reciver.ReciveLeaf(_parent);
             }
+            parent.AddChild(this, isActive);
         }
 
-        //释放
-        public virtual void Free()
-        {
-
-        }
+        
     }
 }
 

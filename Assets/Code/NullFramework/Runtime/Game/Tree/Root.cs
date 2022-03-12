@@ -41,7 +41,7 @@ namespace NullFramework.Runtime
             instance = this;
             msgQueue = new Queue<Msg>();
             m_frame = 0;
-            OnEnter();
+            OnEnable();
         }
 
         //用于外界调用的Update

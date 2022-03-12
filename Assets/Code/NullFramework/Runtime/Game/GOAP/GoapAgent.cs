@@ -6,7 +6,7 @@ namespace NullFramework.Runtime
 {
 
     //goap的代理类 用以协调goap的实体类合状态机之间
-    public class GoapAgent : Tress
+    public class GoapAgent : FSMTress
     {
         //行为列表
         private GoapAction[] goapActions;
@@ -29,22 +29,23 @@ namespace NullFramework.Runtime
 
         private void InitFSM()
         {
-            var fsm = new FSM();
             var idleState = new GoapFSMState();
             idleState.AddMsgListener(MsgKind.Update, Update_Idle);
+            idleState.SetLeafKind(LeafKind.Idle);
             
             var moveState = new GoapFSMState();
             moveState.AddMsgListener(MsgKind.Update, Update_Move);
+            moveState.SetLeafKind(LeafKind.Move);
 
             var executeState = new GoapFSMState(); 
             executeState.AddMsgListener(MsgKind.Update, Update_Execute);
+            executeState.SetLeafKind(LeafKind.Execute);
 
-            fsm.AddFSMLeaf(LeafKind.Idle, idleState);
-            fsm.AddFSMLeaf(LeafKind.Move, moveState);
-            fsm.AddFSMLeaf(LeafKind.Execute, executeState);
-            fsm.PushFSMLeaf(LeafKind.Idle);
-            
-            this.AddFSMLeaf(LeafKind.FSM, fsm);
+            this.AddFSMLeaf(idleState);
+            this.AddFSMLeaf(moveState);
+            this.AddFSMLeaf(executeState);
+            this.PushFSMLeaf(LeafKind.Idle);
+
         }
 
         

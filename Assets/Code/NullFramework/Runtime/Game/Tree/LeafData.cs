@@ -8,6 +8,10 @@ namespace NullFramework.Runtime
         {
             var leaf = new T();
             leaf.LoadData(this);
+            if(this is ILeafKindGetter kindLeaf)
+            {
+                leaf.SetLeafKind(kindLeaf.GetLeafKind());
+            }
             return leaf;
         }
     }

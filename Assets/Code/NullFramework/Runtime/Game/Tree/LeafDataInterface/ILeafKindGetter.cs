@@ -1,6 +1,7 @@
 namespace NullFramework.Runtime
 {
-    public interface IFSMLeafData
+    //LeafData的接口
+    public interface ILeafKindGetter
     {
         int GetLeafKind();
     }

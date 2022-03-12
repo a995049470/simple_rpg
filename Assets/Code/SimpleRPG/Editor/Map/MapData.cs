@@ -30,6 +30,15 @@ namespace NullFramework.Editor
             buildings[pos] = building;
             return true;
         }
+        //尝试删除建筑
+        public bool TrayRmoveBuild(Vector3Int pos)
+        {
+            if(!buildings.ContainsKey(pos)) return false;
+            var building = buildings[pos];
+            GameObject.DestroyImmediate(building);
+            buildings.Remove(pos);
+            return true;
+        }
 
         public void OnEditorFinish()
         {
