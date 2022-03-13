@@ -9,6 +9,8 @@ namespace NullFramework.Editor
         private Dictionary<Vector3Int, GameObject> buildings = new Dictionary<Vector3Int, GameObject>();
         private GameObject currentPrefab;
         private GameObject mapRoot;
+        private GameObject preview;
+        private bool isDityPreviw;
         
         public MapData()
         {
@@ -17,6 +19,7 @@ namespace NullFramework.Editor
         
         public void SetCurrentPrefab(GameObject prefab)
         {
+            if(prefab != currentPrefab) isDityPreviw = true;
             this.currentPrefab = prefab;
         }
 
@@ -38,6 +41,21 @@ namespace NullFramework.Editor
             GameObject.DestroyImmediate(building);
             buildings.Remove(pos);
             return true;
+        }
+
+        public void ShowPreview(Vector3 pos)
+        {
+            if(isDityPreviw || preview == null) 
+            {
+                isDityPreviw = false;
+                if(preview != null)
+                {
+                    GameObject.DestroyImmediate(preview);
+                }
+                preview = GameObject.Instantiate(currentPrefab, pos, Quaternion.identity);
+                preview.transform.parent = mapRoot.transform;
+            }
+            preview.transform.position = pos;
         }
 
         public void OnEditorFinish()
