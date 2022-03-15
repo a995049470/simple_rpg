@@ -16,6 +16,8 @@ namespace LPipeline.Editor
         private string outFloder;
         [SerializeField]
         private Material IBLBlurMaterial;
+        [SerializeField]
+        private int width;
         
         private Mesh CreateCube()
         {
@@ -116,9 +118,8 @@ namespace LPipeline.Editor
         [Button("导出")]
         private void Exproter()
         {
-            var widht = originEnvMap.width * 4;
-            var height = originEnvMap.height * 3;
-            var des = new RenderTextureDescriptor(widht, height);
+            var height = width;
+            var des = new RenderTextureDescriptor(width, height);
             des.sRGB = true;
             var rt = new RenderTexture(des);
             Graphics.SetRenderTarget(rt);
@@ -130,8 +131,8 @@ namespace LPipeline.Editor
 
             var active = RenderTexture.active;
             RenderTexture.active = rt;
-            var tex = new Texture2D(widht, height, TextureFormat.RGBA32, false, false);
-            tex.ReadPixels(new Rect(0, 0, widht, height), 0, 0);
+            var tex = new Texture2D(width, height, TextureFormat.RGBA32, false, false);
+            tex.ReadPixels(new Rect(0, 0, width, height), 0, 0);
             tex.Apply();
             
             var bytes = tex.EncodeToPNG();

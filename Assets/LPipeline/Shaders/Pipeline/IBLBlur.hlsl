@@ -43,7 +43,7 @@ float4 Fragment(Varyings i) : SV_TARGET
     
     float3 irradiance = 0;
     float sampleDelta = 0.025;
-    float nrSamples = 0;
+    float weightSum = 0;
     //半球面采样
     for(float phi = 0.0; phi < 2.0 * PI; phi += sampleDelta)
     {
@@ -54,13 +54,14 @@ float4 Fragment(Varyings i) : SV_TARGET
             // tangent space to world
             float3 sampleVec = tangentSample.x * right + tangentSample.y * up + tangentSample.z * normal; 
 
-            irradiance += _MainTex.Sample(sampler_MainTex, sampleVec).rgb * cos(theta) * sin(theta);
-            nrSamples++;
+            //我们将采样的颜色值乘以系数 cos(θ) ，因为较大角度的光较弱，
+            //而系数 sin(θ) 则用于权衡较高半球区域的较小采样区域的贡献度。
+            float weight = cos(theta) * sin(theta);
+            irradiance += _MainTex.Sample(sampler_MainTex, sampleVec).rgb * weight;
+            weightSum += weight;
         }
     }
-    irradiance = PI * irradiance * (1.0 / nrSamples);
-    //irradiance = _MainTex.Sample(sampler_MainTex, normal).rgb;
-    
+    irradiance = irradiance * (1.0 / weightSum);
     return float4(irradiance, 1);
 }
 
