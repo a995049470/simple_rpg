@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: DrawSkyboxPass
   m_EditorClassIdentifier: 
   enable: 1
+  skyboxMaterial: {fileID: 2100000, guid: 408d431b5ad694247be16115029e75d2, type: 2}
+  cube: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}

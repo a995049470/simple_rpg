@@ -29,13 +29,13 @@ namespace LPipeline.Runtime
     {
 
         RenderTargetHandle cameraColorAttachment;
-        RenderTargetHandle cameraDepthAttachment;
+        //RenderTargetHandle cameraDepthAttachment;
         LPipelineRenderSetting pipelineRenderSetting;
 
         public LRenderPipeline(LPipelineRenderSetting setting)
         {
             cameraColorAttachment.Init("_CameraColorTexture");
-            cameraDepthAttachment.Init("_CameraDepthAttachment");
+            //cameraDepthAttachment.Init("_CameraDepthAttachment");
             this.pipelineRenderSetting = setting;
         }
 
@@ -88,16 +88,16 @@ namespace LPipeline.Runtime
             depthDes.msaaSamples = 1;
 
             cmd.GetTemporaryRT(cameraColorAttachment.id, colorDes);
-            cmd.GetTemporaryRT(cameraDepthAttachment.id, depthDes, FilterMode.Point);
+            //cmd.GetTemporaryRT(cameraDepthAttachment.id, depthDes, FilterMode.Point);
             //清理
-            cmd.SetRenderTarget(cameraColorAttachment.Identifier(), cameraDepthAttachment.Identifier());
+            cmd.SetRenderTarget(cameraColorAttachment.Identifier());
             cmd.ClearRenderTarget(true, true, Color.black);
             context.ExecuteCommandBuffer(cmd);
             cmd.Clear();
 
             //赋值data
             data.activeCameraColorAttachment = cameraColorAttachment.Identifier();
-            data.activeCameraDepthAttachment = cameraDepthAttachment.Identifier();
+            data.activeCameraDepthAttachment = cameraColorAttachment.Identifier();
             data.colorDescriptor = colorDes;
 
             //开始运行运行各个pass
@@ -120,7 +120,7 @@ namespace LPipeline.Runtime
 
             //开始清理
             cmd.ReleaseTemporaryRT(cameraColorAttachment.id);
-            cmd.ReleaseTemporaryRT(cameraDepthAttachment.id);
+            //cmd.ReleaseTemporaryRT(cameraDepthAttachment.id);
             for (int i = 0; i < passCount; i++)
             {
                 passes[i]?.FrameCleanup(cmd);

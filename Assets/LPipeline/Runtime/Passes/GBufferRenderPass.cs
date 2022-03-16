@@ -42,6 +42,7 @@ namespace LPipeline.Runtime
         public override void Execute(ScriptableRenderContext context, RenderData data)
         {
             base.Execute(context, data);
+            
             //输出gbuffer
             var des0 = new RenderTextureDescriptor(data.renderWidth, data.renderHeight, RenderTextureFormat.ARGBHalf);
             des0.sRGB = false;
@@ -58,6 +59,7 @@ namespace LPipeline.Runtime
             cmd.GetTemporaryRT(gbuffer1.id, des1, FilterMode.Point);
             cmd.GetTemporaryRT(gbuffer2.id, des2, FilterMode.Point);
             cmd.GetTemporaryRT(depthTexture.id, depthTextureDes, FilterMode.Point);
+            //data.activeCameraDepthAttachment = depthTexture.Identifier();
             var colorRTs = new RenderTargetIdentifier[]
             {
                 gbuffer0.Identifier(),
@@ -66,7 +68,7 @@ namespace LPipeline.Runtime
             };
 
             cmd.SetRenderTarget(colorRTs, depthTexture.Identifier());
-            cmd.ClearRenderTarget(true, true, Color.black);
+            cmd.ClearRenderTarget(true, true, Color.black, 1.0f);
             context.ExecuteCommandBuffer(cmd);
             cmd.Clear();
             var drawSetting  = CreateDrawingSettings(gbufferTagList, data, SortingCriteria.CommonOpaque);

@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   setting:
     passes:
-    - {fileID: 11400000, guid: 33d5adc6e87ad5244a3df4eccd125c61, type: 2}
     - {fileID: 11400000, guid: e57bf469b21418543ab1ce271f465baf, type: 2}
     - {fileID: 11400000, guid: e3f371ec1f944ed41a9f671de6b72af0, type: 2}
     - {fileID: 11400000, guid: b14cff1e34769034080e21059012cc7c, type: 2}
     - {fileID: 11400000, guid: 1c1ac2a97057f654a8663a309cb7e919, type: 2}
     - {fileID: 11400000, guid: a7b6d6d227432534ba673d9e11c15029, type: 2}
     - {fileID: 11400000, guid: 221271bd79d4de942bfd3113f80ac2b1, type: 2}
+    - {fileID: 11400000, guid: 33d5adc6e87ad5244a3df4eccd125c61, type: 2}
     - {fileID: 11400000, guid: 33f888a04dede084087660b9581b01f8, type: 2}
     enableDynamicBatching: 0

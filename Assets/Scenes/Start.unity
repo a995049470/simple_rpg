@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &38151582
 Transform:
   m_ObjectHideFlags: 0
@@ -562,10 +562,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc259615684787b4abc292b97c634340, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intensity: 64
-  lightColor: {r: 1, g: 1, b: 1, a: 0}
-  lightRaidus: 24.2
-  lightAttenuation: 0.934
+  intensity: 7.1
+  lightColor: {r: 1, g: 0, b: 0, a: 0}
+  lightRaidus: 20.1
+  lightAttenuation: 0.836
   lightMask: {fileID: 0}
 --- !u!4 &398969417
 Transform:
@@ -574,13 +574,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 398969415}
-  m_LocalRotation: {x: 0.6962651, y: 0.42907718, z: -0.57235223, w: 0.059335172}
-  m_LocalPosition: {x: 1.8099947, y: 5.069996, z: -13.1100025}
-  m_LocalScale: {x: 48.4, y: 48.4, z: 48.4}
+  m_LocalRotation: {x: 0.6194964, y: 0.694144, z: -0.31709477, w: -0.18395455}
+  m_LocalPosition: {x: 0.52, y: 4.16, z: -9.92}
+  m_LocalScale: {x: 40.2, y: 40.2, z: 40.2}
   m_Children: []
   m_Father: {fileID: 1183451377}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 395.015, y: -5514.358, z: 3379.713}
+  m_LocalEulerAnglesHint: {x: 372.257, y: -5538.442, z: 3328.162}
 --- !u!23 &398969418
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -646,7 +646,7 @@ GameObject:
   m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &624367915
 Transform:
   m_ObjectHideFlags: 0
@@ -655,7 +655,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 624367914}
   m_LocalRotation: {x: -0, y: -0, z: -0.08630802, w: 0.9962685}
-  m_LocalPosition: {x: 1.59, y: 0.58999956, z: -13.57}
+  m_LocalPosition: {x: 10.4, y: 0.67, z: -19.55}
   m_LocalScale: {x: 24.6, y: 24.6, z: 24.6}
   m_Children: []
   m_Father: {fileID: 1183451377}
@@ -674,7 +674,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   intensity: 43.1
-  lightColor: {r: 0.8301887, g: 0, b: 0.524986, a: 0}
+  lightColor: {r: 1, g: 1, b: 1, a: 0}
   lightRaidus: 12.3
   lightAttenuation: 0.541
   lightMask: {fileID: 0}
@@ -742,7 +742,7 @@ GameObject:
   m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!23 &644598632
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -804,6 +804,85 @@ Transform:
   m_Father: {fileID: 2131402438}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 88.55, z: 0}
+--- !u!1 &718250063
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 718250066}
+  - component: {fileID: 718250065}
+  - component: {fileID: 718250064}
+  m_Layer: 0
+  m_Name: Sphere
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!23 &718250064
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 718250063}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: cfdeaec0a8747494a88b5999f1dfdd1c, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &718250065
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 718250063}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &718250066
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 718250063}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.77, y: 2.61, z: -12.68}
+  m_LocalScale: {x: 9.0496, y: 9.0496, z: 9.0496}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &770156139
 GameObject:
   m_ObjectHideFlags: 0
@@ -821,7 +900,7 @@ GameObject:
   m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &770156140
 Transform:
   m_ObjectHideFlags: 0
@@ -900,7 +979,7 @@ GameObject:
   m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!23 &826286709
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1345,13 +1424,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1279884671}
-  m_LocalRotation: {x: -0.24248974, y: 0.5364281, z: -0.3395891, w: -0.73356867}
+  m_LocalRotation: {x: -0.36167717, y: 0.4721296, z: -0.42446372, w: -0.6827253}
   m_LocalPosition: {x: 40.891903, y: 26.761482, z: -32.22043}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1055338174}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 46.062004, y: -783.751, z: 1100.066}
+  m_LocalEulerAnglesHint: {x: 63.464005, y: -769.09, z: 1112.2}
 --- !u!114 &1279884673
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -17,7 +17,7 @@ namespace LPipeline.Editor
         [SerializeField]
         private Material IBLBlurMaterial;
         [SerializeField]
-        private int width;
+        private int unitSize = 32;
         
         private Mesh CreateCube()
         {
@@ -59,35 +59,35 @@ namespace LPipeline.Editor
             };
             var uv = new Vector2[]
             {
-                new Vector2(0.00f, 0.66f),
-                new Vector2(0.25f, 0.66f),
-                new Vector2(0.25f, 0.33f),
-                new Vector2(0.00f, 0.33f),
+                new Vector2(0.00f, 0.6666f),
+                new Vector2(0.25f, 0.6666f),
+                new Vector2(0.25f, 0.3333f),
+                new Vector2(0.00f, 0.3333f),
 
-                new Vector2(0.25f, 0.66f),
-                new Vector2(0.50f, 0.66f),
-                new Vector2(0.50f, 0.33f),
-                new Vector2(0.25f, 0.33f),
+                new Vector2(0.25f, 0.6666f),
+                new Vector2(0.50f, 0.6666f),
+                new Vector2(0.50f, 0.3333f),
+                new Vector2(0.25f, 0.3333f),
 
-                new Vector2(0.50f, 0.66f),
-                new Vector2(0.75f, 0.66f),
-                new Vector2(0.75f, 0.33f),
-                new Vector2(0.50f, 0.33f),
+                new Vector2(0.50f, 0.6666f),
+                new Vector2(0.75f, 0.6666f),
+                new Vector2(0.75f, 0.3333f),
+                new Vector2(0.50f, 0.3333f),
 
-                new Vector2(0.75f, 0.66f),
-                new Vector2(1.00f, 0.66f),
-                new Vector2(1.00f, 0.33f),
-                new Vector2(0.75f, 0.33f),
+                new Vector2(0.75f, 0.6666f),
+                new Vector2(1.00f, 0.6666f),
+                new Vector2(1.00f, 0.3333f),
+                new Vector2(0.75f, 0.3333f),
 
-                new Vector2(0.25f, 0.99f),
-                new Vector2(0.50f, 0.99f),
-                new Vector2(0.50f, 0.66f),
-                new Vector2(0.25f, 0.66f),
+                new Vector2(0.25f, 1.0000f),
+                new Vector2(0.50f, 1.0000f),
+                new Vector2(0.50f, 0.6666f),
+                new Vector2(0.25f, 0.6666f),
 
-                new Vector2(0.25f, 0.33f),
-                new Vector2(0.50f, 0.33f),
-                new Vector2(0.50f, 0.00f),
-                new Vector2(0.25f, 0.00f),
+                new Vector2(0.25f, 0.3333f),
+                new Vector2(0.50f, 0.3333f),
+                new Vector2(0.50f, 0.0000f),
+                new Vector2(0.25f, 0.0000f),
             };
             var indices = new int[]
             {
@@ -118,7 +118,8 @@ namespace LPipeline.Editor
         [Button("导出")]
         private void Exproter()
         {
-            var height = width;
+            var width = unitSize * 4;
+            var height = unitSize * 3;
             var des = new RenderTextureDescriptor(width, height);
             des.sRGB = true;
             var rt = new RenderTexture(des);
