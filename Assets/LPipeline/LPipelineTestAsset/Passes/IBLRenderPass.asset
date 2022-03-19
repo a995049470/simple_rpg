@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c37ac4aa6ad1ab54cae17c3661bd952c, type: 3}
+  m_Name: IBLRenderPass
+  m_EditorClassIdentifier: 
+  enable: 1
+  targetCameraType: 31
+  ambientMateril: {fileID: 2100000, guid: 332dc3c024e7c1f4bbe9002fa255be46, type: 2}

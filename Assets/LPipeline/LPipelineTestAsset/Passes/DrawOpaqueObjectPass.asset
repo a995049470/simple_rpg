@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: DrawOpaqueObjectPass
   m_EditorClassIdentifier: 
   enable: 1
+  cameraType: 15
   shaderTags:
   - Universal2D
   - UniversalForward

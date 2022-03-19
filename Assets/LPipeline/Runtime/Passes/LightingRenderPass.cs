@@ -4,6 +4,7 @@ using UnityEngine.Rendering;
 
 namespace LPipeline.Runtime
 {
+
     [CreateAssetMenu(fileName = "LightingRenderPass", menuName = "LPipeline/Passes/LightingRenderPass")]
     public class LightingRenderPass : RenderPass
     {
@@ -15,7 +16,7 @@ namespace LPipeline.Runtime
         private int id_lightParameter = Shader.PropertyToID("_LightParameter");
         private int id_lightColor = Shader.PropertyToID("_LightColor");
         private int id_lightPosition = Shader.PropertyToID("_LightPosition");
-        private int id_invVP = Shader.PropertyToID("_InvVP");
+       
         private int id_lightDirection = Shader.PropertyToID("_LightDirection");
         private int id_lgihtMask = Shader.PropertyToID("_LightMask");
         private int id_intensityBias = Shader.PropertyToID("_IntensityBias");
@@ -30,14 +31,11 @@ namespace LPipeline.Runtime
 
         public override void Execute(ScriptableRenderContext context, RenderData data)
         {
-            base.Execute(context, data);
+            
            
             var cmd = CommandBufferPool.Get(nameof(LightingRenderPass));
             SetDefaultRenderTarget(cmd, context, data);
-            var vp = data.gpuProjectionMatrix * data.viewMatrix;
-            var invVp = vp.inverse;
-            cmd.SetGlobalMatrix(id_invVP, invVp);
-
+            
             //收集所有视锥体内的灯光
             //开始平行光渲染
             var directionalLights = LightManager.Instance.GetVisibleDirectionalLights();

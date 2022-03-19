@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6928f363f61e6d04b8a7850d251c801f, type: 3}
   m_Name: IBLEnvironmentMapExproter
   m_EditorClassIdentifier: 
-  originEnvMap: {fileID: 8900000, guid: 34a763168147f4182a21b9fd004d67de, type: 3}
+  originEnvMap: {fileID: 8900000, guid: d4c8dc343ae5d4673b7720ffdb1ddf00, type: 3}
   outFloder: Assets/GameResource/Texture/EnvMap/IBL
   IBLBlurMaterial: {fileID: 2100000, guid: b5da821d1bf54124caa9b757275950dc, type: 2}
   unitSize: 32

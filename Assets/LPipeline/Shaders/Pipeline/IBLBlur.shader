@@ -2,7 +2,7 @@ Shader "LPipeline/IBLBlur"
 {
     Properties
     {
-        [HideInInspector]_MainTex("MainTex", Cube) = "" {}
+        _MainTex("MainTex", Cube) = "" {}
         
     }
     SubShader

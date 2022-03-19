@@ -43,13 +43,14 @@ Varyings Vertex(Attributes i)
 //加点基色 不至于太黑
 float4 Fragment(Varyings i) : SV_TARGET
 {
-    UNITY_SETUP_INSTANCE_ID(i);
-    float3 Albedo = UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, _Albedo);
-    float AO = UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, _AO);
-    float3 albedo = _AlbedoTex.Sample(sampler_AlbedoTex, i.uv).rgb * Albedo;
-    float ao = _AOTex.Sample(sampler_AOTex, i.uv).r * AO;
-    float3 color = LIGHT_AMBINE * ao * albedo;
-    return float4(color, 1) ;
+    return 0;
+    // UNITY_SETUP_INSTANCE_ID(i);
+    // float3 Albedo = UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, _Albedo);
+    // float AO = UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, _AO);
+    // float3 albedo = _AlbedoTex.Sample(sampler_AlbedoTex, i.uv).rgb * Albedo;
+    // float ao = _AOTex.Sample(sampler_AOTex, i.uv).r * AO;
+    // float3 color = LIGHT_AMBINE * ao * albedo;
+    // return float4(color, 1) ;
 }
 
 #endif

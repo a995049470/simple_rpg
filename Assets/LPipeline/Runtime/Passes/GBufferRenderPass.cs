@@ -41,7 +41,7 @@ namespace LPipeline.Runtime
         
         public override void Execute(ScriptableRenderContext context, RenderData data)
         {
-            base.Execute(context, data);
+          
             
             //输出gbuffer
             var des0 = new RenderTextureDescriptor(data.renderWidth, data.renderHeight, RenderTextureFormat.ARGBHalf);

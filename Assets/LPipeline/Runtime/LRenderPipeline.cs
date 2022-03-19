@@ -92,6 +92,8 @@ namespace LPipeline.Runtime
             //清理
             cmd.SetRenderTarget(cameraColorAttachment.Identifier());
             cmd.ClearRenderTarget(true, true, Color.black);
+            
+
             context.ExecuteCommandBuffer(cmd);
             cmd.Clear();
 
@@ -106,7 +108,7 @@ namespace LPipeline.Runtime
             for (int i = 0; i < passCount; i++)
             {
                 var pass = passes[i];
-                if(pass == null || !pass.Enable)
+                if(pass == null || !pass.Enable || ((int)pass.TargetCameraType & (int)camera.cameraType) == 0)
                 {
                     continue;
                 }

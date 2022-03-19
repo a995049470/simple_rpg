@@ -20,7 +20,7 @@ namespace LPipeline.Runtime
 
         public override void Execute(ScriptableRenderContext context, RenderData data)
         {
-            base.Execute(context, data);
+            
             var cmd = CommandBufferPool.Get(nameof(DrawSkyboxPass));
             //要那gbuffer里的depthTexture当作深度目标
             cmd.SetRenderTarget(data.activeCameraColorAttachment, depthTexture.Identifier());

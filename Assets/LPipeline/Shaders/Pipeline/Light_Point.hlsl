@@ -51,7 +51,6 @@ float GetLightIntensity(float dis)
     return intensity; 
 }
 
-#define PI 3.1415926
 float2 PositionToUV(float3 position)
 {
     float r = sqrt(position.x * position.x + position.y * position.y + position.z * position.z);

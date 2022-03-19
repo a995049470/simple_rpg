@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: LightingRenderPass
   m_EditorClassIdentifier: 
   enable: 1
+  targetCameraType: 31
   directionalLightMaterial: {fileID: 2100000, guid: 5809eb7991587924eb70fe997c8d9c26,
     type: 2}
   pointLightMaterial: {fileID: 2100000, guid: 2e58cbe6a96826646a8c854a1277316e, type: 2}

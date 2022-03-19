@@ -41,7 +41,7 @@ namespace LPipeline.Runtime
 
         public override void Execute(ScriptableRenderContext context, RenderData data)
         {
-            base.Execute(context, data);
+            
             var cmd = CommandBufferPool.Get(profilerTag);
             SetDefaultRenderTarget(cmd, context, data);
             var sortFlags = isOpaque ? SortingCriteria.CommonOpaque : SortingCriteria.CommonTransparent;

@@ -39,7 +39,7 @@ namespace LPipeline.Runtime
 
         public override void Execute(ScriptableRenderContext context, RenderData data)
         {
-            base.Execute(context, data);
+            
             if (cubeMesh == null || material == null)
             {
                 throw new System.Exception("没材质 没网格 渲个P!");

@@ -5,12 +5,9 @@ using UnityEngine.Rendering.Universal;
 
 namespace LPipeline.Runtime
 {
-    
-
-    public class RenderPass : ScriptableObject
+    public abstract class RenderPass : ScriptableObject
     {
         private static Mesh fullScreenQuad;
-        
         private static RenderTargetHandle tempRT;
         public static RenderTargetHandle TempRT
         {
@@ -27,11 +24,11 @@ namespace LPipeline.Runtime
         [SerializeField]
         private bool enable = true;
         public bool Enable { get => enable; }
+        [SerializeField]
+        private CameraType targetCameraType = (CameraType)31;
+        public CameraType TargetCameraType { get => targetCameraType; }
 
-        public virtual void Execute(ScriptableRenderContext context, RenderData data)
-        {
-            
-        }
+        public abstract void Execute(ScriptableRenderContext context, RenderData data);
 
         public virtual void FrameCleanup(CommandBuffer cmd)
         {

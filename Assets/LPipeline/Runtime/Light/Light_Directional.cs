@@ -5,6 +5,7 @@ namespace LPipeline
     [ExecuteAlways]
     public class Light_Directional : MonoBehaviour
     {
+        [Header("暂时只能存在一个全局光 需要指定全局光产生的阴影贴图")]
         [SerializeField]
         [Range(0, 2)]
         private float intensity;

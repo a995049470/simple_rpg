@@ -17,7 +17,7 @@
             ZWrite Off
             ZTest Always
             Blend One One
-            Cull Off
+            Cull Back
             HLSLPROGRAM
             #pragma prefer_hlslcc gles
             #pragma exclude_renderers d3d11_9x

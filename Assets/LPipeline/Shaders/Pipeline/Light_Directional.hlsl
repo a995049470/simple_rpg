@@ -36,6 +36,9 @@ Varyings Vertex(Attributes i)
 {
     Varyings o = (Varyings)0;
     o.positionCS = i.positionOS;
+#if UNITY_UV_STARTS_AT_TOP
+    o.positionCS.y = -o.positionCS.y;
+#endif
     o.positionSS = ComputeScreenPos(o.positionCS);
     return o;
 }

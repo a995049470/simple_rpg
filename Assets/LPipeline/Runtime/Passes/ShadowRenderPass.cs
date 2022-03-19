@@ -47,7 +47,7 @@ namespace LPipeline.Runtime
         }
         public override void Execute(ScriptableRenderContext context, RenderData data)
         {
-            base.Execute(context, data);
+            
             
             var shadowLight = LightManager.Instance.GetShadowLight();
             if(shadowLight == null)
