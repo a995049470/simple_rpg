@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e028b32bf872bc4da039ada3906e4f8, type: 3}
+  m_Name: IBLGlossyEnvironmentMapExporter
+  m_EditorClassIdentifier: 
+  originEnvMap: {fileID: 8900000, guid: e71fc492f440446b99875b8e1df890ba, type: 3}
+  glossyEvnMapBlurMaterial: {fileID: 2100000, guid: 83eb0f94f9f5707429ef764393c45809,
+    type: 2}
+  unitSize: 256
+  minSize: 16
+  outFloder: Assets/GameResource/Texture/EnvMap/PRT

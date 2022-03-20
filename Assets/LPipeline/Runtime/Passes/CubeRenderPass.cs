@@ -14,6 +14,8 @@ namespace LPipeline.Runtime
         private Mesh cubeMesh;
         [SerializeField]
         private Material material;
+        [SerializeField]
+        private bool isCastShadow = true;
 
         private RenderTargetHandle gbuffer0;
         //normal
@@ -66,8 +68,11 @@ namespace LPipeline.Runtime
             
             cmd.SetRenderTarget(data.activeCameraColorAttachment, depthTexture.Identifier());
             cmd.DrawMeshInstancedProcedural(cubeMesh, subMeshIndex, material, 1, instanceCount);
-            cmd.SetRenderTarget(shadowMap.Identifier(), shadowMap.Identifier());
-            cmd.DrawMeshInstancedProcedural(cubeMesh, subMeshIndex, material, 2, instanceCount);
+            if(isCastShadow)
+            {
+                cmd.SetRenderTarget(shadowMap.Identifier(), shadowMap.Identifier());
+                cmd.DrawMeshInstancedProcedural(cubeMesh, subMeshIndex, material, 2, instanceCount);
+            }
             context.ExecuteCommandBuffer(cmd);
             cmd.Clear();
             CommandBufferPool.Release(cmd);

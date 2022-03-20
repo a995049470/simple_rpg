@@ -24,19 +24,19 @@ namespace SimpleRPG.Editor
             return new Vector3(pixel.r, pixel.g, pixel.b);
         }
 
-        public float GetMetallic(int i, int j)
+        public float GetMetallic(int i, int j, float defaultValue = 0.5f)
         {
-            return metallicTexture == null ? 0.5f : metallicTexture.GetPixel(i, j).r;
+            return metallicTexture == null ? defaultValue : metallicTexture.GetPixel(i, j).r;
         }
 
-        public float GetRoughness(int i, int j)
+        public float GetRoughness(int i, int j, float defaultValue = 0.5f)
         {
-            return roughnessTexture == null ? 0.5f : roughnessTexture.GetPixel(i, j).r;
+            return roughnessTexture == null ? defaultValue : roughnessTexture.GetPixel(i, j).r;
         }
 
-        public float GetAO(int i, int j)
+        public float GetAO(int i, int j, float defaultValue = 1.0f)
         {
-            return aoTexture == null ? 1.0f : aoTexture.GetPixel(i, j).r;
+            return aoTexture == null ? defaultValue : aoTexture.GetPixel(i, j).r;
         }
     }
 }

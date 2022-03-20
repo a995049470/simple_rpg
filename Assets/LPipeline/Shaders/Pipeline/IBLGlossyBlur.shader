@@ -1,11 +1,9 @@
-Shader "LPipeline/IBLAmbient"
+Shader "LPipeline/IBLGlossyBlur"
 {
     Properties
     {
-        _DiffuseEnvMap("DiffuseEnvMap", Cube) = "" {}
-        _GlossyEnvMap("GlossyEnvMap", Cube) = "" {}
-        _BRDFLut("BRDFLut", 2D) = "white" {}
-        _AmbientIntensity("环境光强度", Range(0, 2)) = 1
+        [HideInInspector]_MainTex("MainTex", Cube) = "" {}
+        [HideInInspector]_Roughness("Roughness", float) = 0
         
     }
     SubShader
@@ -14,16 +12,15 @@ Shader "LPipeline/IBLAmbient"
         
         pass
         {
-            Name "IBLAmbient"
+            Name "IBLGlossyBlur"
             Tags
             {
                 "RenderType"="Opaque"
-                "LightMode"="IBLAmbient"
+                "LightMode"="IBLGlossyBlur"
             }
             ZWrite Off
             ZTest Always
-            Blend One One
-            Cull Back
+            Cull Off
             HLSLPROGRAM
             #pragma prefer_hlslcc gles
             #pragma exclude_renderers d3d11_9x
@@ -32,7 +29,7 @@ Shader "LPipeline/IBLAmbient"
             #pragma vertex Vertex
             #pragma fragment Fragment
 
-            #include "IBLAmbient.hlsl"
+            #include "IBLGlossyBlur.hlsl"
             ENDHLSL
         }
     }

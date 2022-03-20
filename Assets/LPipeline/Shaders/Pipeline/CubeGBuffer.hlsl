@@ -71,11 +71,13 @@ out float3 gbuffer2 : SV_TARGET2)
     float3 albedo = i.albedo;
     float3 normalWS = i.normalWS;
     float metallic = i.metallic;
-    float roughness = i.roughness;
+    //roughness 1会导致ambient出问题.....
+    float roughness = i.roughness * 0.99;
     float ao = i.ao;
     gbuffer0 = albedo;
     gbuffer1 = normalWS;
     gbuffer2 = float3(metallic, roughness, ao);
+    
     //gbuffer2 = i.positionWS;
 }
 

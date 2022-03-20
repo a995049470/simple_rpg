@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enable: 1
   targetCameraType: 31
-  ambientMateril: {fileID: 2100000, guid: 332dc3c024e7c1f4bbe9002fa255be46, type: 2}
+  ambientMateril: {fileID: 2100000, guid: 5768f0c93614f454ea71bf535339d5c7, type: 2}

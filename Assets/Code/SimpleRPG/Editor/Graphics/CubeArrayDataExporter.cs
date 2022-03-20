@@ -25,7 +25,13 @@ namespace SimpleRPG.Editor
         private int width;
         [SerializeField]
         private int height;
-        
+        [SerializeField]
+        [Range(0, 1)]
+        private float defaultMetallic = 0;
+        [SerializeField]
+        [Range(0, 1)]
+        private float defaultRoughness = 0;
+
         [Button("Cube转数据")]
         private void TestTextureToCube()
         {
@@ -131,8 +137,10 @@ namespace SimpleRPG.Editor
                     buffer.localToWorldMatrix = matrix;
                     buffer.normalTS = gbufferTextures.GetNormalTS(i, j);
                     buffer.ao = gbufferTextures.GetAO(i, j);
-                    buffer.metallic = gbufferTextures.GetMetallic(i, j);
-                    buffer.roughness = gbufferTextures.GetRoughness(i, j);
+                    buffer.metallic = gbufferTextures.GetMetallic(i, j, defaultMetallic);
+                    buffer.roughness = gbufferTextures.GetRoughness(i, j, defaultRoughness);
+
+                    
                     data.Add(buffer);
                 }
             }

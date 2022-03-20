@@ -12,12 +12,13 @@ namespace SimpleRPG.Runtime
     {
         [SerializeField]
         private TextAsset data;
-
+        
 
         //增量刷新
         private CubeGBuffer[] cubeBuffers;
         private static CubeGBuffer[] emptyGBuffer = new CubeGBuffer[0];
         private Matrix4x4 lastLocalToWorldMatrix;
+        
         
 
         private void Awake() {

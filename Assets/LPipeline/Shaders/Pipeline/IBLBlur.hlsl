@@ -1,5 +1,5 @@
-#ifndef LPIPELINE_IBL_BLUE_PASS
-#define LPIPELINE_IBL_BLUE_PASS
+#ifndef LPIPELINE_IBL_BLUR_PASS
+#define LPIPELINE_IBL_BLUR_PASS
 
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 

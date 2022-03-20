@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: CubeRenderPass
   m_EditorClassIdentifier: 
   enable: 1
+  targetCameraType: 31
   cubeMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   material: {fileID: 2100000, guid: eb6c6952221c68f46a562af8ae835409, type: 2}
+  isCastShadow: 0

@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ToneMappint
-  m_Shader: {fileID: 4800000, guid: 5d693034f88c3d844a75281080549dfd, type: 3}
+  m_Name: LPipeline_IBLGlossyBlur
+  m_Shader: {fileID: 4800000, guid: 99090567d16b6e24489b0ec167436dea, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -24,5 +24,5 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _AdaptedLum: 0.9
+    - _Roughness: 0
     m_Colors: []

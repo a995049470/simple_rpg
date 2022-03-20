@@ -93,22 +93,6 @@ float3 BDRF(float3 lightDir, float3 viewDir,
     return lo;
 }
 
-float3 Ambient_IBL(float3 normal, float3 viewDir,
-                   float3 albedo, float3 irradiance,
-                   float roughness, float metallic)
-{
-    float3 f0 = 0.04f;
-    f0 = lerp(f0, albedo, metallic); 
-    
-    float NDotV = max(dot(normal, viewDir), 0);
-    float3 ks = FresnelSchlickRoughness(NDotV, f0, roughness);
-    float3 kd = 1.0 - ks;
-    kd *= 1 - metallic;
-    float3 diffuse = irradiance * albedo;
-    float3 ambient = kd * diffuse;
-    return ambient;
-}
-
 
 float RadicalInverse_VdC(uint bits) 
 {
@@ -184,5 +168,7 @@ float2 IntegrateBRDF(float NdotV, float roughness)
     B /= float(SAMPLE_COUNT);
     return float2(A, B);
 }
+
+
 
 #endif
