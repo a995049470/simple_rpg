@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25d27eeb75b716d45a613caf301f1b0b, type: 3}
   m_Name: ShadowRenderPass
   m_EditorClassIdentifier: 
-  enable: 0
+  enable: 1
   targetCameraType: 31
-  shadowMapResolution: {x: 1024, y: 1024}
-  width: 64
-  height: 64
+  shadowMapResolution: {x: 2048, y: 2048}
+  width: 128
+  height: 128
   near: 0
   far: 128

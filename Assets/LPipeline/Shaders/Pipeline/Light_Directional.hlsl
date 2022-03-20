@@ -66,6 +66,7 @@ float4 Fragment(Varyings i) : SV_TARGET
     float3 brdf = BDRF(lightDir, viewDir, normalWS, albedo, lightColor, roughness, metallic, ao);
 
     float3 color = brdf;
+    color *= visiable;
     
     
     return float4(color, 1);
