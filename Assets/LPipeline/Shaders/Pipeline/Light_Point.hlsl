@@ -9,6 +9,7 @@ struct Attributes
 {
     float4 positionOS : POSITION;
     float2 texcoord : TEXCOORD;
+    UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
 struct Varyings
@@ -16,16 +17,20 @@ struct Varyings
     float4 positionCS : POSITION;
     float4 positionSS : TEXCOORD0;
     float2 uv : TEXCOORD1;
+    UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
 Texture2D _DepthTexture; SamplerState sampler_DepthTexture;
 Texture2D _GBuffer0; SamplerState sampler_GBuffer0;
 Texture2D _GBuffer1; SamplerState sampler_GBuffer1;
 Texture2D _GBuffer2; SamplerState sampler_GBuffer2;
-TextureCube _LightMask; SamplerState sampler_LightMask;
+//TextureCube _LightMask; SamplerState sampler_LightMask;
 
-float4 _LightParameter;
-float4 _LightColor;
+UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
+    UNITY_DEFINE_INSTANCED_PROP(float4, _LightParameter)
+    UNITY_DEFINE_INSTANCED_PROP(float3, _LightColor)
+UNITY_INSTANCING_BUFFER_END(UnityPerMaterial)
+
 float4x4 _InvVP;
 float _IntensityBias;
 
@@ -34,6 +39,8 @@ float _IntensityBias;
 Varyings Vertex(Attributes i)
 {
     Varyings o = (Varyings)0;
+    UNITY_SETUP_INSTANCE_ID(i);
+	UNITY_TRANSFER_INSTANCE_ID(i, o);
     o.positionCS = TransformObjectToHClip(i.positionOS.xyz);
     o.positionSS = ComputeScreenPos(o.positionCS);
     o.uv = i.texcoord;
@@ -44,9 +51,10 @@ Varyings Vertex(Attributes i)
 
 float GetLightIntensity(float dis)
 {
-    float intensity = 1.0 / (_LightParameter.y * dis * dis + _LightParameter.z * dis + _LightParameter.w);
+    float4 lightParameter = UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, _LightParameter);
+    float intensity = 1.0 / (lightParameter.y * dis * dis + lightParameter.z * dis + lightParameter.w);
     intensity = max(intensity, _IntensityBias);
-    intensity = (intensity - _IntensityBias) / (1.0 - _IntensityBias) * _LightParameter.x;
+    intensity = (intensity - _IntensityBias) / (1.0 - _IntensityBias) * lightParameter.x;
     
     return intensity; 
 }
@@ -61,6 +69,7 @@ float2 PositionToUV(float3 position)
 
 float4 Fragment(Varyings i) : SV_TARGET
 {
+    UNITY_SETUP_INSTANCE_ID(i);
     float2 uvSS = i.positionSS.xy / i.positionSS.w;
     float depth = _DepthTexture.Sample(sampler_DepthTexture, uvSS).r;
     float3 albedo = _GBuffer0.Sample(sampler_GBuffer0, uvSS).rgb;
@@ -81,11 +90,12 @@ float4 Fragment(Varyings i) : SV_TARGET
     float ao = gbuffer2.z;
 
     float3 uv_mask = normalize(TransformWorldToObject(positionWS));
-    float3 mask = _LightMask.Sample(sampler_LightMask, uv_mask).rgb;
+    //float3 mask = _LightMask.Sample(sampler_LightMask, uv_mask).rgb;
+    float3 mask = 1;
+    float3 lightColor = UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, _LightColor);
+    float3 finalLightColor = lightColor * intensity * mask;
     
-    float3 lightColor = _LightColor * intensity * mask;
-    
-    float3 brdf = BDRF(lightDir, viewDir, normalWS, albedo, lightColor, roughness, metallic, ao);
+    float3 brdf = BDRF(lightDir, viewDir, normalWS, albedo, finalLightColor, roughness, metallic, ao);
     
     float3 color = brdf;
     return float4(color, 1);

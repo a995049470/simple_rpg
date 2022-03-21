@@ -27,7 +27,8 @@ namespace LPipeline
         private Mesh lightMesh;
         [SerializeField] 
         private static Mesh defalutMesh;
-        [SerializeField]
+        
+        //[SerializeField]
         private Cubemap lightMask;
         private static Cubemap defalutTexture; 
 
@@ -72,7 +73,7 @@ namespace LPipeline
             materialPropertyBlock = materialPropertyBlock ?? new MaterialPropertyBlock();
             materialPropertyBlock.SetColor(id_lightColor, lightColor);
             materialPropertyBlock.SetVector(id_lightParameter, lightParameter);
-            materialPropertyBlock.SetTexture(id_lightMask, GetLightMask());
+            //materialPropertyBlock.SetTexture(id_lightMask, GetLightMask());
             cacheRenderer.SetPropertyBlock(materialPropertyBlock);
             
         }

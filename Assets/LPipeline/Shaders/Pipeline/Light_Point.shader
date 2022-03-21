@@ -4,7 +4,7 @@
     {
         [HideInInspector]_LightColor("_LightColor", color) = (0, 0, 0, 0)
         [HideInInspector]_LightParameter("_LightParameter", vector) = (0, 0, 0, 0)
-        _LightMask("LightMask", Cube) = "white" {}
+        //_LightMask("LightMask", Cube) = "white" {}
     }
     SubShader
     {
@@ -29,6 +29,7 @@
 
             #pragma vertex Vertex
             #pragma fragment Fragment
+            #pragma multi_compile_instancing
 
             #include "Light_Point.hlsl"
 

@@ -249,7 +249,6 @@ MonoBehaviour:
   lightColor: {r: 1, g: 0.7971698, b: 0.8332056, a: 0}
   lightRaidus: 18.3
   lightAttenuation: 0.745
-  lightMask: {fileID: 0}
 --- !u!23 &284931198
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -548,7 +547,6 @@ MonoBehaviour:
   lightColor: {r: 1, g: 0, b: 0, a: 0}
   lightRaidus: 20.1
   lightAttenuation: 0.836
-  lightMask: {fileID: 0}
 --- !u!4 &398969417
 Transform:
   m_ObjectHideFlags: 0
@@ -659,7 +657,6 @@ MonoBehaviour:
   lightColor: {r: 1, g: 0, b: 0.008883953, a: 0}
   lightRaidus: 21.35
   lightAttenuation: 1
-  lightMask: {fileID: 0}
 --- !u!23 &454142241
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -756,7 +753,6 @@ MonoBehaviour:
   lightColor: {r: 1, g: 0.1651341, b: 0, a: 0}
   lightRaidus: 13.85
   lightAttenuation: 1
-  lightMask: {fileID: 0}
 --- !u!23 &624367917
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -932,7 +928,6 @@ MonoBehaviour:
   lightColor: {r: 0.5330188, g: 1, b: 0.84654427, a: 0}
   lightRaidus: 13.85
   lightAttenuation: 1
-  lightMask: {fileID: 0}
 --- !u!23 &715721704
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -997,7 +992,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &718250064
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1266,7 +1261,6 @@ MonoBehaviour:
   lightColor: {r: 1, g: 1, b: 1, a: 0}
   lightRaidus: 12.5
   lightAttenuation: 1
-  lightMask: {fileID: 0}
 --- !u!23 &836537522
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1363,7 +1357,6 @@ MonoBehaviour:
   lightColor: {r: 0.40009844, g: 1, b: 0, a: 0}
   lightRaidus: 11.2
   lightAttenuation: 0.983
-  lightMask: {fileID: 0}
 --- !u!23 &854004273
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1460,7 +1453,6 @@ MonoBehaviour:
   lightColor: {r: 1, g: 1, b: 1, a: 0}
   lightRaidus: 27.9
   lightAttenuation: 1
-  lightMask: {fileID: 0}
 --- !u!23 &1007410053
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1588,7 +1580,6 @@ MonoBehaviour:
   lightColor: {r: 0, g: 1, b: 0.19055557, a: 0}
   lightRaidus: 13.85
   lightAttenuation: 1
-  lightMask: {fileID: 0}
 --- !u!23 &1155173019
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1726,7 +1717,6 @@ MonoBehaviour:
   lightColor: {r: 1, g: 0.707305, b: 0.4292453, a: 0}
   lightRaidus: 13.85
   lightAttenuation: 1
-  lightMask: {fileID: 0}
 --- !u!23 &1190866166
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1819,6 +1809,85 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   intensity: 0.695
   lightColor: {r: 1, g: 1, b: 1, a: 0}
+--- !u!1 &1304092716
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1304092717}
+  - component: {fileID: 1304092719}
+  - component: {fileID: 1304092718}
+  m_Layer: 0
+  m_Name: Sphere (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1304092717
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304092716}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.24, y: 2.9699998, z: -4.88}
+  m_LocalScale: {x: 9.0496, y: 9.0496, z: 9.0496}
+  m_Children: []
+  m_Father: {fileID: 1576519591}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &1304092718
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304092716}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 8ef82af64caa2d446badfa09d96baa98, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &1304092719
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304092716}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1479682308
 GameObject:
   m_ObjectHideFlags: 0
@@ -1992,6 +2061,7 @@ Transform:
   - {fileID: 322312193}
   - {fileID: 718250066}
   - {fileID: 1684799701}
+  - {fileID: 1304092717}
   m_Father: {fileID: 1579299800}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2218,7 +2288,6 @@ MonoBehaviour:
   lightColor: {r: 1, g: 0.707305, b: 0.4292453, a: 0}
   lightRaidus: 13.85
   lightAttenuation: 1
-  lightMask: {fileID: 0}
 --- !u!23 &1816451636
 MeshRenderer:
   m_ObjectHideFlags: 0

@@ -32,6 +32,7 @@ namespace LPipeline.Editor
             RenderTexture.active = rt;
             tex.ReadPixels(new Rect(0, 0, width, height), 0, 0);
             tex.Apply();
+            tex.wrapMode = TextureWrapMode.Clamp;
             RenderTexture.active = active;
 
             // var absOutFloder = FileUtility.LocalPathToAbsPath(outFloder);

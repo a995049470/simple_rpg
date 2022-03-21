@@ -3,6 +3,7 @@ using UnityEngine;
 using System.IO;
 using UnityEditor;
 using NullFramework.Runtime;
+using UnityEditor.SceneManagement;
 
 namespace NullFramework.Editor
 {
@@ -38,6 +39,7 @@ namespace NullFramework.Editor
                     asset.transform.localScale = root.transform.localScale; 
                     PrefabUtility.SavePrefabAsset(asset);
                     PrefabUtility.ApplyPrefabInstance(root, InteractionMode.AutomatedAction);
+                    
                 }
             }
             AssetDatabase.Refresh();
@@ -51,6 +53,7 @@ namespace NullFramework.Editor
             {
                 go.SetActive(!go.activeSelf);
             }
+            EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
         }
     }
 }
