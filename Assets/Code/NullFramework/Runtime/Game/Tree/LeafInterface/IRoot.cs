@@ -1,6 +1,6 @@
 namespace NullFramework.Runtime
 {
-    public interface IRoot
+    public interface IRootData
     {
         
     }

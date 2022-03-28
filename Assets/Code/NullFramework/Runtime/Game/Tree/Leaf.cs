@@ -21,15 +21,16 @@ namespace NullFramework.Runtime
 
         protected Tress parent;
         protected Dictionary<int, MsgRespond> m_msgRespondMap;
-        protected int m_handle;
         //叶节点种类
-        private int m_kind;
+        private int kind;
+        public int Kind { get => kind; }
         private bool isActive = false;
         public bool IsActive { get => isActive; }
         private bool isWake = false;
-
-        public int Kind { get => m_kind; }
         private bool m_isRegisterMsgHandle = false;
+        //深度
+        private int depth;
+        public int Depth { get => depth; }
         
         //同一种kind 不同序号
         //private int m_index;
@@ -38,6 +39,7 @@ namespace NullFramework.Runtime
             m_msgRespondMap = new Dictionary<int, MsgRespond>();
         }
 
+        
 
         public virtual void LoadData(LeafData data)
         {
@@ -74,15 +76,20 @@ namespace NullFramework.Runtime
         public virtual bool OnUpdate(Msg msg)
         {
             bool isHasRespond = true;
+
             //失活态不除发OnUpdate
             if(!isActive || !isWake)
             {
                 return isHasRespond;
             }
-
+            //是否执行本身事件
+            bool isInvokeSelf = msg.ActiveMsg(this);
+            //是否继续传播
+            bool isContinue = !msg.IsStop;
+            
             if(m_msgRespondMap.TryGetValue(msg.Kind, out var respond))
             {
-                respond.Invoke(msg);
+                respond.Invoke(msg, isInvokeSelf, isContinue);
                 isHasRespond = !respond.IsEmpty();
             }
             else
@@ -115,21 +122,13 @@ namespace NullFramework.Runtime
 
         
 
-        public void SetLeafKind(int kind)
+        public void SetLeafKind(int _kind)
         {
-            m_kind = kind;
+            this.kind = _kind;
         }
 
 
-        public void SetHandle(int handle)
-        {
-            m_handle = handle;
-        }
-
-        public int GetHandle_I32()
-        {
-            return m_handle;
-        }
+       
         //被释放时触发
         public virtual void OnFree()
         {
@@ -201,6 +200,7 @@ namespace NullFramework.Runtime
                 ClearMsgListeners();
             }
             parent = _parent;
+            depth = parent.Depth + 1;
             InitListeners();
             //传输数据
             if(this is ILeafMemberDicSetter setter && parent is ILeafMemberDicGetter getter)

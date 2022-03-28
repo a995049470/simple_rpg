@@ -9,11 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9e5f21123d24314798d94a070964270, type: 3}
-  m_Name: CameraFollowLeafData
+  m_Script: {fileID: 11500000, guid: e3565b5f68a90a343821ac7212cbb356, type: 3}
+  m_Name: EnemyTressData
   m_EditorClassIdentifier: 
-  cameraPrefab: {fileID: 6166413263060680258, guid: 1a8b5ad69c20dce47849dd6c8988cf63,
+  enemyPrefab: {fileID: 3919166708672700242, guid: ebd67f2a8bf42a7468735de1130ca468,
     type: 3}
-  zdistance: 30
-  smoothTime: 0.2
-  maxSpeed: 30
+  position: {x: -5.99, y: 0, z: 0}

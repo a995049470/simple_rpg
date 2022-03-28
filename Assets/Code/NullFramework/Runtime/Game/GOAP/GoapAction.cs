@@ -5,7 +5,7 @@ namespace NullFramework.Runtime
     /// <summary>
     /// goap行为
     /// </summary>
-    public abstract class GoapAction
+    public abstract class GoapActionLeaf : Leaf
     {
         //前置条件
         StateSet preconditions;

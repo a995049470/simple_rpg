@@ -3,24 +3,24 @@ using UnityEngine;
 
 namespace SimpleRPG.Runtime
 {
-
-    [CreateAssetMenu(fileName = "PlayerTressData", menuName = "SimpleRPG/PlayerTressData")]
-    public class PlayerTressData : LeafData<PlayerTress>, ITRSSetter
+    [CreateAssetMenu(fileName = "EnemyTressData", menuName = "SimpleRPG/EnemyTressData")]
+    public class EnemyTressData : LeafData<EnemyTress>, ITRSSetter
     {
         [SerializeField]
-        private GameObject playerPrefab;
+        private GameObject enemyPrefab;
         [SerializeField]
         private Vector3 position;
-        public GameObject InstantiatePlayer()
+
+        public GameObject InstantiateEnemy()
         {
-            var go = UObjectUtility.InstantiateGameObject(playerPrefab);
+            var go = UObjectUtility.InstantiateGameObject(enemyPrefab);
             go.transform.position = position;
             return go;
         }
 
         public void SetTRS(Vector3 _position, Quaternion _rotation, Vector3 _scale)
         {
-            position = _position;
+            this.position = _position;
         }
     }
 }

@@ -6,13 +6,13 @@ namespace NullFramework.Runtime
 {
     public class GNode
     {
-        public GoapAction action;
+        public GoapActionLeaf action;
         public GNode last;
         public int cost;
         public StateSet currentState;
-        public List<GoapAction> possibleActions;
+        public List<GoapActionLeaf> possibleActions;
         
-        public GNode(GoapAction _action, GNode _last, StateSet _state, List<GoapAction> _actions)
+        public GNode(GoapActionLeaf _action, GNode _last, StateSet _state, List<GoapActionLeaf> _actions)
         {
             action = _action;
             if(action != null) cost += action.Cost;
@@ -29,10 +29,10 @@ namespace NullFramework.Runtime
         /// 获取行为列表 尝试扔到多线程里跑
         /// </summary>
         /// <returns></returns>
-        public Stack<GoapAction> CreateExecutionQueue(GoapAgent agent, StateSet goal, StateSet worldState, GoapAction[] actions, out bool isSuccess)
+        public Stack<GoapActionLeaf> CreateExecutionQueue(GoapAgent agent, StateSet goal, StateSet worldState, List<GoapActionLeaf> actions, out bool isSuccess)
         {
             //挑选所有能够执行的行为
-            var possibleActions = new List<GoapAction>();
+            var possibleActions = new List<GoapActionLeaf>();
             foreach (var action in actions)
             {
                 if(action.CheckActionPreconditions(agent))
@@ -70,7 +70,7 @@ namespace NullFramework.Runtime
                     }
                     var currentState = CreateNewWorldState(worldState, action.Effects);
                     var isFinishGoal = IsIncludeTargetStates(goal, currentState);
-                    var remainActions = new List<GoapAction>();
+                    var remainActions = new List<GoapActionLeaf>();
                     if(!isFinishGoal)
                     {
                         //假设每个行为在一个计划中只会执行一次
@@ -89,7 +89,7 @@ namespace NullFramework.Runtime
 
             }
 
-            var actionStack = new Stack<GoapAction>();
+            var actionStack = new Stack<GoapActionLeaf>();
             if(minCostPlanNode != null)
             {
                 isSuccess = true;
@@ -107,9 +107,9 @@ namespace NullFramework.Runtime
             return actionStack;
         }   
         
-        List<GoapAction> GetRemainActions(List<GoapAction> actions, int removeIndex)
+        List<GoapActionLeaf> GetRemainActions(List<GoapActionLeaf> actions, int removeIndex)
         {
-            var remain = new List<GoapAction>();
+            var remain = new List<GoapActionLeaf>();
             remain.AddRange(actions.GetRange(0, removeIndex));
             remain.AddRange(actions.GetRange(removeIndex + 1, actions.Count - removeIndex - 1));
             return remain;

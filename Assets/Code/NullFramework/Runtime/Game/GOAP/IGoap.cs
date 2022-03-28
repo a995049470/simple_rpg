@@ -38,7 +38,7 @@ namespace NullFramework.Runtime
         StateSet GetWorldState();
 
         //移动到目标地点
-        bool Move(GoapAction aciton);
+        bool Move(GoapActionLeaf aciton);
 
         //计划完成 
         void PlanFinsih(StateSet goal, PlanResult result);

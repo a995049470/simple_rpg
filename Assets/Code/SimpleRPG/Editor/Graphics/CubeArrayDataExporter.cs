@@ -21,10 +21,10 @@ namespace SimpleRPG.Editor
         private string exportFloder;
         [SerializeField]
         private float alphaThreshold;
+        //[SerializeField]
+        //private int width;
         [SerializeField]
-        private int width;
-        [SerializeField]
-        private int height;
+        private int targetHeight;
         [SerializeField]
         [Range(0, 1)]
         private float defaultMetallic = 0;
@@ -40,8 +40,9 @@ namespace SimpleRPG.Editor
             CubeRendererCenter.Instance.Refresh();
         }
 
-        private Texture2D ConvertToFixedSizeTexture(Texture2D _source)
+        private Texture2D ConvertToFixedSizeTexture(Texture2D _source, int height, out int width)
         {
+            width = _source.width / _source.height * height;
             var des = new RenderTextureDescriptor(width, height, RenderTextureFormat.ARGBFloat);
             var rt = new RenderTexture(des);
             rt.filterMode = FilterMode.Bilinear;
@@ -67,20 +68,27 @@ namespace SimpleRPG.Editor
         {
             var dic = new Dictionary<string, GBufferTextures>();
             var textures = EditorHelper.LoadAllAsset<Texture2D>(sourceFloder, "*.png");
+            var height = targetHeight;
             foreach (var gbufferTexture in textures)
             {
                 var res = gbufferTexture.name.Split('_');
                 if(res.Length < 2) continue;
                 var name = res[0];
                 var kind = res[res.Length - 1].ToLower();
-                var suitTexture = ConvertToFixedSizeTexture(gbufferTexture);
+                var suitTexture = ConvertToFixedSizeTexture(gbufferTexture, height, out var width);
                 if(!dic.ContainsKey(name))
                 {
                     var gbuffer = new GBufferTextures();
                     gbuffer.name = name;
                     dic[name] = gbuffer;
+                    gbuffer.height = height;
+                    gbuffer.width = width;
                 }
                 var gbufferTextures = dic[name];
+                if(width != gbufferTextures.width || height != gbufferTextures.height)
+                {
+                    gbufferTextures.isInvalid = true;
+                }
                 
                 switch (kind)
                 {
@@ -107,14 +115,22 @@ namespace SimpleRPG.Editor
             
             foreach (var value in dic.Values)
             {
-                CreateCubeDataFromGbufferTextures(value);
+                if(value.isInvalid)
+                {
+                    Debug.LogError($"{value} 尺寸不一致");
+                }
+                else
+                {
+                    CreateCubeDataFromGbufferTextures(value);
+                }
             }
         }
 
         private void CreateCubeDataFromGbufferTextures(GBufferTextures gbufferTextures)
         {
             //转换成适合大小的texture
-            
+            var width = gbufferTextures.width;
+            var height = gbufferTextures.height;
             var num = width * height;
             var data = new List<CubeGBuffer>();
             for (int i = 0; i < width; i++) 

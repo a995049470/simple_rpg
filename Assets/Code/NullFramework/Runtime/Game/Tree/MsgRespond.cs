@@ -42,17 +42,21 @@ namespace NullFramework.Runtime
             m_nextLeafList.Remove(leaf);
         }
 
-        public void Invoke(Msg msg)
+        public void Invoke(Msg msg, bool isInvokeSelf, bool isContinue)
         {
-            m_msgAction?.Invoke(msg);
-            var count = m_nextLeafList.Count;
-            //信息的取消在运行过程中自行处理
-            for (int i = 0; i < count ; i++)
+            if(isInvokeSelf) m_msgAction?.Invoke(msg);
+            if(isContinue)
             {
-                var leaf = m_nextLeafList[i];
-                leaf.OnUpdate(msg);
+                var count = m_nextLeafList.Count;
+                //信息的取消在运行过程中自行处理
+                for (int i = 0; i < count ; i++)
+                {
+                    var leaf = m_nextLeafList[i];
+                    leaf.OnUpdate(msg);
+                }
             }
         }
+        
     }
 }
 

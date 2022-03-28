@@ -10,6 +10,9 @@ namespace SimpleRPG.Editor
         public Texture2D metallicTexture;
         public Texture2D roughnessTexture;
         public Texture2D aoTexture;
+        public int width;
+        public int height;
+        public bool isInvalid = false;
 
         
         public Color GetAlbedo(int i, int j)
@@ -37,6 +40,11 @@ namespace SimpleRPG.Editor
         public float GetAO(int i, int j, float defaultValue = 1.0f)
         {
             return aoTexture == null ? defaultValue : aoTexture.GetPixel(i, j).r;
+        }
+
+        public override string ToString()
+        {
+            return $"{albedoTexture} {normalTexture}  {metallicTexture} {roughnessTexture} {aoTexture}";
         }
     }
 }

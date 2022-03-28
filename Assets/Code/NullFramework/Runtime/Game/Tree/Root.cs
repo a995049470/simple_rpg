@@ -89,7 +89,7 @@ namespace NullFramework.Runtime
         }
 
 
-        //最大接受256条 之后的会被丢弃  之后在考虑丢弃问题..
+        
         public void AddMsg(Msg msg)
         {
             msgQueue.Enqueue(msg);

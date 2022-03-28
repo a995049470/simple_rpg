@@ -9,19 +9,18 @@ namespace NullFramework.Runtime
     public class GoapAgent : FSMTress
     {
         //行为列表
-        private GoapAction[] goapActions;
-        private Stack<GoapAction> executionStack;
+        private List<GoapActionLeaf> goapActions = new List<GoapActionLeaf>();
+        private Stack<GoapActionLeaf> executionStack;
         private GoapPlanner planner;
         //数据提供者
         private IGoap goap;
-        private GoapAction currentAction;
+        private GoapActionLeaf currentAction;
         private StateSet curruentGoal;
 
-        public GoapAgent(IGoap _goap, GoapAction[] _goapActions) : base()
+        public GoapAgent() : base()
         {
-            goap = _goap;
-            goapActions = _goapActions;
             planner = new GoapPlanner(); 
+            goapActions = new List<GoapActionLeaf>();
             InitFSM();
         }
        
@@ -47,6 +46,17 @@ namespace NullFramework.Runtime
 
         }
 
+        public override void AddChild(Leaf leaf, bool isActive)
+        {
+            if(leaf is GoapActionLeaf goapAction)
+            {
+
+            }
+            else
+            {
+                base.AddChild(leaf, isActive);
+            }
+        }
         
         private void Update_Idle(Msg msg)
         {

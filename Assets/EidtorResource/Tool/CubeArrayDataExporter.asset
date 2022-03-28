@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc8545cb000c9974c807afd2da25bf20, type: 3}
   m_Name: CubeArrayDataExporter
   m_EditorClassIdentifier: 
-  sourceFloder: Assets/GameResource/Texture
+  sourceFloder: Assets/GameResource/Texture/CubeTexture
   step: 1
   exportFloder: Assets/GameResource/CubeData
   alphaThreshold: 0.5
-  width: 16
-  height: 16
+  targetHeight: 16
   defaultMetallic: 0.858
   defaultRoughness: 0.236
