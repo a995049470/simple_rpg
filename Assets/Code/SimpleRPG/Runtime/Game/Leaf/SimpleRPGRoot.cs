@@ -29,8 +29,8 @@ namespace SimpleRPG.Runtime
             var data = new MsgData_Move();
             data.dir = dir;
             data.strength = 1;
-            AddMsg(new Msg(MsgKind.move, data));
-            AddMsg(new Msg(MsgKind.custom));
+            AddMsg(new Msg(GameMsgKind.move, data));
+            AddMsg(new Msg(GameMsgKind.custom));
         }
     }
 }

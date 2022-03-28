@@ -2,8 +2,9 @@ namespace NullFramework.Editor
 {
     public static class MapEditorMsgKind
     {
-        public static int MapEditorEvent = 1;
-        public static int EditorFinish = 2;
+        private const int prefix = 1 << 16;
+        public static int MapEditorEvent = prefix | 0;
+        public static int EditorFinish = prefix | 1;
     }
 
 }

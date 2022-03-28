@@ -25,7 +25,7 @@ namespace SimpleRPG.Runtime
 
         protected override void InitListeners()
         {
-            AddMsgListener(MsgKind.custom, FollowTarget);
+            AddMsgListener(GameMsgKind.custom, FollowTarget);
         }
 
         private void FollowTarget(Msg msg)

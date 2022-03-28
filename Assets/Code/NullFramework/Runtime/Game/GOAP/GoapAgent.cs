@@ -23,22 +23,21 @@ namespace NullFramework.Runtime
             goapActions = _goapActions;
             planner = new GoapPlanner(); 
             InitFSM();
-            AddMsgListener(MsgKind.Update, msg => {});
         }
        
 
         private void InitFSM()
         {
             var idleState = new GoapFSMState();
-            idleState.AddMsgListener(MsgKind.Update, Update_Idle);
+            idleState.AddMsgListener(BaseMsgKind.Update, Update_Idle);
             idleState.SetLeafKind(LeafKind.Idle);
             
             var moveState = new GoapFSMState();
-            moveState.AddMsgListener(MsgKind.Update, Update_Move);
+            moveState.AddMsgListener(BaseMsgKind.Update, Update_Move);
             moveState.SetLeafKind(LeafKind.Move);
 
             var executeState = new GoapFSMState(); 
-            executeState.AddMsgListener(MsgKind.Update, Update_Execute);
+            executeState.AddMsgListener(BaseMsgKind.Update, Update_Execute);
             executeState.SetLeafKind(LeafKind.Execute);
 
             this.AddFSMLeaf(idleState);

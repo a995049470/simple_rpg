@@ -30,7 +30,7 @@ namespace SimpleRPG.Runtime
 
         protected override void InitListeners()
         {
-            AddMsgListener(MsgKind.move, Move);
+            AddMsgListener(GameMsgKind.move, Move);
         }
 
         private void Move(Msg msg)
