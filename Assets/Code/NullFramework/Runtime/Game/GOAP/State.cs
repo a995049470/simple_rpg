@@ -8,15 +8,21 @@ namespace NullFramework.Runtime
     /// </summary>
 
     //暂时只用int
-    public class State
+    public struct State
     {
-        public int Key;
-        public int Value;
+        private int key;
+        public int Key { get => key; }
+        private int value;
         
         public State(int _key, int _value)
         {
-            Key = _key;
-            Value = _value;
+            key = _key;
+            value = _value;
+        }
+
+        public bool IsInclude(State state)
+        {
+            return value == state.value;
         }
 
         /// <summary>
@@ -26,7 +32,7 @@ namespace NullFramework.Runtime
         /// <returns></returns>
         public bool IsDieOut(State state)
         {
-            var isPass = Key == state.Key && Value == -state.Value;
+            var isPass = Key == state.Key && value == -state.value;
             return isPass;
         }
 
@@ -34,11 +40,22 @@ namespace NullFramework.Runtime
         /// 相同的状态叠加
         /// </summary>
         /// <param name="state"></param>
-        public void Add(State state)
+        public State Add(State state)
         {
-            
+            return new State(state.key, state.value);
         }
         
+        /// <summary>
+        /// 条件合并
+        /// </summary>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public bool TryCombine(State target, out State state)
+        {
+            state = new State(target.Key, target.value);
+            bool isAllowCombine = state.value == target.value;
+            return isAllowCombine;
+        }
         
     }
 }

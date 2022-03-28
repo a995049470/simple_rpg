@@ -29,15 +29,15 @@ namespace NullFramework.Runtime
         private void InitFSM()
         {
             var idleState = new GoapFSMState();
-            idleState.AddMsgListener(BaseMsgKind.Update, Update_Idle);
+            idleState.AddMsgListener(BaseMsgKind.GoapUpdate, Update_Idle);
             idleState.SetLeafKind(LeafKind.Idle);
             
             var moveState = new GoapFSMState();
-            moveState.AddMsgListener(BaseMsgKind.Update, Update_Move);
+            moveState.AddMsgListener(BaseMsgKind.GoapUpdate, Update_Move);
             moveState.SetLeafKind(LeafKind.Move);
 
             var executeState = new GoapFSMState(); 
-            executeState.AddMsgListener(BaseMsgKind.Update, Update_Execute);
+            executeState.AddMsgListener(BaseMsgKind.GoapUpdate, Update_Execute);
             executeState.SetLeafKind(LeafKind.Execute);
 
             this.AddFSMLeaf(idleState);

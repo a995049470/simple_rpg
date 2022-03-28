@@ -124,7 +124,14 @@ namespace NullFramework.Runtime
             }
             foreach (var kvp in effcts)
             {
-                res[kvp.Key] = kvp.Value;
+                if(res.TryGetValue(kvp.Key, out var value))
+                {
+                    res[kvp.Key] = value.Add(kvp.Value);
+                }
+                else
+                {
+                    res[kvp.Key] = kvp.Value;
+                }
             }
             return res;
         }
@@ -157,30 +164,33 @@ namespace NullFramework.Runtime
                     keyStates[key] = exit_right;
                 }
             }
-            var res = new StateSet();
+            var resStates = new StateSet();
             foreach (var kvp in keyStates)
             {
                 if(kvp.Value == exit_left)
                 {
-                    res[kvp.Key] = left[kvp.Key];
+                    resStates[kvp.Key] = left[kvp.Key];
                 }
                 else if(kvp.Value == exit_right)
                 {
-                    res[kvp.Key] = right[kvp.Key];
+                    resStates[kvp.Key] = right[kvp.Key];
                 }
                 else if(kvp.Value == exit_left_right)
                 {
                     var leftValue = left[kvp.Key];
                     var rightValue = right[kvp.Key];
-                    if(leftValue != rightValue)
+                    if(leftValue.TryCombine(rightValue, out var resValue))
+                    {
+                        resStates[kvp.Key] = resValue;
+                    }
+                    else
                     {
                         isSuccess = false;
-                        return res;
+                        return resStates;
                     }
-                    res[kvp.Key] = leftValue;
                 }
             }
-            return res;
+            return resStates;
         }
 
         /// <summary>
@@ -196,7 +206,7 @@ namespace NullFramework.Runtime
             {
                 if(states.TryGetValue(condtion.Key, out State state))
                 {
-                    if(condtion.Value != state.Value)
+                    if(!state.IsInclude(condtion))
                     {
                         isMeet = false;
                         break;

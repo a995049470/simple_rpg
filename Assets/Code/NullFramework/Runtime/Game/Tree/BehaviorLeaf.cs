@@ -23,7 +23,7 @@ namespace NullFramework.Runtime
         public void AddBehaviorUpdate(ByteCodeBehavior behavior, Action action)
         {
             m_behavior = behavior;
-            AddMsgListener(BaseMsgKind.Update, _=>action?.Invoke());
+            AddMsgListener(BaseMsgKind.BehaviorUpdate, _=>action?.Invoke());
         }
     }
 }
