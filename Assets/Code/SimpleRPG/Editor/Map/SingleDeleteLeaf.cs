@@ -1,20 +1,29 @@
 using UnityEngine;
 using NullFramework.Runtime;
+using SimpleRPG.Runtime;
 
 namespace NullFramework.Editor
 {
-    public class SingleDeleteLeaf : Leaf, ILeafReciver
+    public class SingleDeleteLeaf : Leaf, ILeafMemberDicSetter
     {
         private MapData mapData;
+
+        
+
         public void ReciveLeaf(Leaf leaf)
         {
-             if(leaf is OperateManagerTress tress)
+            if(leaf is OperateManagerTress tress)
             {
                 this.mapData = tress.CurrentMapData;
             }
         }
 
-         protected override void InitListeners()
+        public void SetMemberDic(LeafMemberDic leaf)
+        {
+            mapData = leaf[MemberKind.mapData] as MapData;
+        }
+
+        protected override void InitListeners()
         {
             base.InitListeners();
             AddMsgListener(MapEditorMsgKind.MapEditorEvent, Delete);

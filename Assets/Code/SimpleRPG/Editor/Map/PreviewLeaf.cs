@@ -1,10 +1,13 @@
 using NullFramework.Runtime;
+using SimpleRPG.Runtime;
 
 namespace NullFramework.Editor
 {
-    public class PreviewLeaf : Leaf, ILeafReciver
+    public class PreviewLeaf : Leaf, ILeafMemberDicSetter
     {
          private MapData mapData;
+
+    
 
         public void ReciveLeaf(Leaf leaf)
         {
@@ -13,6 +16,12 @@ namespace NullFramework.Editor
                 this.mapData = tress.CurrentMapData;
             }
         }
+
+        public void SetMemberDic(LeafMemberDic dic)
+        {
+            mapData = dic[MemberKind.mapData] as MapData;
+        }
+
         protected override void InitListeners()
         {
             base.InitListeners();

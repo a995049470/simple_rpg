@@ -203,9 +203,9 @@ namespace NullFramework.Runtime
             parent = _parent;
             InitListeners();
             //传输数据
-            if(this is ILeafReciver reciver)
+            if(this is ILeafMemberDicSetter setter && parent is ILeafMemberDicGetter getter)
             {
-                reciver.ReciveLeaf(_parent);
+                setter.SetMemberDic(getter.GetMemberDic());
             }
             parent.AddChild(this, isActive);
         }

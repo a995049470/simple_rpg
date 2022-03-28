@@ -1,13 +1,15 @@
 using NullFramework.Runtime;
+using SimpleRPG.Runtime;
 
 namespace NullFramework.Editor
 {
     //所有操作管理者的枝条
-    public class OperateManagerTress : Tress, ILeafDataReciver
+    public class OperateManagerTress : Tress, ILeafDataReciver, ILeafMemberDicGetter
     {
         private MapData mapData;
         public MapData CurrentMapData { get => mapData; }
         private OperateManagerTressData leafData;
+        private LeafMemberDic membderDic;
 
         public void OnReciveDataFinish()
         {
@@ -31,6 +33,16 @@ namespace NullFramework.Editor
         private void OnEditorFinish(Msg msg)
         {
             mapData.OnEditorFinish();
+        }
+
+        public LeafMemberDic GetMemberDic()
+        {
+            if(membderDic == null)
+            {
+                membderDic = new LeafMemberDic();
+                membderDic[MemberKind.mapData] = mapData;
+            }
+            return membderDic;
         }
     }
 

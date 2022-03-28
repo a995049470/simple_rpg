@@ -6,7 +6,7 @@ using UnityEngine;
 namespace SimpleRPG.Runtime
 {
 
-    public class MoveLeaf : Leaf<MoveLeafData>, ILeafReciver
+    public class MoveLeaf : Leaf<MoveLeafData>, ILeafMemberDicSetter
     {
         private Transform transform;
 
@@ -15,17 +15,10 @@ namespace SimpleRPG.Runtime
             
         }
 
-        public void ReciveLeaf(Leaf leaf)
-        {
-            if(leaf is PlayerTress playerTress)
-            {
-                this.transform = playerTress.Player.transform;
-            }
-        }
 
-        public void SetUnityObject(Object obj)
+        public void SetMemberDic(LeafMemberDic dic)
         {
-            this.transform = (obj as GameObject)?.transform;
+            transform = dic[MemberKind.mover] as Transform;
         }
 
         protected override void InitListeners()

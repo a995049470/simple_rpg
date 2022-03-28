@@ -1,20 +1,27 @@
 using UnityEngine;
 using NullFramework.Runtime;
+using SimpleRPG.Runtime;
 
 namespace NullFramework.Editor
 {
 
     //只负责简单的实例化
-    public class SingleBuildLeaf : Leaf, ILeafReciver
+    public class SingleBuildLeaf : Leaf, ILeafMemberDicSetter
     {
         private MapData mapData;
 
+        
         public void ReciveLeaf(Leaf leaf)
         {
             if(leaf is OperateManagerTress tress)
             {
                 this.mapData = tress.CurrentMapData;
             }
+        }
+
+        public void SetMemberDic(LeafMemberDic dic)
+        {
+            mapData = dic[MemberKind.mapData] as MapData;
         }
 
         protected override void InitListeners()

@@ -3,19 +3,15 @@ using UnityEngine;
 
 namespace SimpleRPG.Runtime
 {
-    public class CameraFollowLeaf : Leaf<CameraFollowLeafData>, ILeafReciver
+    public class CameraFollowLeaf : Leaf<CameraFollowLeafData>, ILeafMemberDicSetter
     {
         private GameObject camera;
         private GameObject target;
         private Vector3 currentVelocity;
         
-
-        public void ReciveLeaf(Leaf leaf)
+        public void SetMemberDic(LeafMemberDic dic)
         {
-            if(leaf is PlayerTress playerTress)
-            {
-                target = playerTress.Player.transform.Find("look").gameObject;
-            }
+            target = dic[MemberKind.fllowTarget] as GameObject;
         }
 
         public override void OnReciveDataFinish()
