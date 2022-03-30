@@ -31,6 +31,9 @@ namespace NullFramework.Runtime
         //深度
         private int depth;
         public int Depth { get => depth; }
+        //TODO:计划使用uid 只要被free 原来的uid失效 思考中
+        // private int uid;
+        // public int UID { get => uid; }
         
         //同一种kind 不同序号
         //private int m_index;
@@ -38,9 +41,7 @@ namespace NullFramework.Runtime
         {
             m_msgRespondMap = new Dictionary<int, MsgRespond>();
         }
-
         
-
         public virtual void LoadData(LeafData data)
         {
             if(this is ILeafDataReciver setter)

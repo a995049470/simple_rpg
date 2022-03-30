@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SimpleRPG.Runtime
 {
-
+    
     public class PlayerTress : Tress<PlayerTressData>, ILeafMemberDicGetter
     {
         private GameObject player;

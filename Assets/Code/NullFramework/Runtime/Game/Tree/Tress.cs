@@ -29,9 +29,9 @@ namespace NullFramework.Runtime
         //增加信息传导叶节点
         public void AddMsgLeaf(int kind, Leaf leaf)
         {
-            if(m_msgRespondMap.TryGetValue(kind, out var result_respont))
+            if(m_msgRespondMap.TryGetValue(kind, out var result_respond))
             {
-                result_respont.AddLeaf(leaf);
+                result_respond.AddLeaf(leaf);
             }
             else
             {
@@ -44,10 +44,10 @@ namespace NullFramework.Runtime
 
         public void RemoveMsgLeaf(int kind, Leaf leaf)
         {
-            if(m_msgRespondMap.TryGetValue(kind, out var result_respont))
+            if(m_msgRespondMap.TryGetValue(kind, out var result_respond))
             {
-                result_respont.RemoveLeaf(leaf);
-                if(result_respont.IsEmpty())
+                result_respond.RemoveLeaf(leaf);
+                if(result_respond.IsEmpty())
                 {
                     m_msgRespondMap.Remove(kind);
                     parent?.RemoveMsgLeaf(kind, leaf);

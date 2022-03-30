@@ -10,7 +10,7 @@ namespace NullFramework.Runtime
         //代码的二进制文件
         private byte[] codeBytes;
         private int codePtr;
-        private RingArray<int> numStack;
+        private RingArray<double> numStack;
         // ObjectArray 暂时难以扩容
         private ObjectArray objArray;
         private const int maxSize_numStack = 256;
@@ -20,17 +20,20 @@ namespace NullFramework.Runtime
         private bool isStop;
         private bool isFinish;
         private static object[] arg0 = new object[0];
+        private const int size_doule = sizeof(double);
+        //外界的输入量
+        private object inputValue;
 
         public VM()
         {
-            numStack = new RingArray<int>(maxSize_numStack);
+            numStack = new RingArray<double>(maxSize_numStack);
             objArray = new ObjectArray(maxSize_objArray);
             InitSymbolDic();
         }
 
         public VM(VM vm)
         {
-            numStack = new RingArray<int>(maxSize_numStack);
+            numStack = new RingArray<double>(maxSize_numStack);
             objArray = new ObjectArray(maxSize_objArray);
             this.symbolDic = vm.symbolDic;
             this.methodDic = vm.methodDic;
@@ -104,6 +107,11 @@ namespace NullFramework.Runtime
             codeBytes = CodeToBytes(code);
         }
 
+        public void SetInput(object value)
+        {
+            inputValue = value;
+        }
+
         public byte[] CodeToBytes(string code)
         {
             var bytes = new List<byte>();
@@ -145,11 +153,11 @@ namespace NullFramework.Runtime
                         {
                             var fistChar = code[startIndex];
                             var len = i - startIndex;
-                            bool isNum = fistChar >= '0' && fistChar <= '9';
+                            bool isNum = (fistChar >= '0' && fistChar <= '9') || fistChar == '+' || fistChar == '-';
                             var strVal = code.Substring(startIndex, len);
                             if(isNum)
                             {
-                                if(int.TryParse(strVal, out var num))
+                                if(double.TryParse(strVal, out var num))
                                 {
                                     bytes.AddRange(System.BitConverter.GetBytes(num));
                                     UnityEngine.Debug.Log($"读到数字{strVal}");
@@ -183,10 +191,10 @@ namespace NullFramework.Runtime
         }
 
         //code
-        protected int PopIntFromeCodeBytes()
+        protected double PopDoubleFromeCodeBytes()
         {
-            var value = System.BitConverter.ToInt32(codeBytes, codePtr);
-            codePtr += 4;
+            var value = System.BitConverter.ToDouble(codeBytes, codePtr);
+            codePtr += size_doule;
             return value;
         }
         
@@ -217,7 +225,7 @@ namespace NullFramework.Runtime
         }
 
         //int
-        protected void Push(int value)
+        protected void Push(double value)
         {
             numStack.Push(value);
         }
@@ -230,33 +238,58 @@ namespace NullFramework.Runtime
 
         protected int PopInt()
         {
+            return (int)numStack.Pop();
+        }
+
+        protected float PopFloat()
+        {
+            return (float)numStack.Pop();
+        }
+
+         protected double PopDouble()
+        {
             return numStack.Pop();
         }
 
         protected T Pop<T>() where T : class
         {
-            var pos = numStack.Pop();
+            var pos = PopInt();
             var value = objArray.Get(pos) as T;
             return value;
         } 
 
+        
+
         [VMMethod]
-        public void Add()
+        protected void Add()
         {
-            var right = PopInt();
-            var left = PopInt();
+            var right = PopDouble();
+            var left = PopDouble();
             var sum = right + left;
             Push(sum);    
         }
         
         [VMMethod]
-        public void Num()
+        protected void Num()
         {
-            var num = PopIntFromeCodeBytes();
+            var num = PopDoubleFromeCodeBytes();
             Push(num);
         }
         
-        //timer time
+        [VMMethod]
+        protected void Input()
+        {
+            Push(inputValue);
+        }
+
+        //无意义的方法
+        [VMMethod]
+        protected void End()
+        {
+
+        }
+
+        
         
     }
 }

@@ -157,13 +157,48 @@ namespace Tests
         {
             var vm = new TestVM();
             vm.OutPut();
-            string code = "num 0 num 10 num 10 add wait";
+            string code = "num 0 num +20 num -10 add wait";
             vm.ReadCode(code);
             vm.Restart();
             vm.Excute();
         }
-       
 
+        [Test]
+        public void DoubleTest()
+        {
+            int count = 1 << 8;
+            for (int i = 0; i < count; i++)
+            {
+                Assert.AreEqual(i, (int)double.Parse(i.ToString()));
+            }
+        }
+
+        [Test]
+        public void LuaTest()
+        {
+            var luaLeaf = new LuaLeaf();
+            var path = "Assets/Code/SimpleRPG/Tests/Editor/testLua.lua";
+            var luaCode = System.IO.File.ReadAllText(path);
+            luaLeaf.SetLuaCode(luaCode);
+            
+            luaLeaf.Execute();
+            luaLeaf.Execute();
+            luaLeaf.Execute();
+            luaLeaf.Execute();
+            luaLeaf.Execute();
+            luaLeaf.Execute();
+        }
+
+        [Test]
+        public void LuaTest2()
+        {
+            var luaLeaf = new LuaLeaf();
+          
+            var luaCode = "require 'battle_attack'";
+            luaLeaf.SetLuaCode(luaCode);
+            
+            luaLeaf.Execute();
+        }
        
     }
 }
