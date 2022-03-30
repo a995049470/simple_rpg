@@ -67,10 +67,101 @@ namespace Tests
             
         }
 
-        
+        [Test]
+        public void RingArrayTest()
+        {
+            var ring = new RingArray<int>(4);
+            for (int i = 0; i < 20; i++)
+            {
+                if(i > 4 && UnityEngine.Random.value < 0.5f )
+                {
+                    ring.Dequeue();
+                }
+                else
+                {
+                    ring.Push(i);
+                }
+                Debug.Log(ring);
+            }
 
+        }
 
-        
+        public class A
+        {
+            public static int value;
+        }
+
+        public class B : A
+        {
+
+        }
+
+        [Test]
+        public void TestCalss()
+        {
+            A.value = 10;
+            B.value = 20;
+            Debug.Log(A.value + "  " + B.value);
+        }
+
+        public class TestVM : VM
+        {
+            public void OutPut()
+            {
+                var str = "";
+                foreach (var kvp in symbolDic)
+                {
+                    str += $"{kvp.Key} : {kvp.Value}";
+                }
+                Debug.Log(str);
+            }
+
+            [VMMethod]
+            public void Wait()
+            {
+                var methodPtr = GetCurrentMethodPtr();
+                var time = PopInt();
+                var timer = PopInt();
+                Debug.Log($"第{timer}帧率");
+                timer++;
+                
+                if (timer < time)
+                {
+                    SetPrt(methodPtr);
+                    Push(timer);
+                    Push(time);
+                }
+            }
+
+            [VMMethod]
+            public void A0()
+            {
+
+            }
+             
+            [VMMethod]
+            public void A1()
+            {
+
+            }
+
+            [VMMethod]
+            public void C0()
+            {
+
+            }
+        }
+
+        [Test]
+        public void VMTest()
+        {
+            var vm = new TestVM();
+            vm.OutPut();
+            string code = "num 0 num 10 num 10 add wait";
+            vm.ReadCode(code);
+            vm.Restart();
+            vm.Excute();
+        }
        
 
        

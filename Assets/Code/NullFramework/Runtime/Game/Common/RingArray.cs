@@ -2,25 +2,26 @@ using System;
 using UnityEngine;
 namespace NullFramework.Runtime
 {
-    //考虑动态扩容的问题 实际容量会比数组尺寸少一个
+    
     public class RingArray<T>
     {
-        private T[] values;
-        private int start;
-        private int end;
-        private int size;
-        public int ValueCount { get => (end + size - start) % size;}
+        protected T[] values;
+        protected int start;
+        protected int end;
+        protected int size;
+        protected int count;
+        public int Count { get => count; }
        
 
         public bool IsFull()
         {
             //最大容量为size - 1
-            return ValueCount == size - 1;
+            return count == size;
         }
         
         public RingArray(int _size)
         {
-            size = _size + 1;
+            size = _size;
             values = new T[size];
         }
 
@@ -44,38 +45,70 @@ namespace NullFramework.Runtime
             start = ptr;
         }
 
-        public void Push(T value)
+        public int Push(T value)
         {
+            var pos = end;
             values[end] = value;
             end = (end + 1) % size;
-            if(end == start)
+            if(IsFull())
             {
-                start = (start + 1) % size;
+                start = end;
             }
+            else
+            {
+                count ++;
+            }
+            return end;
         }
         public T Peek()
         {
+        #if UNITY_EDITOR
+            if(count == 0)
+            {
+                throw new Exception("当前数量为0 peak无意义");
+            }
+        #endif
             return values[end];
         }
         public T Head()
         {
+        #if UNITY_EDITOR
+            if(count == 0)
+            {
+                throw new Exception("当前数量为0 Head无意义");
+            }
+        #endif
             return values[start];
         }
-        public T Pop()
+        public virtual T Pop()
         {
-            var value = values[(end - 1 + size) % size];
-            if(end != start)
+        #if UNITY_EDITOR
+            if(count == 0)
             {
+                throw new Exception("当前数量为0 Pop无意义");
+            }
+        #endif
+            var value = values[(end - 1 + size) % size];
+            if(count > 0)
+            {
+                count --;
                 end = (end + size - 1) % size;
             }
             return value;
         }
 
-        public T Dequeue()
+        public virtual T Dequeue()
         {
-            var value = values[start];
-            if(start != end)
+        #if UNITY_EDITOR
+            if(count == 0)
             {
+                throw new Exception("当前数量为0 无法Dequeue");
+            }
+        #endif
+            var value = values[start];
+            if(count > 0)
+            {
+                count --;
                 start = (start + 1) % size;
             }
             return value;
@@ -83,18 +116,44 @@ namespace NullFramework.Runtime
 
         public void Clear()
         {
+            count = 0;
             start = end = 0;
         }
 
         public T[] GetArray()
         {
-            int count = (end + size - start) % size;
             var res = new T[count];
             for (int i = 0; i < count; i++)
             {
                 res[i] = values[(start + i) % size];
             }
             return res;
+        }
+        public override string ToString()
+        {
+            var str = "[";
+            for (int i = 0; i < count; i++)
+            {
+                var value = values[(start + i) % size];
+                str += i == count - 1 ? $"{value}" : $"{value} ,";
+            }
+            str += "]";
+            return str;
+        }
+        public T Get(int pos)
+        {
+        #if UNITY_EDITOR
+            if(pos < 0 || pos >= size)
+            {
+                throw new System.Exception("无效的位置");
+            }
+            var dis =  (pos + size - start) % size;
+            if(dis > count)
+            {
+                throw new System.Exception("该位置不是存值范围");
+            }
+        #endif
+            return values[pos];
         }
     }
 
