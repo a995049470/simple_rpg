@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -58,7 +59,7 @@ namespace NullFramework.Runtime
             }
         }
         
-        private void Update_Idle(Msg msg)
+        private Action Update_Idle(Msg msg)
         {
             curruentGoal = goap.CreateGoalState();
             var worldState = goap.GetWorldState();
@@ -73,10 +74,10 @@ namespace NullFramework.Runtime
                 //通知失败
                 goap.PlanFinsih(curruentGoal, PlanResult.Fail);
             }
-            
+            return null;
         }
 
-        private void Update_Move(Msg msg)
+        private Action Update_Move(Msg msg)
         {
             
             goap.Move(currentAction);
@@ -85,13 +86,14 @@ namespace NullFramework.Runtime
             {
                 goap.PlanFinsih(curruentGoal, PlanResult.Cancel);
                 FSMSwitch(LeafKind.Idle);
-                return;
+                return null;
             }
             
             if(currentAction.CheckInRange(this))
             {
                 FSMSwitch(LeafKind.Execute);
             }
+            return null;
         }
 
         
@@ -121,14 +123,14 @@ namespace NullFramework.Runtime
             currentAction = null;
         }
 
-        private void Update_Execute(Msg msg)
+        private Action Update_Execute(Msg msg)
         {   
             //所有行为完成
             if(IsAllActionCompelete())
             {
                 FSMSwitch(LeafKind.Idle);
                 goap.PlanFinsih(curruentGoal, PlanResult.Success);
-                return;
+                return null;
             }
             //设置当前行为
             if(!IsHasActiveAction())
@@ -141,7 +143,7 @@ namespace NullFramework.Runtime
             if(!currentAction.CheckInRange(this))
             {
                 FSMSwitch(LeafKind.Move);
-                return;
+                return null;
             }
 
             //行为中止
@@ -156,6 +158,7 @@ namespace NullFramework.Runtime
             {
                 ActionFinish();
             }
+            return null;
             
         }
         

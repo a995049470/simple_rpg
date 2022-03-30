@@ -40,7 +40,7 @@ namespace NullFramework.Editor
             var worldPosition = start + t * dir;
             var worldIntPosition = new Vector3Int(Mathf.RoundToInt(worldPosition.x), Mathf.RoundToInt(worldPosition.y), Mathf.RoundToInt(worldPosition.z));
 
-            var data = new MapEditorEventData();
+            var data = new MsgData_MapEditorEvent();
             data.currentEvent = e;
             data.mouseWorldPosition = worldPosition;
             data.mouseWorldIntPosition = worldIntPosition;

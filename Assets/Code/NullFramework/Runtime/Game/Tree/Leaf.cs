@@ -14,6 +14,7 @@ namespace NullFramework.Runtime
             this.leafData = data as T;
         }
     }
+    
     //实际生效的叶子节点
     public abstract class Leaf 
     {
@@ -31,6 +32,7 @@ namespace NullFramework.Runtime
         //深度
         private int depth;
         public int Depth { get => depth; }
+        public delegate Action MsgCallBack(Msg msg); 
         //TODO:计划使用uid 只要被free 原来的uid失效 思考中
         // private int uid;
         // public int UID { get => uid; }
@@ -136,7 +138,7 @@ namespace NullFramework.Runtime
 
         }
 
-        public void AddMsgListener(int msgKind, Action<Msg> action)
+        public void AddMsgListener(int msgKind, MsgCallBack action)
         {
             if (m_msgRespondMap.TryGetValue(msgKind, out var result_respond))
             {
@@ -151,7 +153,7 @@ namespace NullFramework.Runtime
             }
         }
 
-        public void RemoveMsgListener(int msgKind, Action<Msg> action)
+        public void RemoveMsgListener(int msgKind, MsgCallBack action)
         {
             if (m_msgRespondMap.TryGetValue(msgKind, out var respond))
             {
@@ -204,10 +206,10 @@ namespace NullFramework.Runtime
             depth = parent.Depth + 1;
             InitListeners();
             //传输数据
-            if(this is ILeafMemberDicSetter setter && parent is ILeafMemberDicGetter getter)
-            {
-                setter.SetMemberDic(getter.GetMemberDic());
-            }
+            // if(this is ILeafMemberDicSetter setter && parent is ILeafMemberDicGetter getter)
+            // {
+            //     setter.SetMemberDic(getter.GetMemberDic());
+            // }
             parent.AddChild(this, isActive);
         }
 

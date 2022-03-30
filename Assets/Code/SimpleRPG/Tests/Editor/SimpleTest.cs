@@ -199,6 +199,35 @@ namespace Tests
             
             luaLeaf.Execute();
         }
+
+        public class K
+        {
+            public int value; 
+        }
+
+        public class KK
+        {
+            public K k;
+            public KK(int v)
+            {
+                k = new K();
+                k.value = v;
+            }
+        }
+
+        [Test]
+        public void RefTest()
+        {
+            var kk1  = new KK(1);
+            var kk2 = new KK(2);
+            var kk3 = new KK(3);
+            ref K rk = ref kk1.k;
+            rk = kk2.k;
+            ref int v = ref kk1.k.value;
+            int c = v;
+            c = 100;
+            Debug.Log(kk1.k.value);
+        } 
        
     }
 }

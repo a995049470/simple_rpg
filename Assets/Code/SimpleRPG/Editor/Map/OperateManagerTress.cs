@@ -1,15 +1,15 @@
+using System;
 using NullFramework.Runtime;
 using SimpleRPG.Runtime;
 
 namespace NullFramework.Editor
 {
     //所有操作管理者的枝条
-    public class OperateManagerTress : Tress, ILeafDataReciver, ILeafMemberDicGetter
+    public class OperateManagerTress : Tress, ILeafDataReciver
     {
         private MapData mapData;
         public MapData CurrentMapData { get => mapData; }
         private OperateManagerTressData leafData;
-        private LeafMemberDic membderDic;
 
         public void OnReciveDataFinish()
         {
@@ -27,22 +27,23 @@ namespace NullFramework.Editor
         protected override void InitListeners()
         {
             base.InitListeners();
-            AddMsgListener(MapEditorMsgKind.EditorFinish, OnEditorFinish);
+            AddMsgListener(MapEditorMsgKind.EditorFinish, EditorFinish);
+            AddMsgListener(MapEditorMsgKind.MapEditorEvent, MapEditorEvent);
         }
 
-        private void OnEditorFinish(Msg msg)
+
+        private System.Action EditorFinish(Msg msg)
         {
             mapData.OnEditorFinish();
+            return null;
         }
 
-        public LeafMemberDic GetMemberDic()
+        private System.Action MapEditorEvent(Msg msg)
         {
-            if(membderDic == null)
-            {
-                membderDic = new LeafMemberDic();
-                membderDic[MemberKind.mapData] = mapData;
-            }
-            return membderDic;
+            var msgData = msg.GetData<MsgData_MapEditorEvent>();
+            var origin = msgData.mapData;
+            msgData.mapData = mapData;
+            return () => msgData.mapData = origin;
         }
     }
 

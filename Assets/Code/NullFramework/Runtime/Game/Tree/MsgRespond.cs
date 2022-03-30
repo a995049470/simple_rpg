@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using static NullFramework.Runtime.Leaf;
 
 namespace NullFramework.Runtime
 {
     public class MsgRespond
     {
-        private Action<Msg> m_msgAction;
+        private MsgCallBack m_msgAction;
         private List<Leaf> m_nextLeafList;
         
         public MsgRespond()
@@ -19,12 +20,12 @@ namespace NullFramework.Runtime
             return m_msgAction == null && m_nextLeafList.Count == 0;
         }
 
-        public void AddMsgAction(Action<Msg> action)
+        public void AddMsgAction(MsgCallBack action)
         {
             m_msgAction += action;
         }
 
-        public void RemoveMsgAction(Action<Msg> action)
+        public void RemoveMsgAction(MsgCallBack action)
         {
             m_msgAction -= action;
         }
@@ -44,7 +45,8 @@ namespace NullFramework.Runtime
 
         public void Invoke(Msg msg, bool isInvokeSelf, bool isContinue)
         {
-            if(isInvokeSelf) m_msgAction?.Invoke(msg);
+            Action cb = null;
+            if(isInvokeSelf) cb = m_msgAction?.Invoke(msg);
             if(isContinue)
             {
                 var count = m_nextLeafList.Count;
@@ -55,6 +57,7 @@ namespace NullFramework.Runtime
                     leaf.OnUpdate(msg);
                 }
             }
+            if(isInvokeSelf) cb?.Invoke();
         }
         
     }

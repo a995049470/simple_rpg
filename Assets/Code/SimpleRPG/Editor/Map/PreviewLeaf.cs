@@ -3,38 +3,22 @@ using SimpleRPG.Runtime;
 
 namespace NullFramework.Editor
 {
-    public class PreviewLeaf : Leaf, ILeafMemberDicSetter
+    public class PreviewLeaf : Leaf
     {
-         private MapData mapData;
-
-    
-
-        public void ReciveLeaf(Leaf leaf)
-        {
-            if(leaf is OperateManagerTress tress)
-            {
-                this.mapData = tress.CurrentMapData;
-            }
-        }
-
-        public void SetMemberDic(LeafMemberDic dic)
-        {
-            mapData = dic[MemberKind.mapData] as MapData;
-        }
-
         protected override void InitListeners()
         {
             base.InitListeners();
             AddMsgListener(MapEditorMsgKind.MapEditorEvent, Preview);
         }
-        private void Preview(Msg msg)
+        private System.Action Preview(Msg msg)
         {
-            var msgData = msg.GetData<MapEditorEventData>();
+            var msgData = msg.GetData<MsgData_MapEditorEvent>();
             var e = msgData.currentEvent;
             if(e.type == UnityEngine.EventType.MouseMove)
             {
-                mapData.ShowPreview(msgData.mouseWorldIntPosition);
+                msgData.mapData.ShowPreview(msgData.mouseWorldIntPosition);
             }
+            return null;
         }
     }
 

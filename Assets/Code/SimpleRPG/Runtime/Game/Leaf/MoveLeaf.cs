@@ -6,33 +6,26 @@ using UnityEngine;
 namespace SimpleRPG.Runtime
 {
 
-    public class MoveLeaf : Leaf<MoveLeafData>, ILeafMemberDicSetter
+    public class MoveLeaf : Leaf<MoveLeafData>
     {
-        private Transform transform;
-
-        public override void OnReciveDataFinish()
-        {
-            
-        }
-
-
-        public void SetMemberDic(LeafMemberDic dic)
-        {
-            transform = dic[MemberKind.mover] as Transform;
-        }
-
+    
         protected override void InitListeners()
         {
-            AddMsgListener(GameMsgKind.move, Move);
+            AddMsgListener(GameMsgKind.Move, Move);
         }
 
-        private void Move(Msg msg)
+        private System.Action Move(Msg msg)
         {
             var msgData = msg.GetData<MsgData_Move>();
-            
+            var mover = msgData.mover;
+            if(!mover)
+            {
+                return null;
+            }
             var speed = leafData.MoveSpeed * msgData.strength * msgData.dir;
             var dis = speed * Root.Instance.DeltaTime;
-            this.transform.Translate(dis, Space.World);
+            mover.Translate(dis, Space.World);
+            return null;
         }
         
     }

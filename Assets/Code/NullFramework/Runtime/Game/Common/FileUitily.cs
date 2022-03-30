@@ -23,6 +23,14 @@ namespace NullFramework.Runtime
             return path.Substring(len);
         }
 
+        public static string GetNearestFloder(string path)
+        {
+            var sp = path.Split('/', '\\');
+            var ex = sp.Length > 1 ? 1 : 0;
+            var len = path.Length - sp[sp.Length - 1].Length - ex;
+            return path.Substring(0, len);
+        }
+
         
     }
 }

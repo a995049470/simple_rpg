@@ -30,7 +30,7 @@ namespace SimpleRPG.Runtime
             cacheLeaf = null;
         }
 
-        private void OnValidate() {
+        public void OnValidate() {
             if(data == null)
             {
                 isRoot = false;
@@ -38,7 +38,7 @@ namespace SimpleRPG.Runtime
             } 
             isRoot = data is IRootData;
             setter = data as ITRSSetter;
-            this.name = data.name.Substring(0, data.name.Length - 4);
+            this.name = data.GetType().Name.Replace("Data", "");
         }
 
         private void Update() {
@@ -47,6 +47,12 @@ namespace SimpleRPG.Runtime
             {
                 setter.SetTRS(this.transform.position, this.transform.rotation, this.transform.lossyScale);
             }
+        }
+
+        public void SetData(LeafData _data)
+        {
+            data = _data;
+            OnValidate();
         }
         
     }
