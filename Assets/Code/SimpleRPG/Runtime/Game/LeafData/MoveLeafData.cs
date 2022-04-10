@@ -10,7 +10,6 @@ namespace SimpleRPG.Runtime
         [SerializeField]
         private float moveSpeed = 4;
         public float MoveSpeed { get => moveSpeed; }
-
     }
 }
 

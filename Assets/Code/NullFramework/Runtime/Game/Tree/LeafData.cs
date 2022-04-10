@@ -19,5 +19,9 @@ namespace NullFramework.Runtime
     public abstract class LeafData : ScriptableObject 
     {
         public abstract Leaf CreateLeaf();
+        public LeafData Instantiate()
+        {
+            return Object.Instantiate(this);
+        }
     }
 }

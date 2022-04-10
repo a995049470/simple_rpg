@@ -32,6 +32,11 @@ namespace SimpleRPG.Runtime
             AddMsg(new Msg(GameMsgKind.Move, data_move, this));
             var data_followTarget = new MsgData_FollowTarget();
             AddMsg(new Msg(GameMsgKind.FollowTarget, data_followTarget, this));
+            
+            if(Input.GetKey(KeyCode.J))
+            {
+                AddMsg(new Msg(GameMsgKind.Attack, new MsgData_Attack(), this));
+            }
         }
     }
 }

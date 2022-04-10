@@ -26,6 +26,15 @@ namespace NullFramework.Runtime
            m_msgRespondMap = new Dictionary<int, MsgRespond>();
         }
 
+        /// <summary>
+        /// 从字节点收集信息
+        /// </summary>
+        /// <param name="msg"></param>
+        protected void CollectInfo(Msg msg)
+        {
+            OnUpdate(msg);
+        }
+
         //增加信息传导叶节点
         public void AddMsgLeaf(int msgKind, Leaf leaf)
         {
@@ -54,6 +63,7 @@ namespace NullFramework.Runtime
                 }
             }
         }
+        
 
         public virtual void AddChild(Leaf leaf, bool isActive)
         {

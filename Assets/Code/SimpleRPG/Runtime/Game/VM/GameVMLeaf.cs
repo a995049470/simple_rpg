@@ -2,11 +2,7 @@ using NullFramework.Runtime;
 
 namespace SimpleRPG.Runtime
 {
-    public class Attacker
-    {
-        private Leaf leaf;
 
-    }
 
     public class GameVM : VM
     {   

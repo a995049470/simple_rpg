@@ -1,6 +1,8 @@
+using NullFramework.Runtime;
+
 namespace SimpleRPG.Runtime
 {
-    public class MsgData_Input
+    public class MsgData_Input : MsgData
     {
         public int UpButtonState;
         public int DownButtonState;

@@ -65,10 +65,7 @@ namespace NullFramework.Runtime
             return isActive;
         }
 
-
-        
-
-        public T GetData<T>() where T : class
+        public T GetData<T>() where T : MsgData
         {
             return data as T;
         }
@@ -76,7 +73,6 @@ namespace NullFramework.Runtime
         public object GetData()
         {
             return data;
-        }
-       
+        }   
     }
 }

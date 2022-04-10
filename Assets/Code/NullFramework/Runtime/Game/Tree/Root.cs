@@ -24,6 +24,7 @@ namespace NullFramework.Runtime
         }
         private const int MaxMsgCount = 32;
         private Queue<Msg> msgQueue;
+        private Queue<Msg> nextFrameMsgQueue;
         private int m_frame;
         private int Frame { get => m_frame; }
         private int fps = 30;
@@ -40,6 +41,7 @@ namespace NullFramework.Runtime
         {
             instance = this;
             msgQueue = new Queue<Msg>();
+            nextFrameMsgQueue = new Queue<Msg>();
             m_frame = 0;
             OnEnable();
         }
@@ -51,15 +53,7 @@ namespace NullFramework.Runtime
             while (time > DeltaTime)
             {
                 time -= DeltaTime; 
-                
-                BeforeUpdate();
-                int count = Mathf.Min(MaxMsgCount, msgQueue.Count);
-                for (int i = 0; i < count; i++)
-                {
-                    var msg = msgQueue.Dequeue();
-                    OnUpdate(msg);
-                }
-                m_frame ++;
+                Update();
             }
         }
 
@@ -67,15 +61,25 @@ namespace NullFramework.Runtime
         public void Update()
         {
             BeforeUpdate();
-            int count = Mathf.Min(MaxMsgCount, msgQueue.Count);
+            //全执行..
+            int count = msgQueue.Count;
             for (int i = 0; i < count; i++)
             {
                 var msg = msgQueue.Dequeue();
                 OnUpdate(msg);
             }
             m_frame++;
+            //交换缓存
+            Swap();
         }
 
+
+        private void Swap()
+        {
+            var temp = msgQueue;
+            msgQueue = nextFrameMsgQueue;
+            nextFrameMsgQueue = temp;
+        }
 
         protected virtual void BeforeUpdate()
         {
@@ -94,6 +98,11 @@ namespace NullFramework.Runtime
         {
             msgQueue.Enqueue(msg);
         }        
+
+        public void AddNextFrameMsg(Msg msg)
+        {
+            nextFrameMsgQueue.Enqueue(msg);
+        }
 
         
     }

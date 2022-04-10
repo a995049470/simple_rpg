@@ -79,7 +79,6 @@ namespace NullFramework.Runtime
         public virtual bool OnUpdate(Msg msg)
         {
             bool isHasRespond = true;
-
             //失活态不除发OnUpdate
             if(!isActive || !isWake)
             {
@@ -90,6 +89,8 @@ namespace NullFramework.Runtime
             //是否继续传播
             bool isContinue = !msg.IsStop;
             
+            //现在是深度优先的遍历方式
+
             if(m_msgRespondMap.TryGetValue(msg.Kind, out var respond))
             {
                 respond.Invoke(msg, isInvokeSelf, isContinue);
@@ -150,6 +151,14 @@ namespace NullFramework.Runtime
                 msgRespond.AddMsgAction(action);
                 m_msgRespondMap[msgKind] = msgRespond;
                 parent?.AddMsgLeaf(msgKind, this);
+            }
+        }
+
+        public void AddMsgListeners(params (int, MsgCallBack)[] listeners)
+        {
+            foreach (var listener in listeners)
+            {
+                AddMsgListener(listener.Item1, listener.Item2);
             }
         }
 

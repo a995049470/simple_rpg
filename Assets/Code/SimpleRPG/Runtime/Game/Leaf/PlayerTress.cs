@@ -15,6 +15,7 @@ namespace SimpleRPG.Runtime
             base.InitListeners();
             AddMsgListener(GameMsgKind.Move, Move);
             AddMsgListener(GameMsgKind.FollowTarget, FollowTarget);
+            AddMsgListener(GameMsgKind.Attack, Attack);
         }
 
         
@@ -29,7 +30,7 @@ namespace SimpleRPG.Runtime
             var msgData = msg.GetData<MsgData_Move>();
             var origin = msgData.mover;
             msgData.mover = player.transform;
-            return ()=>msgData.mover = origin;
+            return () => msgData.mover = origin;
         }
 
         public System.Action FollowTarget(Msg msg)
@@ -37,7 +38,15 @@ namespace SimpleRPG.Runtime
             var msgData = msg.GetData<MsgData_FollowTarget>();
             var origin = msgData.lookTarget;
             msgData.lookTarget = look;
-            return ()=>msgData.lookTarget = origin;
+            return () => msgData.lookTarget = origin;
+        }
+
+        public System.Action Attack(Msg msg)
+        {
+            var msgData = msg.GetData<MsgData_Attack>();
+            var origin_attcker = msgData.attacker;
+            msgData.attacker = this;
+            return () => msgData.attacker = origin_attcker;
         }
     }
 }
