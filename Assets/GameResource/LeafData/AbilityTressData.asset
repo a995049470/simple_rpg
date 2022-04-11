@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b84e817fb652cd43bcdc943e7e9a82d, type: 3}
-  m_Name: PlayerTressData_0
+  m_Script: {fileID: 11500000, guid: f5effda563e721c4ea83690a3bc5d7b5, type: 3}
+  m_Name: AbilityTressData
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 1546927844982933137, guid: 5a3c3a0947bd5184e9c17180a6dfe1ba,
-    type: 3}
-  position: {x: 0, y: 0, z: 0}
+  hp: 100
+  atk: 10

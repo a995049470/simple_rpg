@@ -26,10 +26,14 @@ namespace NullFramework.Runtime
         private Queue<Msg> msgQueue;
         private Queue<Msg> nextFrameMsgQueue;
         private int m_frame;
-        private int Frame { get => m_frame; }
+        public int Frame { get => m_frame; }
         private int fps = 30;
         public int FPS { get => fps; set => fps = value; }
-        public float DeltaTime { get => 1.0f / fps; }
+        //用于帧率计算
+        public float FrameDeltaTime { get => 1.0f / fps; }
+        private float realDeltaTime;
+        public float RealDeltaTime { get => realDeltaTime; }
+        private float lastUpdateTime;
         private float time = 0;
         
         public static void Dispose()
@@ -49,18 +53,20 @@ namespace NullFramework.Runtime
         //用于外界调用的Update
         public void Update(float deltaTime)
         {
+            InputProcess();
             time += deltaTime;
-            while (time > DeltaTime)
+            while (time > FrameDeltaTime)
             {
-                time -= DeltaTime; 
-                Update();
+                realDeltaTime = Time.time - lastUpdateTime;
+                time -= FrameDeltaTime; 
+                FrameUpdate();
             }
         }
 
         //直接帧驱动
-        public void Update()
+        public void FrameUpdate()
         {
-            BeforeUpdate();
+            AddFixedMsgs();
             //全执行..
             int count = msgQueue.Count;
             for (int i = 0; i < count; i++)
@@ -71,8 +77,10 @@ namespace NullFramework.Runtime
             m_frame++;
             //交换缓存
             Swap();
+            lastUpdateTime = Time.time;
         }
 
+        
 
         private void Swap()
         {
@@ -81,7 +89,17 @@ namespace NullFramework.Runtime
             nextFrameMsgQueue = temp;
         }
 
-        protected virtual void BeforeUpdate()
+        /// <summary>
+        /// 处理外界的输入
+        /// </summary>
+        protected virtual void InputProcess()
+        {
+
+        }
+        /// <summary>
+        /// 一些固定的帧事件
+        /// </summary>
+        protected virtual void AddFixedMsgs()
         {
 
         }

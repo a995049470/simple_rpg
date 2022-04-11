@@ -9,7 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4c2ecdf6bb74074aa5714b2e73092f5, type: 3}
-  m_Name: MoveLeafData_0
+  m_Script: {fileID: 11500000, guid: 6a0c7e62272be0b4a893ebf29b1e957a, type: 3}
+  m_Name: SimpleAttackLeafData
   m_EditorClassIdentifier: 
-  moveSpeed: 12
+  luaFile: simple_attack
+  attackRadius: 2
+  attackNum: 1

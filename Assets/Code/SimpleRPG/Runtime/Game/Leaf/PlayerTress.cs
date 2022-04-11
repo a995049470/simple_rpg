@@ -45,7 +45,10 @@ namespace SimpleRPG.Runtime
         {
             var msgData = msg.GetData<MsgData_Attack>();
             var origin_attcker = msgData.attacker;
-            msgData.attacker = this;
+            var battleUnit = new BattleUnit();
+            battleUnit.leaf = this;
+            battleUnit.unitObj = this.player;
+            msgData.attacker = battleUnit;
             return () => msgData.attacker = origin_attcker;
         }
     }

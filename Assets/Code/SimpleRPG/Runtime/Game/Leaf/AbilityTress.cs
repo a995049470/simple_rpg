@@ -19,16 +19,25 @@ namespace SimpleRPG.Runtime
             base.InitListeners();
             AddMsgListeners
             (
-                (GameMsgKind.Attack, Attack)
+                (GameMsgKind.Attack, Attack),
+                (GameMsgKind.CollectEnemy, CollectEnemy)
             );
         }
  
         private System.Action Attack(Msg msg)
         {
             var msgData = msg.GetData<MsgData_Attack>();
-            var origin = msgData.attackAbilityData;
-            return () => msgData.attackAbilityData = origin;
+            msgData.attacker.abilityData = this.abilityData;
+            return null;
         }
+
+        private System.Action CollectEnemy(Msg msg)
+        {
+            var msgData = msg.GetData<MsgData_CollectEnemy>();
+            msgData.TryAddEnemyAblity(abilityData);
+            return null;
+        }
+
         
     }
 }

@@ -18,7 +18,7 @@ namespace NullFramework.Editor
         private void OnDisable() {
             SceneView.duringSceneGui -= DuringSceneGUI;
             Root.Instance.AddMsg(new Msg(MapEditorMsgKind.EditorFinish));
-            Root.Instance.Update();
+            Root.Instance.FrameUpdate();
             Root.Dispose();
         }
 
@@ -47,7 +47,7 @@ namespace NullFramework.Editor
             data.camera = camera;
             var msg = new Msg(MapEditorMsgKind.MapEditorEvent, data);
             Root.Instance.AddMsg(msg);
-            Root.Instance.Update();
+            Root.Instance.FrameUpdate();
         }
         
         // private void Update() {

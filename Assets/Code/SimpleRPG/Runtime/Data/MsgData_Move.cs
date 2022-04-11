@@ -2,7 +2,6 @@ using NullFramework.Runtime;
 using UnityEngine;
 namespace SimpleRPG.Runtime
 {
-
     public class MsgData_Move : MsgData
     {
         //角度

@@ -3,55 +3,84 @@ using XLua;
 
 namespace NullFramework.Runtime
 {
+    public class LuaLeaf<T> : LuaLeaf, ILeafDataReciver where T : LeafData
+    {
+        protected T leafData;
+
+        public virtual void OnReciveDataFinish() {}
+
+        public virtual void SetLeafData(LeafData data)
+        {
+            this.leafData = data as T;
+        }
+    }
+
     [LuaCallCSharp]
     public class LuaLeaf : Leaf
     {
-        private static LuaEnv env;
-        public static LuaEnv Env
+        private static LuaEnv envCache;
+        private static LuaEnv luaEnv
         {
             get
             {
-                if(env == null)
+                if(envCache == null)
                 {
-                    env = new LuaEnv();  
-                    env.AddLoader((ref string file) =>
+                    envCache = new LuaEnv();  
+                    envCache.AddLoader((ref string file) =>
                     {   
                         var bytes = LRes.LoadLuaBytes(file);
                         return bytes;
                     });
                 }
-                return env;
+                return envCache;
             }
         }
         public bool IsFinish;
         public bool IsStop;
-        private byte[] luaBytes;
-        private LuaTable luaCache;
+        private LuaTable scriptEnv;
+        private Action luaExecute;
         
 
         public LuaLeaf() : base()
         {
             
         }
-        public void SetLuaCode(string code)
+
+        public void SetLuaCodeByFile(string lauFile)
         {
-            luaBytes = System.Text.Encoding.UTF8.GetBytes(code);
-            luaCache = null;
+            string code = $"require '{lauFile}'";
+            SetLuaCode(code, lauFile);
         }
 
-        public void Execute()
+        public void SetLuaCode(string code, string chunkName = "chunk")
         {
-        #if UNITY_EDITOR
-            if(luaBytes == null || luaBytes.Length == 0)
+            var luaBytes = System.Text.Encoding.UTF8.GetBytes(code);
+            if(scriptEnv != null) 
             {
-                throw new Exception("没lua代码");
+                scriptEnv.Dispose();
+                scriptEnv = null;
             }
-        #endif
-            IsStop = false;
-            Env.Global.Set("luaLeaf", this);
-            Env.DoString(luaBytes);
+            scriptEnv = luaEnv.NewTable();
+            LuaTable meta = luaEnv.NewTable();
+            meta.Set("__index", luaEnv.Global);
+            scriptEnv.SetMetaTable(meta);
+            meta.Dispose();
+            luaEnv.DoString(luaBytes, chunkName, scriptEnv);
+            luaExecute = scriptEnv.Get<Action>("execute");
+
         }
 
+        public void ExecuteLuaScript()
+        {
+            
+            scriptEnv.Set("leaf", this);
+            luaExecute?.Invoke();
+        }
+
+        public void AddMsg(Msg msg)
+        {
+            root.AddMsg(msg);
+        }
       
         
     }

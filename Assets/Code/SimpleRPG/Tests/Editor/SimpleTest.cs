@@ -181,12 +181,12 @@ namespace Tests
             var luaCode = System.IO.File.ReadAllText(path);
             luaLeaf.SetLuaCode(luaCode);
             
-            luaLeaf.Execute();
-            luaLeaf.Execute();
-            luaLeaf.Execute();
-            luaLeaf.Execute();
-            luaLeaf.Execute();
-            luaLeaf.Execute();
+            luaLeaf.ExecuteLuaScript();
+            luaLeaf.ExecuteLuaScript();
+            luaLeaf.ExecuteLuaScript();
+            luaLeaf.ExecuteLuaScript();
+            luaLeaf.ExecuteLuaScript();
+            luaLeaf.ExecuteLuaScript();
         }
 
         [Test]
@@ -197,7 +197,7 @@ namespace Tests
             var luaCode = "require 'battle_attack'";
             luaLeaf.SetLuaCode(luaCode);
             
-            luaLeaf.Execute();
+            luaLeaf.ExecuteLuaScript();
         }
 
         public class K

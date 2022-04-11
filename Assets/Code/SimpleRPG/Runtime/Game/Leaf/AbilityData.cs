@@ -13,9 +13,9 @@ namespace SimpleRPG.Runtime
 
         public AbilityData(AbilityTressData data)
         {
-            this.hp = data.Hp;
-            this.currentHp = data.Hp;
-            this.atk = data.Atk;
+            this.hp = data.hp;
+            this.currentHp = data.hp;
+            this.atk = data.atk;
         }
     }
 }

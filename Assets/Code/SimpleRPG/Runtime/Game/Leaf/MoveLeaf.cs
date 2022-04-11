@@ -8,10 +8,15 @@ namespace SimpleRPG.Runtime
 
     public class MoveLeaf : Leaf<MoveLeafData>
     {
-    
+        private float moveSpeed;
         protected override void InitListeners()
         {
             AddMsgListener(GameMsgKind.Move, Move);
+        }
+        public override void OnReciveDataFinish()
+        {
+            base.OnReciveDataFinish();
+            this.moveSpeed = leafData.moveSpeed;
         }
 
         private System.Action Move(Msg msg)
@@ -22,8 +27,8 @@ namespace SimpleRPG.Runtime
             {
                 return null;
             }
-            var speed = leafData.MoveSpeed * msgData.strength * msgData.dir;
-            var dis = speed * Root.Instance.DeltaTime;
+            var speed = moveSpeed * msgData.strength * msgData.dir;
+            var dis = speed * root.RealDeltaTime;
             mover.Translate(dis, Space.World);
             return null;
         }

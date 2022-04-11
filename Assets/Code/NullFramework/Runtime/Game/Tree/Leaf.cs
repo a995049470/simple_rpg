@@ -18,7 +18,7 @@ namespace NullFramework.Runtime
     //实际生效的叶子节点
     public abstract class Leaf 
     {
-        protected static Root m_root { get => Root.Instance; }
+        protected static Root root { get => Root.Instance; }
 
         protected Tress parent;
         protected Dictionary<int, MsgRespond> m_msgRespondMap;

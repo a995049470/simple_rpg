@@ -13,5 +13,7 @@ namespace SimpleRPG.Runtime
         public const int Attack = prefix | 3;
         //收集敌人
         public const int CollectEnemy = prefix | 4;   
+        //被击
+        public const int Hit = prefix | 5;
     }
 }
