@@ -15,9 +15,16 @@ namespace SimpleRPG.Runtime
         {
             AddMsgListeners
             (
-                (GameMsgKind.CollectEnemy, CollectEnemy)
+                (GameMsgKind.CollectEnemy, CollectEnemy),
+                (GameMsgKind.Hit, Hit)
             );
         }
+
+        private System.Action Hit(Msg msg)
+        {
+            return null;
+        }
+
         private System.Action CollectEnemy(Msg msg)
         {
             var msgData = msg.GetData<MsgData_CollectEnemy>();

@@ -20,14 +20,25 @@ namespace SimpleRPG.Runtime
             AddMsgListeners
             (
                 (GameMsgKind.Attack, Attack),
-                (GameMsgKind.CollectEnemy, CollectEnemy)
+                (GameMsgKind.CollectEnemy, CollectEnemy),
+                (GameMsgKind.Hit, Hit)
             );
+        }
+
+        private System.Action Hit(Msg msg)
+        {
+            var msgData = msg.GetData<MsgData_Hit>();
+            Debug.Log($"受到 {msgData.damage} 点伤害");
+            return null;
         }
  
         private System.Action Attack(Msg msg)
         {
             var msgData = msg.GetData<MsgData_Attack>();
-            msgData.attacker.abilityData = this.abilityData;
+            if(msgData.attacker != null)
+            {
+                msgData.attacker.abilityData = this.abilityData;
+            }
             return null;
         }
 

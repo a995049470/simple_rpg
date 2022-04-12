@@ -4,12 +4,10 @@ namespace SimpleRPG.Runtime
 {
     public class AbilityData
     {
-        private int hp;
-        public int Hp{ get=> hp;}
-        private int currentHp;
-        public int CurrentHp { get => currentHp; }
-        private int atk;   
-        public int Atk { get => atk; }
+        public int hp;
+        public int currentHp;
+        public int atk;   
+        
 
         public AbilityData(AbilityTressData data)
         {

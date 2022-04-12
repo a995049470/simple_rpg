@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using XLua;
 
 namespace NullFramework.Runtime
@@ -31,14 +32,41 @@ namespace NullFramework.Runtime
                         var bytes = LRes.LoadLuaBytes(file);
                         return bytes;
                     });
+                    envCache.DoString("require 'start_env'");
+                    luaExecuteAction = envCache.Global.Get<Action>("Execute");
                 }
                 return envCache;
             }
         }
+        
+        private static Action luaExecuteAction;
+        private const string key_guid = "Guid";
+        private const string key_classId = "ClassId";
+        protected const string key_data = "Data";
+        private static Dictionary<string, int> luaClassDic = new Dictionary<string, int>();
+
+        public static void SaveLuaClass(string filename, int calssId)
+        {
+        #if UNITY_EDITOR
+            if(luaClassDic.ContainsKey(filename))
+            {
+                UnityEngine.Debug.LogError($"{filename} 存在重名");
+            }
+        #endif
+            luaClassDic[filename] = calssId;
+        }
+
+        private static int LoadLuaClassId(string filename)
+        {
+            return luaClassDic[filename];
+        }
+
         public bool IsFinish;
         public bool IsStop;
         private LuaTable scriptEnv;
-        private Action luaExecute;
+        //先拿guid凑活 之后换成int
+        private string guid;
+        private int calssId;
         
 
         public LuaLeaf() : base()
@@ -46,13 +74,15 @@ namespace NullFramework.Runtime
             
         }
 
-        public void SetLuaCodeByFile(string lauFile)
+        public void SetLuaCodeByFile(string luaFile)
         {
-            string code = $"require '{lauFile}'";
-            SetLuaCode(code, lauFile);
+            string code = $"require '{luaFile}'";
+            SetLuaCode(code, luaFile);
+            calssId = LoadLuaClassId(luaFile);
+            guid = System.Guid.NewGuid().ToString();
         }
 
-        public void SetLuaCode(string code, string chunkName = "chunk")
+        private void SetLuaCode(string code, string filename = "chunk")
         {
             var luaBytes = System.Text.Encoding.UTF8.GetBytes(code);
             if(scriptEnv != null) 
@@ -60,28 +90,26 @@ namespace NullFramework.Runtime
                 scriptEnv.Dispose();
                 scriptEnv = null;
             }
-            scriptEnv = luaEnv.NewTable();
-            LuaTable meta = luaEnv.NewTable();
-            meta.Set("__index", luaEnv.Global);
-            scriptEnv.SetMetaTable(meta);
-            meta.Dispose();
-            luaEnv.DoString(luaBytes, chunkName, scriptEnv);
-            luaExecute = scriptEnv.Get<Action>("execute");
-
+            luaEnv.DoString(luaBytes, filename);
         }
 
-        public void ExecuteLuaScript()
+        public void ExecuteLuaScript(MsgData data = null)
         {
-            
-            scriptEnv.Set("leaf", this);
-            luaExecute?.Invoke();
+            if(data != null) luaEnv.Global.Set(key_data, data);
+            luaEnv.Global.Set(key_classId, calssId);
+            luaEnv.Global.Set(key_guid, guid);
+            luaExecuteAction?.Invoke();
         }
 
-        public void AddMsg(Msg msg)
+        public static void AddMsg(Msg msg)
         {
             root.AddMsg(msg);
         }
-      
+
+        public static void AddNextFrameMsg(Msg msg)
+        {
+            root.AddNextFrameMsg(msg);
+        }
         
     }
 }

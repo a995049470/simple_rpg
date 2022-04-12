@@ -176,28 +176,28 @@ namespace Tests
         [Test]
         public void LuaTest()
         {
-            var luaLeaf = new LuaLeaf();
-            var path = "Assets/Code/SimpleRPG/Tests/Editor/testLua.lua";
-            var luaCode = System.IO.File.ReadAllText(path);
-            luaLeaf.SetLuaCode(luaCode);
+            // var luaLeaf = new LuaLeaf();
+            // var path = "Assets/Code/SimpleRPG/Tests/Editor/testLua.lua";
+            // var luaCode = System.IO.File.ReadAllText(path);
+            // luaLeaf.SetLuaCode(luaCode);
             
-            luaLeaf.ExecuteLuaScript();
-            luaLeaf.ExecuteLuaScript();
-            luaLeaf.ExecuteLuaScript();
-            luaLeaf.ExecuteLuaScript();
-            luaLeaf.ExecuteLuaScript();
-            luaLeaf.ExecuteLuaScript();
+            // luaLeaf.ExecuteLuaScript();
+            // luaLeaf.ExecuteLuaScript();
+            // luaLeaf.ExecuteLuaScript();
+            // luaLeaf.ExecuteLuaScript();
+            // luaLeaf.ExecuteLuaScript();
+            // luaLeaf.ExecuteLuaScript();
         }
 
         [Test]
         public void LuaTest2()
         {
-            var luaLeaf = new LuaLeaf();
+            // var luaLeaf = new LuaLeaf();
           
-            var luaCode = "require 'battle_attack'";
-            luaLeaf.SetLuaCode(luaCode);
+            // var luaCode = "require 'battle_attack'";
+            // luaLeaf.SetLuaCode(luaCode);
             
-            luaLeaf.ExecuteLuaScript();
+            // luaLeaf.ExecuteLuaScript();
         }
 
         public class K

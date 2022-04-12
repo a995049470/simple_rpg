@@ -72,7 +72,7 @@ namespace NullFramework.Runtime
             for (int i = 0; i < count; i++)
             {
                 var msg = msgQueue.Dequeue();
-                OnUpdate(msg);
+                InvokeMsg(msg);
             }
             m_frame++;
             //交换缓存
@@ -80,6 +80,17 @@ namespace NullFramework.Runtime
             lastUpdateTime = Time.time;
         }
 
+        private void InvokeMsg(Msg msg)
+        {
+            if(msg.Sender == null)
+            {
+                this.OnUpdate(msg);
+            }
+            else
+            {
+                msg.Sender.OnUpdate(msg);
+            }
+        }
         
 
         private void Swap()
@@ -107,7 +118,7 @@ namespace NullFramework.Runtime
         //立马执行Msg
         public void SyncExecuteMsg(Msg msg)
         {
-            OnUpdate(msg);
+            InvokeMsg(msg);
         }
 
 
@@ -120,6 +131,7 @@ namespace NullFramework.Runtime
         public void AddNextFrameMsg(Msg msg)
         {
             nextFrameMsgQueue.Enqueue(msg);
+        
         }
 
         

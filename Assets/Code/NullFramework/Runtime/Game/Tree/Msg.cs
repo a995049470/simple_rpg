@@ -37,32 +37,13 @@ namespace NullFramework.Runtime
         private Leaf sender;
         //Msg的信息更新从接收者开始
         private Leaf reciver;
-        //超过最大层数 如果消息还没激活 就会停止传播
-        private int maxDepth;
-        private bool isActive;
-        private bool isStop;
-        //是否停止传播
-        public bool IsStop { get => isStop; }
-
+        public Leaf Sender { get => sender; }
         public Msg(int _kind, object _data = null, Leaf _sender = null, Leaf _reciver = null)
         {
             this.kind = _kind;
             this.data = _data;
             this.sender = _sender;
             this.reciver = _reciver;
-            this.isActive = _reciver == null;
-            this.isStop = false;
-            this.maxDepth = _reciver == null ? int.MaxValue : _reciver.Depth;
-        }
-
-        public bool ActiveMsg(Leaf leaf)
-        {
-            if(!isActive)
-            {
-                isActive = leaf == reciver;
-                if (!isActive) isStop = leaf.Depth >= maxDepth;
-            }
-            return isActive;
         }
 
         public T GetData<T>() where T : MsgData

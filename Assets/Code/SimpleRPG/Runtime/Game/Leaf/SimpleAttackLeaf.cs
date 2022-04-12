@@ -37,10 +37,10 @@ namespace SimpleRPG.Runtime
             data_collectEnemy.hiters = msgData.hiters;
             data_collectEnemy.radius = this.attackRadius;
             data_collectEnemy.SetAttackNum(this.attackNum);
-            data_collectEnemy.center = msgData.attacker.unitObj. transform.position;
+            data_collectEnemy.center = msgData.attacker.unitObj.transform.position;
             var msg_collectEnemy = new Msg(GameMsgKind.CollectEnemy, data_collectEnemy);
             root.SyncExecuteMsg(msg_collectEnemy);
-            ExecuteLuaScript();
+            ExecuteLuaScript(msgData);
             //开始攻击流程
             return ()=> msgData.hiters = origin;        
         }

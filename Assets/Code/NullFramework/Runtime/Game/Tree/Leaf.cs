@@ -34,14 +34,19 @@ namespace NullFramework.Runtime
         public int Depth { get => depth; }
         public delegate Action MsgCallBack(Msg msg); 
         //TODO:计划使用uid 只要被free 原来的uid失效 思考中
-        // private int uid;
-        // public int UID { get => uid; }
-        
+        // private long uid;
+        // public long UID { get => uid; }
+
+
         //同一种kind 不同序号
         //private int m_index;
         public Leaf()
         {
             m_msgRespondMap = new Dictionary<int, MsgRespond>();
+            AddMsgListeners
+            (
+                (BaseMsgKind.CollectChilds, CollectChilds)
+            );
         }
         
         public virtual void LoadData(LeafData data)
@@ -84,16 +89,12 @@ namespace NullFramework.Runtime
             {
                 return isHasRespond;
             }
-            //是否执行本身事件
-            bool isInvokeSelf = msg.ActiveMsg(this);
-            //是否继续传播
-            bool isContinue = !msg.IsStop;
-            
+
             //现在是深度优先的遍历方式
 
             if(m_msgRespondMap.TryGetValue(msg.Kind, out var respond))
             {
-                respond.Invoke(msg, isInvokeSelf, isContinue);
+                respond.Invoke(msg, true, true);
                 isHasRespond = !respond.IsEmpty();
             }
             else
@@ -222,7 +223,18 @@ namespace NullFramework.Runtime
             parent.AddChild(this, isActive);
         }
 
-        
+        private System.Action CollectChilds(Msg msg)
+        {
+            var msgData = msg.GetData<MsgData_CollectChilds>();
+            var orign_depth = msgData.depth;
+            msgData.AddChild(this);
+            return ()=> msgData.depth = orign_depth;
+        }
+
+       
+
+         
+
     }
 }
 

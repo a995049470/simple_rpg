@@ -20,6 +20,8 @@ namespace SimpleRPG.Runtime
 
         protected void OnValidate() {
             Root.Instance.FPS = fps;
+            Application.targetFrameRate = fps;
+            QualitySettings.vSyncCount = 2;
         }
 
         

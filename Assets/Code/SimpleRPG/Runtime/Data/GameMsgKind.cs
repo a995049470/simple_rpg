@@ -1,5 +1,6 @@
 namespace SimpleRPG.Runtime
 {
+    [XLua.LuaCallCSharp]
     public class GameMsgKind
     {
         private const int prefix = 1 << 8;
