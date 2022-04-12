@@ -33,6 +33,7 @@ namespace NullFramework.Runtime
         private int depth;
         public int Depth { get => depth; }
         public delegate Action MsgCallBack(Msg msg); 
+        protected static Action emptyAction = null;
         //TODO:计划使用uid 只要被free 原来的uid失效 思考中
         // private long uid;
         // public long UID { get => uid; }
@@ -91,6 +92,7 @@ namespace NullFramework.Runtime
 
             if(m_msgRespondMap.TryGetValue(msg.Kind, out var respond))
             {
+                // UnityEngine.Debug.Log($"{this.GetType()} 接收导了 {msg.GetData().GetType()}");
                 respond.Invoke(msg, true, true);
                 isHasRespond = !respond.IsEmpty();
             }

@@ -19,6 +19,8 @@ function SimpleAttack:execute()
         damage = math.max(damage - i, 0)
         local hiter = hiters[i]
         local hitData = MsgData_Hit()
+        hitData.effectCount = 1
+        hitData.unitObj = hiter.unitObj
         hitData.damage = damage
         local msg = Msg(GameMsgKind.Hit, hitData, attacker.leaf, hiter.leaf)
         AddNextFrameMsg(msg)

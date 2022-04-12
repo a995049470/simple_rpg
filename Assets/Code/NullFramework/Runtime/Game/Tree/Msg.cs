@@ -37,7 +37,7 @@ namespace NullFramework.Runtime
         private Leaf sender;
         //Msg的信息更新从接收者开始
         private Leaf reciver;
-        public Leaf Sender { get => sender; }
+        public Leaf Reciver { get => reciver; }
         public Msg(int _kind, object _data = null, Leaf _sender = null, Leaf _reciver = null)
         {
             this.kind = _kind;

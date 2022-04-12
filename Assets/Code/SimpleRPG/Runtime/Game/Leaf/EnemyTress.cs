@@ -16,14 +16,23 @@ namespace SimpleRPG.Runtime
             AddMsgListeners
             (
                 (GameMsgKind.CollectEnemy, CollectEnemy),
-                (GameMsgKind.Hit, Hit)
+                (GameMsgKind.Move, Move)
             );
         }
 
-        private System.Action Hit(Msg msg)
+        private System.Action Move(Msg msg)
         {
-            return null;
+            var msgData = msg.GetData<MsgData_Move>();
+            System.Action cb = null;
+            if(!msgData.isPlayer)
+            {
+                var origin = msgData.mover;
+                msgData.mover = enemy.transform;
+                cb = () => msgData.mover = origin;
+            }
+            return cb;
         }
+
 
         private System.Action CollectEnemy(Msg msg)
         {

@@ -25,7 +25,7 @@ namespace SimpleRPG.Runtime
             this.smoothTime = leafData.smoothTime;
             this.maxSpeed = leafData.maxSpeed;
         }
-
+        
         private System.Action FollowTarget(Msg msg)
         {
             var msgData = msg.GetData<MsgData_FollowTarget>();

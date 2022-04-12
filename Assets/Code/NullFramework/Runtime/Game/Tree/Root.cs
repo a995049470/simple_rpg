@@ -82,13 +82,13 @@ namespace NullFramework.Runtime
 
         private void InvokeMsg(Msg msg)
         {
-            if(msg.Sender == null)
+            if(msg.Reciver == null)
             {
                 this.OnUpdate(msg);
             }
             else
             {
-                msg.Sender.OnUpdate(msg);
+                msg.Reciver.OnUpdate(msg);
             }
         }
         

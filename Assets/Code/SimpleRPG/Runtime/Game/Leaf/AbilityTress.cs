@@ -28,8 +28,8 @@ namespace SimpleRPG.Runtime
         private System.Action Hit(Msg msg)
         {
             var msgData = msg.GetData<MsgData_Hit>();
-            Debug.Log($"受到 {msgData.damage} 点伤害");
-            return null;
+            //Debug.Log($"受到 {msgData.damage} 点伤害");
+            return emptyAction;
         }
  
         private System.Action Attack(Msg msg)
@@ -39,14 +39,14 @@ namespace SimpleRPG.Runtime
             {
                 msgData.attacker.abilityData = this.abilityData;
             }
-            return null;
+            return emptyAction;
         }
 
         private System.Action CollectEnemy(Msg msg)
         {
             var msgData = msg.GetData<MsgData_CollectEnemy>();
             msgData.TryAddEnemyAblity(abilityData);
-            return null;
+            return emptyAction;
         }
 
         

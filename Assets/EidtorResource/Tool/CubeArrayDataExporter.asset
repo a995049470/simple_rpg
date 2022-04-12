@@ -17,5 +17,5 @@ MonoBehaviour:
   exportFloder: Assets/GameResource/CubeData
   alphaThreshold: 0.5
   targetHeight: 16
-  defaultMetallic: 0.858
-  defaultRoughness: 0.236
+  defaultMetallic: 0
+  defaultRoughness: 1

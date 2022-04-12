@@ -28,9 +28,14 @@ namespace SimpleRPG.Runtime
         public System.Action Move(Msg msg)
         {
             var msgData = msg.GetData<MsgData_Move>();
-            var origin = msgData.mover;
-            msgData.mover = player.transform;
-            return () => msgData.mover = origin;
+            System.Action cb = null;
+            if(msgData.isPlayer)
+            {
+                var origin = msgData.mover;
+                msgData.mover = player.transform;
+                cb = () => msgData.mover = origin;
+            }
+            return cb;
         }
 
         public System.Action FollowTarget(Msg msg)

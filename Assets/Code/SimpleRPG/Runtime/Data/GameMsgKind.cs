@@ -8,6 +8,7 @@ namespace SimpleRPG.Runtime
         public const int Custom = prefix | 0;
         //移动执行
         public const int Move = prefix | 1;
+        
         //镜头跟随
         public const int FollowTarget = prefix | 2;
         //普通攻击
@@ -16,5 +17,9 @@ namespace SimpleRPG.Runtime
         public const int CollectEnemy = prefix | 4;   
         //被击
         public const int Hit = prefix | 5;
+        //颜色tween
+        public const int ColorTween = prefix | 6;
+        
+        
     }
 }

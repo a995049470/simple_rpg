@@ -23,8 +23,6 @@ namespace SimpleRPG.Runtime
             Application.targetFrameRate = fps;
             QualitySettings.vSyncCount = 2;
         }
-
-        
         
     }
 }
