@@ -43,10 +43,7 @@ namespace NullFramework.Runtime
         public Leaf()
         {
             m_msgRespondMap = new Dictionary<int, MsgRespond>();
-            AddMsgListeners
-            (
-                (BaseMsgKind.CollectChilds, CollectChilds)
-            );
+           
         }
         
         public virtual void LoadData(LeafData data)
@@ -221,19 +218,7 @@ namespace NullFramework.Runtime
             //     setter.SetMemberDic(getter.GetMemberDic());
             // }
             parent.AddChild(this, isActive);
-        }
-
-        private System.Action CollectChilds(Msg msg)
-        {
-            var msgData = msg.GetData<MsgData_CollectChilds>();
-            var orign_depth = msgData.depth;
-            msgData.AddChild(this);
-            return ()=> msgData.depth = orign_depth;
-        }
-
-       
-
-         
+        }  
 
     }
 }

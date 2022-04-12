@@ -7,7 +7,6 @@ namespace NullFramework.Runtime
         //data:GameObject
         public const int InitFightMap = prefix | 2;  
         public const int BehaviorUpdate = prefix | 3;    
-        public const int CollectChilds = prefix | 4;
     }
 
     
