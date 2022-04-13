@@ -23,6 +23,6 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 07d773a3a93418748a437d47cffe916d, type: 2}
     - {fileID: 11400000, guid: 221271bd79d4de942bfd3113f80ac2b1, type: 2}
     - {fileID: 11400000, guid: 33d5adc6e87ad5244a3df4eccd125c61, type: 2}
-    - {fileID: 11400000, guid: f9da352e19e63a14fa5c431add4e641d, type: 2}
+    - {fileID: 11400000, guid: 44b57b010e03e6448838637886b8f110, type: 2}
     - {fileID: 11400000, guid: 33f888a04dede084087660b9581b01f8, type: 2}
     enableDynamicBatching: 0

@@ -8,7 +8,7 @@ namespace LPipeline
     public class Light_Point : MonoBehaviour
     {
         [SerializeField]
-        [Range(0, 96)]
+        [Range(0, 16)]
         private float intensity = 1;
         [SerializeField]
         private Color lightColor = Color.white;
@@ -41,7 +41,7 @@ namespace LPipeline
         private static int id_lightMask = Shader.PropertyToID("_LightMask");
 
         //微小的数
-        public const float IntensityBias = 0.01f;
+        public const float IntensityBias = 0.1f;
 
         private void OnEnable() {
             SetMaterialPropertyBlock();

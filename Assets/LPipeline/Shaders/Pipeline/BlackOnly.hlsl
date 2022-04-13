@@ -25,6 +25,7 @@ Texture2D _AOTex; SamplerState sampler_AOTex;
 UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
     UNITY_DEFINE_INSTANCED_PROP(float3, _Albedo)
     UNITY_DEFINE_INSTANCED_PROP(float, _AO)
+    UNITY_DEFINE_INSTANCED_PROP(float4, _Emssion)
 UNITY_INSTANCING_BUFFER_END(UnityPerMaterial)
 
 
@@ -43,7 +44,8 @@ Varyings Vertex(Attributes i)
 //加点基色 不至于太黑
 float4 Fragment(Varyings i) : SV_TARGET
 {
-    return 0;
+    float4 emssion = UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, _Emssion);
+    return emssion;
     // UNITY_SETUP_INSTANCE_ID(i);
     // float3 Albedo = UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, _Albedo);
     // float AO = UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, _AO);

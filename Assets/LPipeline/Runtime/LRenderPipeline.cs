@@ -81,8 +81,8 @@ namespace LPipeline.Runtime
             
             //生成颜色缓冲和深度模板缓冲并清理
             var cmd = CommandBufferPool.Get("Render Camera");
-            var colorDes = new RenderTextureDescriptor(data.renderWidth, data.renderHeight, RenderTextureFormat.RGB111110Float);
-            colorDes.graphicsFormat = GraphicsFormat.B10G11R11_UFloatPack32;
+            var colorDes = new RenderTextureDescriptor(data.renderWidth, data.renderHeight, RenderTextureFormat.ARGBHalf);
+            //colorDes.graphicsFormat = GraphicsFormat.B10G11R11_UFloatPack32;
             var depthDes = new RenderTextureDescriptor(data.renderWidth, data.renderHeight, RenderTextureFormat.Depth);
             depthDes.depthBufferBits = 32;
             depthDes.msaaSamples = 1;

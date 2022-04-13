@@ -11,6 +11,7 @@
         _Roughness("Roughness", range(0, 1)) = 1
         _AOTex("AO", 2D) = "white" {}
         _AO("AO", range(0, 1)) = 1
+        [HDR]_Emssion("Emssion", color) = (0, 0, 0, 0)
     }
     SubShader
     {

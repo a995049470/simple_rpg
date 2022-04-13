@@ -45,7 +45,7 @@ namespace LPipeline.Runtime
             var des = data.colorDescriptor;
             for (int i = 0; i < iteratorCount + 1; i++)
             {
-                cmd.GetTemporaryRT(mipmaps[i].id, des);    
+                cmd.GetTemporaryRT(mipmaps[i].id, des, FilterMode.Bilinear);    
                 des.width = Mathf.Max(des.width / 2, 1);
                 des.height = Mathf.Max(des.height / 2, 1);
             }

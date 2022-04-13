@@ -42,6 +42,7 @@ float3 ACESToneMapping(float3 color, float adapted_lum)
 float4 Fragment(Varyings i) : SV_TARGET
 {
     float4 color = _MainTex.Sample(sampler_MainTex, i.uv);
+    
     color.rgb = ACESToneMapping(color.rgb, _AdaptedLum);
     
     return color;
