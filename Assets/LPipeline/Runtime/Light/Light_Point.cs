@@ -9,7 +9,7 @@ namespace LPipeline
     {
         [SerializeField]
         [Range(0, 16)]
-        private float intensity = 1;
+        private float intensityPow = 1;
         [SerializeField]
         private Color lightColor = Color.white;
 
@@ -22,6 +22,7 @@ namespace LPipeline
         [Range(0.0f, 1.0f)]
         //光强衰减系数
         private float lightAttenuation = 1.0f;
+        [SerializeField]
         //光照范围的近似mesh 先拿cube用一下
         //[SerializeField]
         private Mesh lightMesh;
@@ -31,6 +32,7 @@ namespace LPipeline
         //[SerializeField]
         private Cubemap lightMask;
         private static Cubemap defalutTexture; 
+        
 
         private MaterialPropertyBlock materialPropertyBlock;
         private Renderer cacheRenderer;
@@ -106,7 +108,7 @@ namespace LPipeline
         public Vector4 GetLightParameter()
         {
             var para = Vector4.zero;
-            
+            float intensity = Mathf.Pow(2, intensityPow) - 1;
             para[0] = intensity;
             // intensity / (a * r * r + b * r + c) = tinyNum
             // a * r * r + b * r = intensity / tinyNum - c
