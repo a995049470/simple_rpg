@@ -3,6 +3,7 @@ using UnityEngine.Rendering;
 
 namespace LPipeline.Runtime
 {
+
     [CreateAssetMenu(fileName = "IBLRenderPass", menuName = "LPipeline/Passes/IBLRenderPass")]
     public class IBLRenderPass : RenderPass
     {

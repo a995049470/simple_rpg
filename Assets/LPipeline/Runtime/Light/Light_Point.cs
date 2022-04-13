@@ -8,7 +8,7 @@ namespace LPipeline
     public class Light_Point : MonoBehaviour
     {
         [SerializeField]
-        [Range(0, 64)]
+        [Range(0, 96)]
         private float intensity = 1;
         [SerializeField]
         private Color lightColor = Color.white;
