@@ -22,7 +22,6 @@ namespace LPipeline
         [Range(0.0f, 1.0f)]
         //光强衰减系数
         private float lightAttenuation = 1.0f;
-        [SerializeField]
         //光照范围的近似mesh 先拿cube用一下
         //[SerializeField]
         private Mesh lightMesh;

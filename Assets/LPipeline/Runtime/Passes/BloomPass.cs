@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -9,6 +10,7 @@ namespace LPipeline.Runtime
     {
         //pass 0:copy 1:down 2:up 3:add
         [SerializeField]
+    
         private Material bloomMaterial;
         [SerializeField]
         [Range(1, 15)]

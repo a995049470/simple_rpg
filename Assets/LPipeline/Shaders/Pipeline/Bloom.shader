@@ -4,7 +4,7 @@
     {
         [HideInInspector]_MainTex ("Texture", 2D) = "white" {}
 		_Offset("模糊半径", Range(0, 8)) = 0 
-        _Threshold("Threshold", Range(0, 10)) = 1
+        _Threshold("Threshold", Range(0, 2)) = 1
         _SoftThreshold("SoftThreshold", Range(0, 1)) = 0
         _Intensity("Intensity", Range(0, 10)) = 1
         
@@ -173,8 +173,8 @@
 
         Pass
 		{
-			HLSLPROGRAM
 			
+			HLSLPROGRAM
 			#pragma vertex Vert_DownSample
 			#pragma fragment Frag_DownSample
 			
@@ -184,8 +184,9 @@
 
 		Pass
 		{
-			HLSLPROGRAM
 			
+			Blend One One
+			HLSLPROGRAM
 			#pragma vertex Vert_UpSample
 			#pragma fragment Frag_UpSample
 			
