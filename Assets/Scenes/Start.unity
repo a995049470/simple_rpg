@@ -597,7 +597,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 454142238}
   m_LocalRotation: {x: -0.71489817, y: -0.6980193, z: 0.033956885, w: 0.023166966}
-  m_LocalPosition: {x: 13.25, y: 11.31, z: -10.76}
+  m_LocalPosition: {x: 13.36, y: 11.33, z: -9.43}
   m_LocalScale: {x: 49.8, y: 49.8, z: 49.8}
   m_Children: []
   m_Father: {fileID: 1183451377}
@@ -615,8 +615,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc259615684787b4abc292b97c634340, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intensityPow: 4.76
-  lightColor: {r: 1, g: 0, b: 0.03305769, a: 0}
+  intensityPow: 3.33
+  lightColor: {r: 0.47659945, g: 1, b: 0, a: 0}
   lightRaidus: 24.9
   lightAttenuation: 0.642
 --- !u!23 &454142241
@@ -1414,13 +1414,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1479682308}
-  m_LocalRotation: {x: 0.1835664, y: -0.39851987, z: 0.07708839, w: 0.8952891}
-  m_LocalPosition: {x: 33.800262, y: 28.14674, z: -39.294205}
+  m_LocalRotation: {x: 0.1525275, y: -0.401224, z: 0.0632073, w: 0.900977}
+  m_LocalPosition: {x: 31.2, y: 21.8, z: -17.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 16.21, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 19, y: -48.095, z: -0.51500005}
 --- !u!81 &1479682312
 AudioListener:
   m_ObjectHideFlags: 0

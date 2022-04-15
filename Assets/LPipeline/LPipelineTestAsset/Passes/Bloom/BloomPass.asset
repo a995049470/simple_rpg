@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: BloomPass
   m_EditorClassIdentifier: 
   enable: 1
-  targetCameraType: 29
+  targetCameraType: 31
   bloomMaterial: {fileID: 2100000, guid: 01eaa970ac56d184bb54563e4095f1aa, type: 2}
-  iteratorCount: 3
+  iteratorCount: 4
