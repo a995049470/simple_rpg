@@ -14,7 +14,6 @@ namespace SimpleRPG.Runtime
         //过滤敌人的类型
         public int attackFilter = -1;
         public List<BattleUnit> hiters;
-        public bool isCurrentEnemyInRange;
 
         public void SetAttackNum(int num)
         {
@@ -35,7 +34,7 @@ namespace SimpleRPG.Runtime
             }
             var position = obj.transform.position;
             var dis = Vector3.Distance(center, position);
-            isCurrentEnemyInRange = dis < radius;
+            var isCurrentEnemyInRange = dis < radius;
             if(isCurrentEnemyInRange)
             {
                 var battleUnit = new BattleUnit();

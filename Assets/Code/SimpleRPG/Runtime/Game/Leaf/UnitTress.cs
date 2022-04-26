@@ -52,23 +52,25 @@ namespace SimpleRPG.Runtime
         public System.Action Attack(Msg msg)
         {
             var msgData = msg.GetData<MsgData_Attack>();
-            var origin_attcker = msgData.attacker;
-            var battleUnit = new BattleUnit();
-            battleUnit.leaf = this;
-            battleUnit.unitObj = this.unit;
-            battleUnit.unitKind = this.unitKind;
-            msgData.attacker = battleUnit;
-            return () => msgData.attacker = origin_attcker;
+            //var origin_attcker = msgData.attacker;
+            if((msgData.attackerFilter & unitKind) > 0)
+            {
+                var battleUnit = new BattleUnit();
+                battleUnit.leaf = this;
+                battleUnit.unitObj = this.unit;
+                battleUnit.unitKind = this.unitKind;
+                msgData.attacker = battleUnit;
+            }
+            return emptyAction;
+            // return () => msgData.attacker = origin_attcker;
         }
 
         private System.Action CollectEnemy(Msg msg)
         {
             var msgData = msg.GetData<MsgData_CollectEnemy>();
-            
-            var origin = msgData.isCurrentEnemyInRange;
             var position = unit.transform.position;
             msgData.TryAddEnemy(this, unit, unitKind);
-            return () => msgData.isCurrentEnemyInRange = origin;
+            return emptyAction;
         }
     }
 }

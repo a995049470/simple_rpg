@@ -27,8 +27,10 @@ namespace NullFramework.Runtime
         private const int maxLoopCount = 2048;
         /// <summary>
         /// 获取行为列表 尝试扔到多线程里跑
+        /// 消耗太高了好像...
         /// </summary>
         /// <returns></returns>
+        /// TODO:重写 改写的更加合理一点
         public Stack<GoapActionLeaf> CreateExecutionQueue(GoapAgent agent, StateSet goal, StateSet worldState, List<GoapActionLeaf> actions, out bool isSuccess)
         {
             //挑选所有能够执行的行为
@@ -40,7 +42,8 @@ namespace NullFramework.Runtime
                     possibleActions.Add(action);
                 }
             }
-
+            //可以改成大小堆
+            //用相差的条件数作为排序方式
             var nodeStack = new Stack<GNode>();
             nodeStack.Push(new GNode(null, null, worldState, possibleActions));
             GNode minCostPlanNode = null;

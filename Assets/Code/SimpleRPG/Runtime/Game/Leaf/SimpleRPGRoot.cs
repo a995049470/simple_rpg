@@ -45,7 +45,9 @@ namespace SimpleRPG.Runtime
 
             if(GetKeyDown(4, KeyCode.J, KeyCode.DownArrow))
             {
-                AddMsg(new Msg(GameMsgKind.Attack, new MsgData_Attack(), this));
+                var msgdata = new MsgData_Attack();
+                msgdata.attackerFilter = UnitKindHelper.GetUnitKinds(UnitKind.Player);
+                AddMsg(new Msg(GameMsgKind.Attack, msgdata, this));
             }
         }
 

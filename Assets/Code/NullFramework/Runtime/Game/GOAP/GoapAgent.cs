@@ -10,7 +10,7 @@ namespace NullFramework.Runtime
     public class GoapAgent : FSMTress
     {
         //行为列表
-        private List<GoapActionLeaf> goapActions = new List<GoapActionLeaf>();
+        private List<GoapActionLeaf> goapActions;
         private Stack<GoapActionLeaf> executionStack;
         private GoapPlanner planner;
         //数据提供者
@@ -32,16 +32,16 @@ namespace NullFramework.Runtime
             idleState.AddMsgListener(BaseMsgKind.GoapUpdate, Update_Idle);
             idleState.SetLeafKind(LeafKind.Idle);
             
-            var moveState = new GoapFSMState();
-            moveState.AddMsgListener(BaseMsgKind.GoapUpdate, Update_Move);
-            moveState.SetLeafKind(LeafKind.Move);
+            // var moveState = new GoapFSMState();
+            // moveState.AddMsgListener(BaseMsgKind.GoapUpdate, Update_Move);
+            // moveState.SetLeafKind(LeafKind.Move);
 
             var executeState = new GoapFSMState(); 
             executeState.AddMsgListener(BaseMsgKind.GoapUpdate, Update_Execute);
             executeState.SetLeafKind(LeafKind.Execute);
 
             this.AddFSMLeaf(idleState);
-            this.AddFSMLeaf(moveState);
+            //this.AddFSMLeaf(moveState);
             this.AddFSMLeaf(executeState);
             this.PushFSMLeaf(LeafKind.Idle);
 
@@ -51,7 +51,7 @@ namespace NullFramework.Runtime
         {
             if(leaf is GoapActionLeaf goapAction)
             {
-
+                goapActions.Add(goapAction);
             }
             else
             {
@@ -140,11 +140,11 @@ namespace NullFramework.Runtime
             }
 
             //距离不够 开始移动
-            if(!currentAction.CheckInRange(this))
-            {
-                FSMSwitch(LeafKind.Move);
-                return null;
-            }
+            // if(!currentAction.CheckInRange(this))
+            // {
+            //     FSMSwitch(LeafKind.Move);
+            //     return null;
+            // }
 
             //行为中止
             if(!currentAction.Excute(this))

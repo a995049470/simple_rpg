@@ -12,7 +12,7 @@ namespace NullFramework.Runtime
         //完成之后对世界状态的影响
         StateSet effects;
         //动作目标
-        IGoapActionTarget target;
+        Leaf target;
         //花费
         int cost;
         //目标是否在范围内
@@ -22,6 +22,10 @@ namespace NullFramework.Runtime
         public StateSet Effects { get => effects; }
         public int Cost { get => cost; }
 
+        public GoapActionLeaf() : base()
+        {
+
+        }
         //执行重置
         public void DoReset()
         {

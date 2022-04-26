@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 namespace NullFramework.Runtime
 {
+    
     /// <summary>
     /// 条件 目标 状态的基本形容类
     /// </summary>
-
     //暂时只用int
     public struct State
     {

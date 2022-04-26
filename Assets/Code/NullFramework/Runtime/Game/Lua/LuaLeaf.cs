@@ -67,6 +67,9 @@ namespace NullFramework.Runtime
         //先拿guid凑活 之后换成int
         private string guid;
         private int calssId;
+        //lua代码执行结果
+        protected int excuteState;
+        
         
 
         public LuaLeaf() : base()
@@ -93,12 +96,15 @@ namespace NullFramework.Runtime
             luaEnv.DoString(luaBytes, filename);
         }
 
-        public void ExecuteLuaScript(MsgData data = null)
+        public int ExecuteLuaScript(MsgData data = null)
         {
             if(data != null) luaEnv.Global.Set(key_data, data);
             luaEnv.Global.Set(key_classId, calssId);
             luaEnv.Global.Set(key_guid, guid);
             luaExecuteAction?.Invoke();
+            //暂时就一帧 跑了就成功
+            excuteState = StateKind.Success;
+            return excuteState;
         }
 
         public static void AddMsg(Msg msg)
