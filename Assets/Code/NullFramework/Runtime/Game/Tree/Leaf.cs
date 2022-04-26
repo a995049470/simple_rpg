@@ -32,7 +32,7 @@ namespace NullFramework.Runtime
         //深度
         private int depth;
         public int Depth { get => depth; }
-        public delegate Action MsgCallBack(Msg msg); 
+        public delegate Action MsgListener(Msg msg); 
         protected static Action emptyAction = null;
         //TODO:计划使用uid 只要被free 原来的uid失效 思考中
         // private long uid;
@@ -140,7 +140,7 @@ namespace NullFramework.Runtime
 
         }
 
-        public void AddMsgListener(int msgKind, MsgCallBack action)
+        public void AddMsgListener(int msgKind, MsgListener action)
         {
             if (m_msgRespondMap.TryGetValue(msgKind, out var result_respond))
             {
@@ -155,7 +155,7 @@ namespace NullFramework.Runtime
             }
         }
 
-        public void AddMsgListeners(params (int, MsgCallBack)[] listeners)
+        public void AddMsgListeners(params (int, MsgListener)[] listeners)
         {
             foreach (var listener in listeners)
             {
@@ -163,7 +163,7 @@ namespace NullFramework.Runtime
             }
         }
 
-        public void RemoveMsgListener(int msgKind, MsgCallBack action)
+        public void RemoveMsgListener(int msgKind, MsgListener action)
         {
             if (m_msgRespondMap.TryGetValue(msgKind, out var respond))
             {

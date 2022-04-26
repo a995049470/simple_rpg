@@ -228,6 +228,17 @@ namespace Tests
             c = 100;
             Debug.Log(kk1.k.value);
         } 
+
+        [Test]
+        public void ForTest()
+        {
+            int rank;
+            for (rank = 10; rank >= 1; rank --)
+            {
+                
+            }
+            Assert.AreEqual(rank, 0);
+        }
        
     }
 }

@@ -19,9 +19,11 @@ namespace SimpleRPG.Runtime
             base.InitListeners();
             AddMsgListeners
             (
-                (GameMsgKind.Attack, Attack),
                 (GameMsgKind.CollectEnemy, CollectEnemy),
                 (GameMsgKind.Hit, Hit)
+            );
+            AddHiddenMsgListeners(
+                (GameMsgKind.Attack, Attack)
             );
         }
 

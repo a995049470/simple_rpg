@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3565b5f68a90a343821ac7212cbb356, type: 3}
-  m_Name: EnemyTressData_0
+  m_Script: {fileID: 11500000, guid: a9b09707e0976854b9a599416ab4e286, type: 3}
+  m_Name: UnitTressData_0
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 3919166708672700242, guid: ebd67f2a8bf42a7468735de1130ca468,
+  playerPrefab: {fileID: 3919166708672700242, guid: ebd67f2a8bf42a7468735de1130ca468,
     type: 3}
   position: {x: 5, y: 0, z: 0}
+  unitKind: 2

@@ -5,7 +5,7 @@
         [HideInInspector]_MainTex ("Texture", 2D) = "white" {}
         _Threshold("Threshold", Range(0, 2)) = 1
         _SoftThreshold("SoftThreshold", Range(0, 1)) = 0
-        _Intensity("Intensity", Range(0, 10)) = 1
+        _Intensity("Intensity", Range(0, 4)) = 1
         
     }
 	HLSLINCLUDE

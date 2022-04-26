@@ -8,7 +8,7 @@ namespace SimpleRPG.Runtime
         public string luaFile;
         public float attackRadius;
         public int attackNum;
-    
+        public UnitKind attackFilter;
     }
 }
 

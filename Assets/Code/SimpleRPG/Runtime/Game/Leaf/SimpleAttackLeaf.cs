@@ -9,6 +9,7 @@ namespace SimpleRPG.Runtime
 
         public float attackRadius;
         public int attackNum;
+        public int attackFilter;
 
         public override void OnReciveDataFinish()
         {
@@ -16,6 +17,7 @@ namespace SimpleRPG.Runtime
             SetLuaCodeByFile(leafData.luaFile);
             this.attackRadius = leafData.attackRadius;
             this.attackNum = leafData.attackNum;
+            this.attackFilter = ((int)leafData.attackFilter);
         }
 
         protected override void InitListeners()
@@ -38,6 +40,7 @@ namespace SimpleRPG.Runtime
             data_collectEnemy.radius = this.attackRadius;
             data_collectEnemy.SetAttackNum(this.attackNum);
             data_collectEnemy.center = msgData.attacker.unitObj.transform.position;
+            data_collectEnemy.attackFilter = attackFilter;
             var msg_collectEnemy = new Msg(GameMsgKind.CollectEnemy, data_collectEnemy);
             root.SyncExecuteMsg(msg_collectEnemy);
             ExecuteLuaScript(msgData);

@@ -8,6 +8,12 @@ namespace SimpleRPG.Runtime
         public Leaf leaf;
         public GameObject unitObj;
         public AbilityData abilityData;
+        public int attackFilter = -1;
+        public int unitKind;
+        //距离攻击者的距离
+        public float distance;
+        
+    
     }
 
 }

@@ -39,7 +39,7 @@ namespace SimpleRPG.Runtime
                 var data_move = new MsgData_Move();
                 data_move.dir = dir;
                 data_move.strength = 1;
-                data_move.isPlayer = true;
+                data_move.unitType = UnitKindHelper.GetUnitKinds(UnitKind.Player);
                 AddMsg(new Msg(GameMsgKind.Move, data_move, this));
             }
 

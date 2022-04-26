@@ -4,13 +4,14 @@ using UnityEngine;
 namespace SimpleRPG.Runtime
 {
 
-    [CreateAssetMenu(fileName = "PlayerTressData", menuName = "SimpleRPG/PlayerTressData")]
-    public class PlayerTressData : LeafData<PlayerTress>, ITRSSetter
-    {
+    [CreateAssetMenu(fileName = "UnitTressData", menuName = "SimpleRPG/UnitTressData", order = 0)]
+    public class UnitTressData : LeafData<UnitTress>, ITRSSetter {
         [SerializeField]
         private GameObject playerPrefab;
         [SerializeField]
         private Vector3 position;
+        [SerializeField]
+        public UnitKind unitKind;
         public GameObject InstantiatePlayer()
         {
             var go = UObjectUtility.InstantiateGameObject(playerPrefab);

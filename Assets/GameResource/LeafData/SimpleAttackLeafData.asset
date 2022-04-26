@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: SimpleAttackLeafData
   m_EditorClassIdentifier: 
   luaFile: simple_attack
-  attackRadius: 10
+  attackRadius: 20
   attackNum: 1
+  attackFilter: 2

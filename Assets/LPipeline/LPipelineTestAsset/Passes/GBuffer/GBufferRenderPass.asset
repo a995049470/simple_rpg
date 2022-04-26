@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: GBufferRenderPass
   m_EditorClassIdentifier: 
   enable: 1
+  targetCameraType: 31

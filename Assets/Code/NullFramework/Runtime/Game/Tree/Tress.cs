@@ -20,12 +20,15 @@ namespace NullFramework.Runtime
     //状态机+普通的父子节点
     public class Tress : Leaf
     {
+        
         //所有状态机子节点 
         public Tress() : base()
         {
            m_msgRespondMap = new Dictionary<int, MsgRespond>();
+           hiddenMsgListenerDic = new Dictionary<int, MsgListener>();
         }
-
+        //潜伏的事件 在该类型事件添加监听时候会一起被加到监听列表
+        private Dictionary<int, MsgListener> hiddenMsgListenerDic;
         /// <summary>
         /// 从字节点收集信息
         /// </summary>
@@ -33,7 +36,29 @@ namespace NullFramework.Runtime
         protected void CollectInfo(Msg msg)
         {
             OnUpdate(msg);
+            
         }
+
+        protected void AddHiddenMsgListener(int msgKind, MsgListener listener)
+        {
+            if(hiddenMsgListenerDic.TryGetValue(msgKind, out var msgListener))
+            {
+                msgListener += listener;
+            }
+            else
+            {
+                hiddenMsgListenerDic[msgKind] = listener;
+            }
+        }
+
+        public void AddHiddenMsgListeners(params (int, MsgListener)[] listeners)
+        {
+            foreach (var listener in listeners)
+            {
+                AddHiddenMsgListener(listener.Item1, listener.Item2);
+            }
+        }
+        
 
         //增加信息传导叶节点
         public void AddMsgLeaf(int msgKind, Leaf leaf)
@@ -45,6 +70,12 @@ namespace NullFramework.Runtime
             else
             {
                 var respond = new MsgRespond();
+                //触发潜伏事件的添加
+                if(hiddenMsgListenerDic.TryGetValue(msgKind, out var listener))
+                {
+                    respond.AddMsgAction(listener);
+                    hiddenMsgListenerDic.Remove(msgKind);
+                }
                 respond.AddLeaf(leaf);
                 m_msgRespondMap[msgKind] = respond;
                 parent?.AddMsgLeaf(msgKind, this);

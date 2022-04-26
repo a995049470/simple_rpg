@@ -6,7 +6,7 @@ namespace NullFramework.Runtime
 {
     public class MsgRespond
     {
-        private MsgCallBack m_msgAction;
+        private MsgListener m_msgAction;
         private List<Leaf> m_nextLeafList;
         
         public MsgRespond()
@@ -20,12 +20,12 @@ namespace NullFramework.Runtime
             return m_msgAction == null && m_nextLeafList.Count == 0;
         }
 
-        public void AddMsgAction(MsgCallBack action)
+        public void AddMsgAction(MsgListener action)
         {
             m_msgAction += action;
         }
 
-        public void RemoveMsgAction(MsgCallBack action)
+        public void RemoveMsgAction(MsgListener action)
         {
             m_msgAction -= action;
         }
