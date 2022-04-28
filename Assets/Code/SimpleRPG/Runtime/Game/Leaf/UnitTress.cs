@@ -23,7 +23,7 @@ namespace SimpleRPG.Runtime
         
         public override void OnReciveDataFinish()
         {
-            unit = leafData.InstantiatePlayer();
+            unit = leafData.InstantiateUnit();
             look = unit.transform.Find("look"); 
             unitKind = ((int)leafData.unitKind);
         }

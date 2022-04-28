@@ -50,25 +50,25 @@ namespace NullFramework.Runtime
         /// <returns></returns>
         public abstract bool IsExcuteableAfterMove(GoapAgent agent);
         
-        public void AddPrecondition(State state)
-        {
-            preconditions[state.Key] = state;
-        }
+        // public void AddPrecondition(State state)
+        // {
+        //     preconditions[state.Key] = state;
+        // }
 
-        public void RemovePreconditon(State state)
-        {
-            preconditions.Remove(state.Key);
-        }
+        // public void RemovePreconditon(State state)
+        // {
+        //     preconditions.Remove(state.Key);
+        // }
 
-        public void AddEffect(State state)
-        {
-            effects[state.Key] = state;
-        }
+        // public void AddEffect(State state)
+        // {
+        //     effects[state.Key] = state;
+        // }
 
-        public void  RemoveEffect(State state)
-        {
-            effects.Remove(state.Key);
-        }
+        // public void  RemoveEffect(State state)
+        // {
+        //     effects.Remove(state.Key);
+        // }
 
     }
 }

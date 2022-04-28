@@ -24,7 +24,10 @@ namespace SimpleRPG.Runtime
                 return cacheLeaf;
             }
         }
+        private GameObject previewObj;
 
+       
+        
         public void ClearCache()
         {
             cacheLeaf = null;
@@ -39,13 +42,23 @@ namespace SimpleRPG.Runtime
             isRoot = data is IRootData;
             setter = data as ITRSSetter;
             this.name = data.GetType().Name.Replace("Data", "");
+            //编辑器下会产生预览的物体
+            if(!Application.isPlaying)
+            {
+                if(previewObj != null) DestroyImmediate(previewObj);
+            }
         }
+        
 
         private void Update() {
             if(Application.isPlaying) return;
             if(setter != null)
             {
                 setter.SetTRS(this.transform.position, this.transform.rotation, this.transform.lossyScale);
+            }
+            if(previewObj != null)
+            {
+                previewObj.transform.SetPositionAndRotation(this.transform.position, this.transform.rotation);
             }
         }
 

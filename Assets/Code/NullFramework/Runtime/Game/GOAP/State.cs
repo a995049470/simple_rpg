@@ -3,37 +3,54 @@ using System.Collections;
 using System.Collections.Generic;
 namespace NullFramework.Runtime
 {
-    
     /// <summary>
     /// 条件 目标 状态的基本形容类
     /// </summary>
     //暂时只用int
-    public struct State
+    public class State
     {
+        private enum ValueType
+        {
+            Empty       = 0,
+            Bool        = 1,
+            Int         = 2,
+            Float       = 3,
+            Leaf        = 4
+        }
+
         private int key;
         public int Key { get => key; }
-        private int value;
-        
+        private int value_int;
+        private float vlaue_float;
+        private bool value_bool;
+        private float value_float;
+        private Leaf value_leaf;
+        private ValueType type;
+
+        public State()
+        {
+        }
+
         public State(int _key, int _value)
         {
             key = _key;
-            value = _value;
+        }
+
+        public void SetInt(int value)
+        {
+            value_int = value;
+            type = ValueType.Int;
+        }
+
+        public void SetBool(bool value)
+        {
+            value_bool = value;
+            type = ValueType.Bool;
         }
 
         public bool IsInclude(State state)
         {
-            return value == state.value;
-        }
-
-        /// <summary>
-        /// 判断该状态能否被消灭
-        /// </summary>
-        /// <param name="state"></param>
-        /// <returns></returns>
-        public bool IsDieOut(State state)
-        {
-            var isPass = Key == state.Key && value == -state.value;
-            return isPass;
+            return true;
         }
 
         /// <summary>
@@ -42,7 +59,7 @@ namespace NullFramework.Runtime
         /// <param name="state"></param>
         public State Add(State state)
         {
-            return new State(state.key, state.value);
+            return default;
         }
         
         /// <summary>
@@ -51,10 +68,9 @@ namespace NullFramework.Runtime
         /// <param name="state"></param>
         /// <returns></returns>
         public bool TryCombine(State target, out State state)
-        {
-            state = new State(target.Key, target.value);
-            bool isAllowCombine = state.value == target.value;
-            return isAllowCombine;
+        { 
+            state = new State();
+            return true;
         }
         
     }
