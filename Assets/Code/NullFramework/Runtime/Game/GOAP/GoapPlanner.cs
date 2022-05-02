@@ -35,13 +35,13 @@ namespace NullFramework.Runtime
         {
             //挑选所有能够执行的行为
             var possibleActions = new List<GoapActionLeaf>();
-            foreach (var action in actions)
-            {
-                if(action.CheckActionPreconditions(agent))
-                {
-                    possibleActions.Add(action);
-                }
-            }
+            // foreach (var action in actions)
+            // {
+            //     if(action.CheckActionPreconditions(agent))
+            //     {
+            //         possibleActions.Add(action);
+            //     }
+            // }
             //可以改成大小堆
             //用相差的条件数作为排序方式
             var nodeStack = new Stack<GNode>();

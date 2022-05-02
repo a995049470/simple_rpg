@@ -1,24 +1,15 @@
 using UnityEngine;
 namespace NullFramework.Runtime
 {
-
-    public class GoapActionLeafData<T> : LeafData<T> where T : GoapActionLeaf, new()
+    public class GoapGoalLeafData<T> : LeafData<T> where T : GoapGoalLeaf, new()
     {
         [SerializeField]
-        private StateData[] preconditions;
-        [SerializeField]
-        private StateData[] effects;
+        private StateData[] goalStates;
 
-        public StateSet CreatePreconditions()
+        public StateSet CreateGoalStates()
         {
-            return StateDataListToStateSet(preconditions);
+            return StateDataListToStateSet(goalStates);
         }
-
-        public StateSet CreateEffects()
-        {
-            return StateDataListToStateSet(effects);
-        }
-
         protected StateSet StateDataListToStateSet(StateData[] stateDatas)
         {
             var set = new StateSet();
@@ -29,5 +20,5 @@ namespace NullFramework.Runtime
             }
             return set;
         }
-    } 
+    }
 }

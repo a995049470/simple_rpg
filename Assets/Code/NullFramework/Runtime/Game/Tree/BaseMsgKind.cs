@@ -7,6 +7,11 @@ namespace NullFramework.Runtime
         //data:GameObject
         public const int InitFightMap = prefix | 2;  
         public const int BehaviorUpdate = prefix | 3;    
+        //收集goapAction
+        //public const int CollectGoapAction = prefix | 7; 
+        //收集goapGoal
+        public const int CollectGoapGoal = prefix | 8;
+
     }
 
 
