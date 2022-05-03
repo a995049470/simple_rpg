@@ -5,5 +5,6 @@ namespace SimpleRPG.Runtime
     public interface IGoapGoalLeafData
     {
         StateSet CreateGoalStates();
+        int GetPriority();
     }
 }

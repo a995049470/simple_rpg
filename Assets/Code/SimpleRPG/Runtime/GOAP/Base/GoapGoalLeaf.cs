@@ -14,7 +14,9 @@ namespace SimpleRPG.Runtime
         public virtual void SetLeafData(LeafData data)
         {
             this.leafData = data as T;
-            goalStates = (data as IGoapGoalLeafData).CreateGoalStates();
+            var goalData = data as IGoapGoalLeafData;
+            goalStates = goalData.CreateGoalStates();
+            priority = goalData.GetPriority();
         }
     }
 }

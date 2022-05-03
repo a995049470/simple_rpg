@@ -67,8 +67,6 @@ namespace NullFramework.Runtime
             
             if(worldStates == null) worldStates = new StateSet();
             else worldStates.Clear();
-            //填充数据
-            worldStates[BaseStateKind.Target] = new State(BaseStateKind.Target, data.target);
             
             //收集目标
             var data_collectGoapGoal = new MsgData_CollectGoapGoal();
