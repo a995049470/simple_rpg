@@ -39,7 +39,7 @@ namespace SimpleRPG.Runtime
 
             //var origin = msgData.hiters;
             //数据未被初始化
-            if(msgData.attackState == StateKind.None)
+            if(msgData.attackState == RunState.None)
             {
                 //收集敌人
                 msgData.hiters = new List<BattleUnit>();
@@ -51,13 +51,13 @@ namespace SimpleRPG.Runtime
                 data_collectEnemy.attackFilter = attackFilter;
                 var msg_collectEnemy = new Msg(GameMsgKind.CollectEnemy, data_collectEnemy);
                 root.SyncExecuteMsg(msg_collectEnemy);
-                msgData.attackState = StateKind.Runing;
+                msgData.attackState = RunState.Runing;
             }
             int state = ExecuteLuaScript(msgData);
             msgData.attackState = state;
 
             //下一帧继续攻击命令的执行
-            if(state == StateKind.Runing)
+            if(state == RunState.Runing)
             {
                 var nextFrameMsg = new Msg(GameMsgKind.Attack, msgData, this, this);
                 AddNextFrameMsg(nextFrameMsg);

@@ -1,18 +1,14 @@
-using System.Collections.Generic;
-
 namespace NullFramework.Runtime
 {
     /// <summary>
     /// goap行为
     /// </summary>
-    public abstract class GoapActionLeaf : Leaf
+    public abstract class BaseGoapActionLeaf : Leaf
     {
         //前置条件
-        StateSet preconditions;
+        protected StateSet preconditions;
         //完成之后对世界状态的影响
-        StateSet effects;
-        //动作目标
-        Leaf target;
+        protected StateSet effects;
         //花费
         int cost;
         //目标是否在范围内
@@ -22,7 +18,7 @@ namespace NullFramework.Runtime
         public StateSet Effects { get => effects; }
         public int Cost { get => cost; }
 
-        public GoapActionLeaf() : base()
+        public BaseGoapActionLeaf() : base()
         {
 
         }
@@ -30,15 +26,14 @@ namespace NullFramework.Runtime
         //执行重置
         public void DoReset()
         {
-            target = null;
             isInRange = false;
             Reset();
         }
         //重置变量
-        protected abstract void Reset();
+        protected virtual void Reset() { }
         //动作是否完成
-        public abstract bool IsDone();
-        
-        public abstract bool Execute(StateSet worldState);
+        public virtual bool IsDone() { return true; } 
+        public virtual bool Execute(StateSet worldState) { return true; } 
+        public virtual bool CheckActionPreconditions(StateSet worldState) { return true; } 
     }
 }

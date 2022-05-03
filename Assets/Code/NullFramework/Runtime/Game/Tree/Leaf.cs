@@ -93,8 +93,7 @@ namespace NullFramework.Runtime
             if(m_msgRespondMap.TryGetValue(msg.Kind, out var respond))
             {
                 // UnityEngine.Debug.Log($"{this.GetType()} 接收导了 {msg.GetData().GetType()}");
-                bool isContinue = !msg.isStop;
-                respond.Invoke(msg, true, isContinue);
+                respond.Invoke(msg);
                 isHasRespond = !respond.IsEmpty();
             }
             else

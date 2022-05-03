@@ -1,8 +1,9 @@
+using NullFramework.Runtime;
 using UnityEngine;
-namespace NullFramework.Runtime
+namespace SimpleRPG.Runtime
 {
 
-    public class GoapActionLeafData<T> : LeafData<T> where T : GoapActionLeaf, new()
+    public class GoapActionLeafData<T> : LeafData<T>, IGoapActionLeafData where T : BaseGoapActionLeaf, new()
     {
         [SerializeField]
         private StateData[] preconditions;

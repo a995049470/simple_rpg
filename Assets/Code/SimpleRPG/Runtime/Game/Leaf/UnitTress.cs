@@ -16,7 +16,8 @@ namespace SimpleRPG.Runtime
                 (GameMsgKind.Move, Move),
                 (GameMsgKind.FollowTarget, FollowTarget),
                 (GameMsgKind.Attack, Attack),
-                (GameMsgKind.CollectEnemy, CollectEnemy)
+                (GameMsgKind.CollectEnemy, CollectEnemy),
+                (BaseMsgKind.GoapUpdate, GoapUpdate)
             );
         }
 
@@ -71,6 +72,26 @@ namespace SimpleRPG.Runtime
             var position = unit.transform.position;
             msgData.TryAddEnemy(this, unit, unitKind);
             return emptyAction;
+        }
+
+        private System.Action GoapUpdate(Msg msg)
+        {
+            var cb = emptyAction;
+            var msgdata = msg.GetData<MsgData_GoapUpdate>();
+            var isPassFilter = (unitKind & msgdata.filter) > 0;
+            if(isPassFilter)
+            {
+                var orgin = msgdata.target;
+                msgdata.target = this;
+                cb = ()=> msgdata.target = orgin;
+            }
+            else
+            {
+                var origin = msg.isStop;
+                msg.isStop = true;
+                cb = ()=> msg.isStop = origin;
+            }
+            return cb;
         }
     }
 }

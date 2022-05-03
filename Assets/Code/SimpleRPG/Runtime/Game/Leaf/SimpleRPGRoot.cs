@@ -9,8 +9,17 @@ namespace SimpleRPG.Runtime
         protected override void AddFixedMsgs()
         {
             base.AddFixedMsgs();
-            var data_followTarget = new MsgData_FollowTarget();
-            AddMsg(new Msg(GameMsgKind.FollowTarget, data_followTarget, this));
+            //发起一个摄像机跟随的固定指令
+            {
+                var data_followTarget = new MsgData_FollowTarget();
+                AddMsg(new Msg(GameMsgKind.FollowTarget, data_followTarget, this));
+            }
+            //发起一个ai运行的指令
+            {
+                var msgdata = new MsgData_GoapUpdate();
+                msgdata.filter = UnitKindHelper.GetUnitKinds(UnitKind.Enemy);
+                AddMsg(new Msg(BaseMsgKind.GoapUpdate, msgdata, this));
+            }
         }
 
         protected override void InputProcess()

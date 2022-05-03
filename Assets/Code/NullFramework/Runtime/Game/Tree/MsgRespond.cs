@@ -43,10 +43,11 @@ namespace NullFramework.Runtime
             m_nextLeafList.Remove(leaf);
         }
 
-        public void Invoke(Msg msg, bool isInvokeSelf, bool isContinue)
+        public void Invoke(Msg msg)
         {
             Action cb = null;
-            if(isInvokeSelf) cb = m_msgAction?.Invoke(msg);
+            cb = m_msgAction?.Invoke(msg);
+            bool isContinue = !msg.isStop;
             if(isContinue)
             {
                 var count = m_nextLeafList.Count;
@@ -57,7 +58,7 @@ namespace NullFramework.Runtime
                     leaf.OnUpdate(msg);
                 }
             }
-            if(isInvokeSelf) cb?.Invoke();
+            cb?.Invoke();
         }
         
     }

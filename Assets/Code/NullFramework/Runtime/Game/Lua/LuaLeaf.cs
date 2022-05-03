@@ -103,7 +103,7 @@ namespace NullFramework.Runtime
             luaEnv.Global.Set(key_guid, guid);
             luaExecuteAction?.Invoke();
             //暂时就一帧 跑了就成功
-            excuteState = StateKind.Success;
+            excuteState = RunState.Success;
             return excuteState;
         }
 

@@ -6,13 +6,13 @@ namespace NullFramework.Runtime
 {
     public class GNode
     {
-        public GoapActionLeaf action;
+        public BaseGoapActionLeaf action;
         public GNode last;
         public int cost;
         public StateSet currentState;
-        public List<GoapActionLeaf> possibleActions;
+        public List<BaseGoapActionLeaf> possibleActions;
         
-        public GNode(GoapActionLeaf _action, GNode _last, StateSet _state, List<GoapActionLeaf> _actions)
+        public GNode(BaseGoapActionLeaf _action, GNode _last, StateSet _state, List<BaseGoapActionLeaf> _actions)
         {
             action = _action;
             if(action != null) cost += action.Cost;
@@ -31,21 +31,21 @@ namespace NullFramework.Runtime
         /// </summary>
         /// <returns></returns>
         /// TODO:重写 改写的更加合理一点
-        public Stack<GoapActionLeaf> CreateExecutionQueue(GoapAgent agent, StateSet goal, StateSet worldState, List<GoapActionLeaf> actions, out bool isSuccess)
+        public Stack<BaseGoapActionLeaf> CreateExecutionQueue(StateSet goalStates, StateSet originWorldStates, List<BaseGoapActionLeaf> actions, out bool isSuccess)
         {
-            //挑选所有能够执行的行为
-            var possibleActions = new List<GoapActionLeaf>();
-            // foreach (var action in actions)
-            // {
-            //     if(action.CheckActionPreconditions(agent))
-            //     {
-            //         possibleActions.Add(action);
-            //     }
-            // }
+            if(goalStates == null || goalStates.Count == 0)
+            {
+                isSuccess = false;
+                return null;
+            }
+            
+            //这个写法有问题...
+            var possibleActions = actions;
+
             //可以改成大小堆
             //用相差的条件数作为排序方式
             var nodeStack = new Stack<GNode>();
-            nodeStack.Push(new GNode(null, null, worldState, possibleActions));
+            nodeStack.Push(new GNode(null, null, originWorldStates, possibleActions));
             GNode minCostPlanNode = null;
 
             for (int i = 0; i < maxLoopCount; i++)
@@ -67,13 +67,14 @@ namespace NullFramework.Runtime
                     {
                         continue;
                     }
-                    if(!IsIncludeTargetStates(action.Preconditions, worldState))
+
+                    if(!IsIncludeTargetStates(action.Preconditions, node.currentState))
                     {
                         continue;
                     }
-                    var currentState = CreateNewWorldState(worldState, action.Effects);
-                    var isFinishGoal = IsIncludeTargetStates(goal, currentState);
-                    var remainActions = new List<GoapActionLeaf>();
+                    var currentState = CreateNewWorldState(node.currentState, action.Effects);
+                    var isFinishGoal = IsIncludeTargetStates(goalStates, currentState);
+                    var remainActions = new List<BaseGoapActionLeaf>();
                     if(!isFinishGoal)
                     {
                         //假设每个行为在一个计划中只会执行一次
@@ -92,7 +93,7 @@ namespace NullFramework.Runtime
 
             }
 
-            var actionStack = new Stack<GoapActionLeaf>();
+            var actionStack = new Stack<BaseGoapActionLeaf>();
             if(minCostPlanNode != null)
             {
                 isSuccess = true;
@@ -110,14 +111,20 @@ namespace NullFramework.Runtime
             return actionStack;
         }   
         
-        List<GoapActionLeaf> GetRemainActions(List<GoapActionLeaf> actions, int removeIndex)
+        List<BaseGoapActionLeaf> GetRemainActions(List<BaseGoapActionLeaf> actions, int removeIndex)
         {
-            var remain = new List<GoapActionLeaf>();
+            var remain = new List<BaseGoapActionLeaf>();
             remain.AddRange(actions.GetRange(0, removeIndex));
             remain.AddRange(actions.GetRange(removeIndex + 1, actions.Count - removeIndex - 1));
             return remain;
         }
 
+        /// <summary>
+        /// 简单的合并
+        /// </summary>
+        /// <param name="worldState"></param>
+        /// <param name="effcts"></param>
+        /// <returns></returns>
         StateSet CreateNewWorldState(StateSet worldState, StateSet effcts)
         {
             var res = new StateSet();
@@ -127,14 +134,7 @@ namespace NullFramework.Runtime
             }
             foreach (var kvp in effcts)
             {
-                if(res.TryGetValue(kvp.Key, out var value))
-                {
-                    res[kvp.Key] = value.Add(kvp.Value);
-                }
-                else
-                {
-                    res[kvp.Key] = kvp.Value;
-                }
+                res[kvp.Key] = kvp.Value;
             }
             return res;
         }
@@ -199,8 +199,8 @@ namespace NullFramework.Runtime
         /// <summary>
         /// 是否包含所有目标状态
         /// </summary>
-        /// <param name="target"></param>
-        /// <param name="states"></param>
+        /// <param name="target">动作的前置函数</param>
+        /// <param name="states">当前的世界状态</param>
         /// <returns></returns>
         bool IsIncludeTargetStates(StateSet target, StateSet states)
         {
