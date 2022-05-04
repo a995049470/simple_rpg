@@ -103,15 +103,24 @@ namespace NullFramework.Runtime
                 currentAction.DoReset();
             }
 
-            currentAction.Execute(worldStates);
+            bool isContinue = currentAction.Execute(worldStates);
+            //行为失败
+            if(!isContinue)
+            {
+                Fail();
+            }
             //行为完成
-            if(currentAction.IsDone())
+            else if(currentAction.IsDone())
             {
                 ActionFinish();
             }
         }
 
-        
+        private void Fail()
+        {
+            currentAction = null;
+            executionStack.Clear();
+        }
         
         /// <summary>
         /// 判断所有行为列表是否完成
@@ -136,6 +145,7 @@ namespace NullFramework.Runtime
         /// </summary>
         private void ActionFinish()
         {
+            currentAction.Compelete(worldStates);
             currentAction = null;
         }
 

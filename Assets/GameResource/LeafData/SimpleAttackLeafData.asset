@@ -16,3 +16,4 @@ MonoBehaviour:
   attackRadius: 20
   attackNum: 1
   attackFilter: 2
+  coolDownTime: 1

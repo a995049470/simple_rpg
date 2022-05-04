@@ -9,6 +9,7 @@ namespace SimpleRPG.Runtime
         public float attackRadius;
         public int attackNum;
         public UnitKind attackFilter;
+        public float coolDownTime;
     }
 }
 

@@ -83,11 +83,10 @@ namespace NullFramework.Runtime
         {
             bool isHasRespond = true;
             //失活态不除发OnUpdate
-            if(!isActive || !isWake)
+            if(!isActive || !isWake || msg.isStop)
             {
                 return isHasRespond;
             }
-
             //现在是深度优先的遍历方式
 
             if(m_msgRespondMap.TryGetValue(msg.Kind, out var respond))

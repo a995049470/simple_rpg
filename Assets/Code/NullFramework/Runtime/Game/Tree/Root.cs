@@ -34,7 +34,10 @@ namespace NullFramework.Runtime
         private float realDeltaTime;
         public float RealDeltaTime { get => realDeltaTime; }
         private float lastUpdateTime;
-        private float time = 0;
+        //更新用的计时器
+        private float updateTimer = 0;
+        public float CurrentTime { get => lastUpdateTime; }
+        
         
         public static void Dispose()
         {
@@ -54,11 +57,12 @@ namespace NullFramework.Runtime
         public void Update(float deltaTime)
         {
             InputProcess();
-            time += deltaTime;
-            while (time > FrameDeltaTime)
+            updateTimer += deltaTime;
+            while (updateTimer > FrameDeltaTime)
             {
                 realDeltaTime = Time.time - lastUpdateTime;
-                time -= FrameDeltaTime; 
+                updateTimer -= FrameDeltaTime; 
+                lastUpdateTime = Time.time;
                 FrameUpdate();
             }
         }
@@ -77,7 +81,6 @@ namespace NullFramework.Runtime
             m_frame++;
             //交换缓存
             Swap();
-            lastUpdateTime = Time.time;
         }
 
         private void InvokeMsg(Msg msg)

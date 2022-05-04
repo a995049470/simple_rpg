@@ -20,6 +20,11 @@ namespace SimpleRPG.Runtime
             }
             return res;
         }
+
+        public static int AllKinds()
+        {
+            return -1;
+        }
     }
 }
 

@@ -19,7 +19,10 @@ namespace SimpleRPG.Runtime
         public const int Hit = prefix | 5;
         //颜色tween
         public const int ColorTween = prefix | 6;
-        
-        
+        //收集世界状态相关 7 - 100
+        public const int Collect_Launcher = prefix | 7;
+        public const int Collect_InAttackRange = prefix | 8;
+        public const int Collect_AttackCoolDown = prefix | 9;
+        public const int Collect_Player = prefix | 10;
     }
 }

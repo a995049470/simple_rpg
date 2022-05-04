@@ -6,10 +6,13 @@ namespace NullFramework.Runtime
     public enum ValueType
     {
         Empty = 0,
-        Bool = 1,
+        //Bool = 1,
         Int = 2,
         Float = 3,
-        Object = 4
+        Object = 4,
+        //只是个字段 不包含任何值
+        Filed = 5,
+        
     }
     
     /// <summary>
@@ -26,10 +29,20 @@ namespace NullFramework.Runtime
         private float value_float;
         private object value_obj;
         private ValueType type;
+        private bool isValid;
+        public bool IsVaild { get => isValid; }
 
-        public State(int _key = 0)
+        public State(int _key = 0, bool _isValid = false)
         {
-            type = ValueType.Empty;
+            if(_isValid)
+            {
+               Set();
+            }
+            else
+            {
+                type = ValueType.Empty;
+                isValid = _isValid;
+            }
         }
 
         public State(int _key, int _value)
@@ -38,11 +51,6 @@ namespace NullFramework.Runtime
             Set(_value);
         }
         public State(int _key, float _value)
-        {
-            key = _key;
-            Set(_value);
-        }
-        public State(int _key, bool _value)
         {
             key = _key;
             Set(_value);
@@ -57,21 +65,30 @@ namespace NullFramework.Runtime
         {
             value_int = value;
             type = ValueType.Int;
+            isValid = true;
         }
-        public void Set(bool value)
-        {
-            value_bool = value;
-            type = ValueType.Bool;
-        }
+        // public void Set(bool value)
+        // {
+        //     value_bool = value;
+        //     type = ValueType.Bool;
+        //     isValid = true;
+        // }
         public void Set(float value)
         {
             value_float = value;
             type = ValueType.Float;
+            isValid = true;
         }
         public void Set(object value)
         {
             value_obj = value;
             type = ValueType.Object;
+            isValid = true;
+        }
+        public void Set()
+        {
+            type = ValueType.Filed;
+            isValid = true;
         }
 
         public int GetInt()
@@ -96,15 +113,20 @@ namespace NullFramework.Runtime
             return value_float;
         }
 
-        public bool GetBool()
+        // public bool GetBool()
+        // {
+        // #if UNITY_EDITOR
+        //     if(type != ValueType.Bool)
+        //     {
+        //         throw new System.Exception("类型不为bool");
+        //     }
+        // #endif
+        //     return value_bool;
+        // }
+
+        public T Get<T>() where T : class
         {
-        #if UNITY_EDITOR
-            if(type != ValueType.Bool)
-            {
-                throw new System.Exception("类型不为bool");
-            }
-        #endif
-            return value_bool;
+            return GetObject() as T;
         }
 
         public object GetObject()
@@ -112,7 +134,7 @@ namespace NullFramework.Runtime
         #if UNITY_EDITOR
             if(type != ValueType.Object)
             {
-                throw new System.Exception("类型不为leaf");
+                throw new System.Exception("类型不为object");
             }
         #endif
             return value_obj;
@@ -124,7 +146,7 @@ namespace NullFramework.Runtime
         }
 
         /// <summary>
-        /// 相同的状态叠加
+        /// TODO:相同的状态叠加
         /// </summary>
         /// <param name="state"></param>
         public State Add(State state)
@@ -133,7 +155,7 @@ namespace NullFramework.Runtime
         }
         
         /// <summary>
-        /// 条件合并
+        /// TODO:条件合并 
         /// </summary>
         /// <param name="state"></param>
         /// <returns></returns>

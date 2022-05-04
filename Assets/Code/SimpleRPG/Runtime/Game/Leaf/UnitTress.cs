@@ -5,7 +5,7 @@ namespace SimpleRPG.Runtime
 {
     public class UnitTress : Tress<UnitTressData>
     {
-        private GameObject unit;
+        private GameObject unitObj;
         private Transform look;
         private int unitKind;
 
@@ -19,13 +19,17 @@ namespace SimpleRPG.Runtime
                 (GameMsgKind.CollectEnemy, CollectEnemy),
                 (BaseMsgKind.GoapUpdate, GoapUpdate)
             );
+            AddMsgListeners(
+                (GameMsgKind.Collect_Launcher, Collect_Launcher),
+                (GameMsgKind.Collect_Player, Collect_Player)
+            );
         }
 
         
         public override void OnReciveDataFinish()
         {
-            unit = leafData.InstantiateUnit();
-            look = unit.transform.Find("look"); 
+            unitObj = leafData.InstantiateUnit();
+            look = unitObj.transform.Find("look"); 
             unitKind = ((int)leafData.unitKind);
         }
 
@@ -36,7 +40,7 @@ namespace SimpleRPG.Runtime
             if((msgData.unitType & unitKind) > 0)
             {
                 var origin = msgData.mover;
-                msgData.mover = unit.transform;
+                msgData.mover = unitObj.transform;
                 cb = () => msgData.mover = origin;
             }
             return cb;
@@ -58,7 +62,7 @@ namespace SimpleRPG.Runtime
             {
                 var battleUnit = new BattleUnit();
                 battleUnit.leaf = this;
-                battleUnit.unitObj = this.unit;
+                battleUnit.unitObj = this.unitObj;
                 battleUnit.unitKind = this.unitKind;
                 msgData.attacker = battleUnit;
             }
@@ -69,8 +73,8 @@ namespace SimpleRPG.Runtime
         private System.Action CollectEnemy(Msg msg)
         {
             var msgData = msg.GetData<MsgData_CollectEnemy>();
-            var position = unit.transform.position;
-            msgData.TryAddEnemy(this, unit, unitKind);
+            var position = unitObj.transform.position;
+            msgData.TryAddEnemy(this, unitObj, unitKind);
             return emptyAction;
         }
 
@@ -92,6 +96,31 @@ namespace SimpleRPG.Runtime
                 cb = ()=> msg.isStop = origin;
             }
             return cb;
+        }
+        
+        private System.Action Collect_Launcher(Msg msg)
+        {
+            var msgdata = msg.GetData<MsgData_Collect>();
+            var unit = new BaseUnit();
+            unit.leaf = this;
+            unit.unitObj = unitObj;
+            msgdata.state.Set(unit);
+            return emptyAction;
+        }
+
+        private System.Action Collect_Player(Msg msg)
+        {
+            bool isPlayer = (unitKind & ((int)UnitKind.Player))> 0;
+            if(isPlayer)
+            {
+                msg.isStop = true;
+                var msgdata = msg.GetData<MsgData_Collect>();
+                var unit = new BaseUnit();
+                unit.leaf = this;
+                unit.unitObj = unitObj;
+                msgdata.state.Set(unit);
+            }
+            return emptyAction;
         }
     }
 }

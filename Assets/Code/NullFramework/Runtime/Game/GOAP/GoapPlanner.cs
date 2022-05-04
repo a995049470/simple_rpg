@@ -139,62 +139,57 @@ namespace NullFramework.Runtime
             return res;
         }
 
-        /// <summary>
-        /// 尝试合并两个集合
-        /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns></returns>
-        StateSet TryCombineStateSet(StateSet left, StateSet right, out bool isSuccess)
-        {
-            isSuccess = false;
-            var keyStates = new Dictionary<int, int>();
-            int exit_left = 1;//左边存在
-            int exit_right = 2;//右边存在
-            int exit_left_right = 3;//两者皆有
-            foreach (var key in left.Keys)
-            {
-                keyStates[key] = exit_left;
-            }
-            foreach (var key in right.Keys)
-            {
-                if(keyStates.TryGetValue(key, out int value))
-                {
-                    keyStates[key] = exit_left_right;
-                }
-                else
-                {
-                    keyStates[key] = exit_right;
-                }
-            }
-            var resStates = new StateSet();
-            foreach (var kvp in keyStates)
-            {
-                if(kvp.Value == exit_left)
-                {
-                    resStates[kvp.Key] = left[kvp.Key];
-                }
-                else if(kvp.Value == exit_right)
-                {
-                    resStates[kvp.Key] = right[kvp.Key];
-                }
-                else if(kvp.Value == exit_left_right)
-                {
-                    var leftValue = left[kvp.Key];
-                    var rightValue = right[kvp.Key];
-                    if(leftValue.TryCombine(rightValue, out var resValue))
-                    {
-                        resStates[kvp.Key] = resValue;
-                    }
-                    else
-                    {
-                        isSuccess = false;
-                        return resStates;
-                    }
-                }
-            }
-            return resStates;
-        }
+
+        // StateSet TryCombineStateSet(StateSet left, StateSet right, out bool isSuccess)
+        // {
+        //     isSuccess = false;
+        //     var keyStates = new Dictionary<int, int>();
+        //     int exit_left = 1;//左边存在
+        //     int exit_right = 2;//右边存在
+        //     int exit_left_right = 3;//两者皆有
+        //     foreach (var key in left.Keys)
+        //     {
+        //         keyStates[key] = exit_left;
+        //     }
+        //     foreach (var key in right.Keys)
+        //     {
+        //         if(keyStates.TryGetValue(key, out int value))
+        //         {
+        //             keyStates[key] = exit_left_right;
+        //         }
+        //         else
+        //         {
+        //             keyStates[key] = exit_right;
+        //         }
+        //     }
+        //     var resStates = new StateSet();
+        //     foreach (var kvp in keyStates)
+        //     {
+        //         if(kvp.Value == exit_left)
+        //         {
+        //             resStates[kvp.Key] = left[kvp.Key];
+        //         }
+        //         else if(kvp.Value == exit_right)
+        //         {
+        //             resStates[kvp.Key] = right[kvp.Key];
+        //         }
+        //         else if(kvp.Value == exit_left_right)
+        //         {
+        //             var leftValue = left[kvp.Key];
+        //             var rightValue = right[kvp.Key];
+        //             if(leftValue.TryCombine(rightValue, out var resValue))
+        //             {
+        //                 resStates[kvp.Key] = resValue;
+        //             }
+        //             else
+        //             {
+        //                 isSuccess = false;
+        //                 return resStates;
+        //             }
+        //         }
+        //     }
+        //     return resStates;
+        // }
 
         /// <summary>
         /// 是否包含所有目标状态

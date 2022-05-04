@@ -33,7 +33,18 @@ namespace NullFramework.Runtime
         protected virtual void Reset() { }
         //动作是否完成
         public virtual bool IsDone() { return true; } 
-        public virtual bool Execute(StateSet worldState) { return true; } 
-        public virtual bool CheckActionPreconditions(StateSet worldState) { return true; } 
+        //false 表示执行失败
+        public virtual bool Execute(StateSet worldStates) { return true; }
+        
+        /// <summary>
+        /// 完成时改变世界的状态
+        /// </summary>
+        /// <param name="worldStates"></param>
+        public void Compelete(StateSet worldStates)
+        {
+
+        }
+        // public virtual bool CheckActionPreconditions(StateSet worldState) { return true; } 
     }
 }
+ 

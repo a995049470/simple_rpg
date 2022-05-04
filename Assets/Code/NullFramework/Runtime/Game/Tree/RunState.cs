@@ -13,10 +13,10 @@ namespace NullFramework.Runtime
         public const int Runing = 1;
         //失败
         public const int Fail = 2;
-        //被取消
-        public const int Cancel = 3;
         //成功
         public const int Success = 4; 
+
+        
     }
     
 }
