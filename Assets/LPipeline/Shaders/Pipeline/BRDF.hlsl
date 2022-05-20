@@ -53,6 +53,14 @@ float GeometrySmith(float3 N, float3 V, float3 L, float k)
     return ggx1 * ggx2;
 }
 
+float V_SmithGGXCorrelated(float NoV, float NoL, float roughness) {
+    float a2 = pow(roughness, 4.0);
+    float GGXV = NoL * sqrt(NoV * NoV * (1.0 - a2) + a2);
+    float GGXL = NoV * sqrt(NoL * NoL * (1.0 - a2) + a2);
+    return 0.5 / (GGXV + GGXL);
+}
+
+
 //菲涅尔方程
 float3 FresnelSchlick(float cosTheta, float3 F0)
 {
@@ -137,7 +145,7 @@ float3 ImportanceSampleGGX(float2 Xi, float3 N, float roughness)
 float2 IntegrateBRDF(float NdotV, float roughness)
 {
     float3 V;
-    V.x = sqrt(1.0 - NdotV*NdotV);
+    V.x = sqrt(1.0 - NdotV * NdotV);
     V.y = 0.0;
     V.z = NdotV;
 
@@ -150,20 +158,23 @@ float2 IntegrateBRDF(float NdotV, float roughness)
     {
         float2 Xi = Hammersley(i, SAMPLE_COUNT);
         float3 H  = ImportanceSampleGGX(Xi, N, roughness);
-        float3 L  = normalize(2.0 * dot(V, H) * H - V);
+        //float3 L  = normalize(2.0 * dot(V, H) * H - V);
+        float3 L = 2.0 * dot(V, H) * H - V;
 
-        float NdotL = max(L.z, 0.0);
-        float NdotH = max(H.z, 0.0);
-        float VdotH = max(dot(V, H), 0.0);
+        float NdotL = saturate(dot(N, L));
+        float NdotH = saturate(dot(N, H));
+        float VdotH = saturate(dot(V, H));
+        
 
         if(NdotL > 0.0)
         {
             float G = GeometrySmith(N, V, L, roughness);
-            float G_Vis = (G * VdotH) / (NdotH * NdotV);
+            //float G_Vis = (G * VdotH) / (NdotH * NdotV);
+            float V_pdf = V_SmithGGXCorrelated(NdotV, NdotL, roughness) * VdotH * NdotL / NdotH;
             float Fc = pow(1.0 - VdotH, 5.0);
 
-            A += (1.0 - Fc) * G_Vis;
-            B += Fc * G_Vis;
+            A += (1.0 - Fc) * V_pdf;
+            B += Fc * V_pdf;
         }
     }
     A /= float(SAMPLE_COUNT);

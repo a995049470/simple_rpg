@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BRDFLut:
-        m_Texture: {fileID: 2800000, guid: dba425a7caadeeb4e99a8a214b2a34f6, type: 2}
+        m_Texture: {fileID: 2800000, guid: ab5b55e9a40214f49816db2b192830d6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DiffuseEnvMap:

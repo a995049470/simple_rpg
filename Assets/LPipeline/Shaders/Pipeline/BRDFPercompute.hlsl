@@ -27,12 +27,12 @@ Varyings Vertex(Attributes i)
     return o;
 }
 
-#include "BRDF.hlsl"
+#include "SpecularBRDFLUT.hlsl"
 
 float2 Fragment(Varyings i) : SV_TARGET
 {
     float2 uv = i.uv;
-    return float2(IntegrateBRDF(uv.x, uv.y));
+    return float2(integrateBRDF(uv.x, uv.y));
 }
 
 

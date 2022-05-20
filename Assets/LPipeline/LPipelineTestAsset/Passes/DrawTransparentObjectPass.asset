@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: DrawTransparentObjectPass
   m_EditorClassIdentifier: 
   enable: 1
+  targetCameraType: 31
   shaderTags:
   - Universal2D
   - UniversalForward

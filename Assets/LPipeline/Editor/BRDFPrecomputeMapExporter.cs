@@ -22,12 +22,12 @@ namespace LPipeline.Editor
         private void Exporte()
         {
             var height = width;
-            var des = new RenderTextureDescriptor(width, height, RenderTextureFormat.RGHalf);
-            des.sRGB = false;
+            var des = new RenderTextureDescriptor(width, height, RenderTextureFormat.ARGBHalf);
+            des.sRGB = true;
             var rt = new RenderTexture(des);
             Graphics.SetRenderTarget(rt);
             Graphics.Blit(Texture2D.blackTexture, rt, precompteMapMaterial);
-            var tex = new Texture2D(width, height, TextureFormat.RGHalf, 0, true);
+            var tex = new Texture2D(width, height);
             var active = RenderTexture.active;
             RenderTexture.active = rt;
             tex.ReadPixels(new Rect(0, 0, width, height), 0, 0);
@@ -35,13 +35,14 @@ namespace LPipeline.Editor
             tex.wrapMode = TextureWrapMode.Clamp;
             RenderTexture.active = active;
 
-            // var absOutFloder = FileUtility.LocalPathToAbsPath(outFloder);
-            // var absPath = $"{absOutFloder}/lut_brdf.png";
-            // var bytes = tex.EncodeToPNG();
-            // File.WriteAllBytes(absPath, bytes);
+            var absOutFloder = FileUtility.LocalPathToAbsPath(outFloder);
+            var absPath = $"{absOutFloder}/lut_brdf.png";
+            var bytes = tex.EncodeToPNG();
+            File.WriteAllBytes(absPath, bytes);
+            UnityEditor.AssetDatabase.Refresh();
             
-            var path = $"{outFloder}/lut_brdf.asset";
-            UnityEditor.AssetDatabase.CreateAsset(tex, path);
+            // var path = $"{outFloder}/lut_brdf.asset";
+            // UnityEditor.AssetDatabase.CreateAsset(tex, path);
             
            
         }
