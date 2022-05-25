@@ -11,11 +11,21 @@ namespace SimpleRPG.Runtime
         private float zdistance;
         private float smoothTime;
         private float maxSpeed;
+        private Transform lookTarget;
         
         
         public override void OnReciveDataFinish()
         {
             camera = leafData.InstantiateCamera();
+        }
+
+        protected override void OnObjectInstantiate(MsgData_ObjectInstantiate data)
+        {
+            base.OnObjectInstantiate(data);
+            if(data.obj is GameObject go)
+            {
+                lookTarget = go.transform.Find("look");
+            }
         }
 
         protected override void InitListeners()
@@ -29,12 +39,11 @@ namespace SimpleRPG.Runtime
         private System.Action FollowTarget(Msg msg)
         {
             var msgData = msg.GetData<MsgData_FollowTarget>();
-            var target = msgData.lookTarget;
-            if(!target)
+            if(!lookTarget)
             {
                 return null;
             }
-            var targetPosition = target.transform.position;
+            var targetPosition = lookTarget.position;
             targetPosition -= camera.transform.forward * zdistance;
             var current = camera.transform.position;
             current = Vector3.SmoothDamp(current, targetPosition, ref currentVelocity, smoothTime, maxSpeed, root.RealDeltaTime);

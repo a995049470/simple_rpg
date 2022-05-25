@@ -6,20 +6,18 @@ namespace SimpleRPG.Runtime
     public class UnitTress : Tress<UnitTressData>
     {
         private GameObject unitObj;
-        private Transform look;
-        private int unitKind;
+        private AbilityData abilityData;
 
         protected override void InitListeners()
         {
             base.InitListeners();
             AddHiddenMsgListeners(
-                (GameMsgKind.Move, Move),
-                (GameMsgKind.FollowTarget, FollowTarget),
                 (GameMsgKind.Attack, Attack),
-                (GameMsgKind.CollectEnemy, CollectEnemy),
+                
                 (BaseMsgKind.GoapUpdate, GoapUpdate)
             );
             AddMsgListeners(
+                (GameMsgKind.CollectEnemy, CollectEnemy),
                 (GameMsgKind.Collect_Launcher, Collect_Launcher),
                 (GameMsgKind.Collect_Player, Collect_Player)
             );
@@ -29,41 +27,29 @@ namespace SimpleRPG.Runtime
         public override void OnReciveDataFinish()
         {
             unitObj = leafData.InstantiateUnit();
-            look = unitObj.transform.Find("look"); 
-            unitKind = ((int)leafData.unitKind);
+            abilityData = leafData.CreateAblityData();
+            UpdateObjectDescriptors();
         }
 
-        public System.Action Move(Msg msg)
+        protected override void UpdateObjectDescriptors()
         {
-            var msgData = msg.GetData<MsgData_Move>();
-            System.Action cb = null;
-            if((msgData.unitType & unitKind) > 0)
-            {
-                var origin = msgData.mover;
-                msgData.mover = unitObj.transform;
-                cb = () => msgData.mover = origin;
-            }
-            return cb;
+            var index = 0;
+            UpdateSingleObjectDescriptor(ref index, unitObj);
+            UpdateSingleObjectDescriptor(ref index, abilityData);
         }
 
-        public System.Action FollowTarget(Msg msg)
-        {
-            var msgData = msg.GetData<MsgData_FollowTarget>();
-            var origin = msgData.lookTarget;
-            msgData.lookTarget = look;
-            return () => msgData.lookTarget = origin;
-        }
 
         public System.Action Attack(Msg msg)
         {
             var msgData = msg.GetData<MsgData_Attack>();
             //var origin_attcker = msgData.attacker;
-            if((msgData.attackerFilter & unitKind) > 0)
+            if((msgData.attackerFilter & abilityData.unitKind) > 0)
             {
                 var battleUnit = new BattleUnit();
                 battleUnit.leaf = this;
                 battleUnit.unitObj = this.unitObj;
-                battleUnit.unitKind = this.unitKind;
+                battleUnit.unitKind = abilityData.unitKind;
+                battleUnit.abilityData = this.abilityData;
                 msgData.attacker = battleUnit;
             }
             return emptyAction;
@@ -74,7 +60,7 @@ namespace SimpleRPG.Runtime
         {
             var msgData = msg.GetData<MsgData_CollectEnemy>();
             var position = unitObj.transform.position;
-            msgData.TryAddEnemy(this, unitObj, unitKind);
+            msgData.TryAddEnemy(this, abilityData, unitObj, abilityData.unitKind);
             return emptyAction;
         }
 
@@ -82,7 +68,7 @@ namespace SimpleRPG.Runtime
         {
             var cb = emptyAction;
             var msgdata = msg.GetData<MsgData_GoapUpdate>();
-            var isPassFilter = (unitKind & msgdata.filter) > 0;
+            var isPassFilter = (abilityData.unitKind & msgdata.filter) > 0;
             if(isPassFilter)
             {
                 var orgin = msgdata.target;
@@ -110,7 +96,7 @@ namespace SimpleRPG.Runtime
 
         private System.Action Collect_Player(Msg msg)
         {
-            bool isPlayer = (unitKind & ((int)UnitKind.Player))> 0;
+            bool isPlayer = (abilityData.unitKind & ((int)UnitKind.Player))> 0;
             if(isPlayer)
             {
                 msg.isStop = true;

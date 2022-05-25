@@ -38,7 +38,6 @@ namespace NullFramework.Runtime
         // private long uid;
         // public long UID { get => uid; }
 
-
         //同一种kind 不同序号
         //private int m_index;
         public Leaf()
@@ -72,7 +71,28 @@ namespace NullFramework.Runtime
             else OnDisable();
         }
 
-        protected virtual void InitListeners() {}
+        protected virtual void InitListeners() 
+        {
+        }
+
+        private void FixedListeners()
+        {
+            AddMsgListeners(
+                (BaseMsgKind.ObjectInstantiate, ObjectInstantiate)
+            );
+        }
+
+        protected System.Action ObjectInstantiate(Msg msg)
+        {
+            var msgData = msg.GetData<MsgData_ObjectInstantiate>();
+            OnObjectInstantiate(msgData);
+            return emptyAction;
+        }
+
+        protected virtual void OnObjectInstantiate(MsgData_ObjectInstantiate data)
+        {
+
+        }
 
         /// <summary>
         /// 在激活的状态下是否存在回应
@@ -212,6 +232,7 @@ namespace NullFramework.Runtime
             }
             parent = _parent;
             depth = parent.Depth + 1;
+            FixedListeners();
             InitListeners();
             //传输数据
             // if(this is ILeafMemberDicSetter setter && parent is ILeafMemberDicGetter getter)

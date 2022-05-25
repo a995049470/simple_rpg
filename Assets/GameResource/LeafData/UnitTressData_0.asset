@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 3919166708672700242, guid: ebd67f2a8bf42a7468735de1130ca468,
     type: 3}
-  position: {x: 5, y: 0, z: 0}
+  position: {x: -5, y: 0, z: 1}
   unitKind: 2
+  hp: 1
+  atk: 1

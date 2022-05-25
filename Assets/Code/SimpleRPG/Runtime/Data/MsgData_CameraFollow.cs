@@ -4,7 +4,7 @@ namespace SimpleRPG.Runtime
 {
     public class MsgData_FollowTarget : MsgData
     {
-        public Transform lookTarget;
+        
     }
 
 }

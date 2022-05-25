@@ -23,7 +23,7 @@ namespace SimpleRPG.Runtime
            
         }
     
-        public void TryAddEnemy(Leaf hiter, GameObject obj, int unitKind)
+        public void TryAddEnemy(Leaf hiter, AbilityData abilityData, GameObject obj, int unitKind)
         {
         
             currentEnemyId = -1;
@@ -41,6 +41,7 @@ namespace SimpleRPG.Runtime
                 battleUnit.leaf = hiter;
                 battleUnit.unitObj = obj;
                 battleUnit.distance = dis;
+                battleUnit.abilityData = abilityData;
                 int id;
                 for (id = hiters.Count ; id >= 1; id --)
                 {
@@ -69,12 +70,7 @@ namespace SimpleRPG.Runtime
             }
         }
 
-        public void TryAddEnemyAblity(AbilityData abilityData)
-        {
-            if(currentEnemyId < 0) return;
-            hiters[currentEnemyId].abilityData = abilityData;
-        }
-
+        
     }
 
 }

@@ -7,14 +7,15 @@ namespace SimpleRPG.Runtime
         public int hp;
         public int currentHp;
         public int atk;   
+        public int unitKind;
         
 
-        public AbilityData(AbilityTressData data)
-        {
-            this.hp = data.hp;
-            this.currentHp = data.hp;
-            this.atk = data.atk;
-        }
+        // public AbilityData(AbilityTressData data)
+        // {
+        //     this.hp = data.hp;
+        //     this.currentHp = data.hp;
+        //     this.atk = data.atk;
+        // }
     }
 }
 

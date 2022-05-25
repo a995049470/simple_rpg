@@ -57,6 +57,8 @@ float4 Fragment(Varyings i) : SV_TARGET
     float3 diffuse = irradiance * albedo;
 
     float NdotV = max(dot(normal, viewDir), 0);
+    //NdotV = pow(1 - NdotV, 8) + NdotV;
+
     float3 reflect = 2.0 * dot(viewDir, normal) * normal - viewDir;
     float lod = roughness * MAX_LOD_LEVEL;
     float3 p0 = _GlossyEnvMap.SampleLevel(sampler_GlossyEnvMap, reflect, floor(lod));

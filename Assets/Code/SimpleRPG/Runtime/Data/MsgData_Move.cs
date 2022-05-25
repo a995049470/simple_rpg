@@ -8,7 +8,6 @@ namespace SimpleRPG.Runtime
         public Vector3 dir;
         //强度
         public int strength;
-        public Transform mover;
         public int unitType;
     }
 
