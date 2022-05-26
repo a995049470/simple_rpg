@@ -31,38 +31,42 @@ namespace NullFramework.Runtime
         
         public static Matrix4x4 Mulit(this Matrix4x4 m, float f)
         {
+            Matrix4x4 res = Matrix4x4.zero;
             for (int i = 0; i < 16; i++)
             {
-                m[i] *= f;
+                res[i] = m[i] * f;
             }
-            return m;
+            return res;
         }
 
         public static Matrix4x4 Add(this Matrix4x4 left, Matrix4x4 right)
         {
+            Matrix4x4 res = Matrix4x4.zero;
             for (int i = 0; i < 16; i++)
             {
-                left[i] += right[i];
+                res[i] = left[i] + right[i];
             }
-            return right;
+            return res;
         }
 
         public static Matrix4x4 Sub(this Matrix4x4 left, Matrix4x4 right)
         {
+            Matrix4x4 res = Matrix4x4.zero;
             for (int i = 0; i < 16; i++)
             {
-                left[i] -= right[i];
+                res[i] = left[i] - right[i];
             }
-            return right;
+            return res;
         }
 
         public static Quaternion Add(this Quaternion left, Quaternion right)
         {
+            Quaternion res = Quaternion.identity;
             for (int i = 0; i < 4; i++)
             {
-                left[i] += right[i];
+                res[i] = left[i] + right[i];
             }
-            return left;
+            return res;
         }
 
         

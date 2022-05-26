@@ -16,6 +16,8 @@ namespace SimpleRPG.Runtime
         
         public override void OnReciveDataFinish()
         {
+            if(Camera.main != null) GameObject.Destroy(Camera.main.gameObject);
+            
             camera = leafData.InstantiateCamera();
         }
 

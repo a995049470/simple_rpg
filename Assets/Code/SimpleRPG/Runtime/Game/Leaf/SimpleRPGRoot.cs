@@ -13,6 +13,8 @@ namespace SimpleRPG.Runtime
             {
                 var data_followTarget = new MsgData_FollowTarget();
                 AddMsg(new Msg(GameMsgKind.FollowTarget, data_followTarget, this));
+                var data_rigidUpdate = new MsgData_RigidUpdate();
+                AddMsg(new Msg(BaseMsgKind.RigidUpdate, data_rigidUpdate, this));
             }
             //发起一个ai运行的指令
             {

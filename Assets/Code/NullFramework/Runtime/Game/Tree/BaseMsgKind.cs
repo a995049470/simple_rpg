@@ -17,6 +17,8 @@ namespace NullFramework.Runtime
         public const int ObjectInstantiate = prefix | 10;
         
         public const int ObjectDescriptorsUpdate = prefix | 11;
+        
+        public const int RigidUpdate = prefix | 12;
     }
     
 }
