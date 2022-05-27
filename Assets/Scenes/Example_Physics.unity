@@ -463,7 +463,7 @@ GameObject:
   - component: {fileID: 536623017}
   - component: {fileID: 536623018}
   m_Layer: 0
-  m_Name: RigidLeaf
+  m_Name: ShapeMatchingRigidLeaf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -495,7 +495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16fd7788899da264c8e79267938a84ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 18ea334962fca0f48a9e9a61c558ccc8, type: 2}
+  data: {fileID: 11400000, guid: e519667693f54fb47a54b79e31440aae, type: 2}
   isRoot: 0
 --- !u!1 &562735644
 GameObject:
@@ -1205,7 +1205,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1071042140}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.867, z: 0}
+  m_LocalPosition: {x: 0, y: 3.65, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 536623017}
@@ -1475,8 +1475,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1479682308}
-  m_LocalRotation: {x: -0.028212255, y: -0.95863986, z: 0.20778652, w: -0.19245397}
-  m_LocalPosition: {x: -1.217222, y: 1.7844503, z: 1.8607156}
+  m_LocalRotation: {x: -0.17952399, y: -0.6830303, z: 0.20077164, w: -0.6789193}
+  m_LocalPosition: {x: -5.732071, y: 3.51034, z: -0.2884071}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

@@ -49,15 +49,15 @@ namespace NullFramework.Runtime
             if(data.obj is GameObject go)
             {
                 var meshFliter = go.GetComponentInChildren<MeshFilter>();
-                var sharedMesh = meshFliter?.sharedMesh;
-                if(sharedMesh != null && sharedMesh != mesh)
+                var targetmesh = meshFliter?.sharedMesh;
+                if(targetmesh != null && targetmesh != mesh)
                 {
-                    mesh = sharedMesh;
+                    mesh = targetmesh;
                     CalculateInertia();
                 }
                 else
                 {
-                    mesh = sharedMesh;
+                    mesh = targetmesh;
                 }
                 target = go.transform;
                 
@@ -109,13 +109,12 @@ namespace NullFramework.Runtime
         private void CollisionPlane(Vector3 p, Vector3 n)
         {
             var r_total = Vector3.zero;
-            //var v_total = Vector3.zero;
+            var v_total = Vector3.zero;
             var pointCount = 0;
             var vertexCount = mesh.vertexCount;
             var vertices = mesh.vertices;
             var rotateMatrix = Matrix4x4.Rotate(rotation);
             var inertia = rotateMatrix * originInertia * rotateMatrix.transpose;
-            inertia = originInertia;
             for (int i = 0; i < vertexCount; i++)
             {
                 var ri_origin = vertices[i];
@@ -128,21 +127,23 @@ namespace NullFramework.Runtime
                 //点在平面上方 碰撞不成立
                 if(dis >= 0) continue;
                 r_total += ri_current;
-                //v_total += v_vert;
+                v_total += v_vert;
                 pointCount ++;
             }
             if(pointCount == 0) return;
             var r_avg = r_total / pointCount;
-            var v_avg = velocity + Vector3.Cross(rotateVelocity, r_avg);
+            // var v_avg = velocity + Vector3.Cross(rotateVelocity, r_avg);
+            var v_avg = v_total / pointCount;
             var v_n = Vector3.Dot(v_avg, n) * n;
             var v_t = v_avg - v_n;
             
-            var u_n = elasticity;
+            //强行缓冲
+            var t = Mathf.Clamp01(Mathf.InverseLerp(0, 0.5f, v_n.magnitude));
+            t = Mathf.Pow(t, 10);
+            var u_n = elasticity * t;
             //滑动摩擦系数
             var a = 1 - u_t * (1 + u_n) * v_n.magnitude / Mathf.Max(v_t.magnitude, 0.01f);
             a = Mathf.Max(a, 0);
-
-            //强行减少抽搐
             v_n *= -u_n;
             v_t *= a;          
             var v_current = v_n + v_t;
@@ -152,8 +153,7 @@ namespace NullFramework.Runtime
             var j = (Vector3)(k.inverse * (v_current - v_avg));
             //更新速度和角速度
             velocity += j / mass;
-            rotateVelocity += (Vector3)(inertia.inverse * (Vector3.Cross(r_avg, j)));
-            
+            rotateVelocity += (Vector3)(inertia.inverse * (Vector3.Cross(r_avg, j)));       
         }
 
         private Matrix4x4 GetCrossMatrix(Vector3 v)

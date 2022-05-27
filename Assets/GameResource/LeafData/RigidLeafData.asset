@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: RigidLeafData
   m_EditorClassIdentifier: 
   mass: 10
-  elasticity: 0.204
+  elasticity: 0.431
   u_t: 0.4
