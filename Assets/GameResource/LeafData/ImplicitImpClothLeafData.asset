@@ -9,12 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9b09707e0976854b9a599416ab4e286, type: 3}
-  m_Name: UnitTressData_4
+  m_Script: {fileID: 11500000, guid: 01800c4401d54004aa9a3c69954b58d6, type: 3}
+  m_Name: ImplicitImpClothLeafData
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 8961817646013703112, guid: 81884ed1a43ef52408ebbf7b7bd594b6,
-    type: 3}
-  position: {x: 0, y: 20, z: 0}
-  unitKind: 2
-  hp: 1
-  atk: 1
+  material: {fileID: 2100000, guid: bbc199857caad4ab2b63e5d4ad0054d4, type: 2}

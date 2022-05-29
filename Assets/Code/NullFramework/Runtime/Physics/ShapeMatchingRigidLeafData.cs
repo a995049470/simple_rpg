@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace NullFramework.Runtime
 {
+
     [CreateAssetMenu(fileName = "ShapeMatchingRigidLeafData", menuName = "NullFramework/ShapeMatchingRigidLeafData")]
     public class ShapeMatchingRigidLeafData : LeafData<ShapeMatchingRigidLeaf>
     {

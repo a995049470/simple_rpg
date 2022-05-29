@@ -12,6 +12,7 @@
         _AOTex("AO", 2D) = "white" {}
         _AO("AO", range(0, 1)) = 1
         [HDR]_Emssion("Emssion", color) = (0, 0, 0, 0)
+        [Enum(UnityEngine.Rendering.CullMode)] _Cull ("Cull", Float) = 0
     }
     SubShader
     {
@@ -26,6 +27,7 @@
             }
             ZWrite On
             ZTest Less
+            Cull [_Cull]
             
             HLSLPROGRAM
             #pragma prefer_hlslcc gles
@@ -51,6 +53,7 @@
             }
             ZWrite Off
             ZTest Equal
+             Cull [_Cull]
             
             HLSLPROGRAM
             #pragma prefer_hlslcc gles

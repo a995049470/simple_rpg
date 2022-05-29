@@ -54,7 +54,7 @@ namespace NullFramework.Runtime
             centerOffset = Vector3.zero;
             //首先更新位置
             var count = positionWSArray.Length;
-            var a = -9.8f * Vector3.up;
+            var a = 10 * Vector3.down;
             for (int i = 0; i < count; i++)
             {
                 var posWS = positionWSArray[i];
