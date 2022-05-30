@@ -2,8 +2,7 @@ using UnityEngine;
 
 namespace NullFramework.Runtime
 {
-
-    public class ImplicitImpClothLeaf : Leaf<ImplicitImpClothLeafData>
+    public class PBDClothLeaf : Leaf<PBDClothLeafData>
     {
 
         private int numX = 21;
@@ -16,17 +15,16 @@ namespace NullFramework.Runtime
         private Spring[] springs;
         private Material clothMaterial;
         private float damping = 0.99f;
-        private float k = 2000;
         private int iterate = 16;
         private Vector3 g = 9.8f * Vector3.down;
         private Vector3[] vertices;
-        private Vector3[] originVertices;
+        private Vector3[] sumX;
+        private int[] sumN;
         private Vector3[] gradient;
         private Vector3[] velocity;
         private SphereModel sphere;
+        private float weight = 0.2f;
         private Vector3 originPosition;
-        
-        
 
         public override void OnReciveDataFinish()
         {
@@ -34,9 +32,9 @@ namespace NullFramework.Runtime
             clothMaterial = leafData.material;
             sphere = leafData.sphere;
             iterate = leafData.iterate;
-            k = leafData.k;
             numX = leafData.numX;
             numY = leafData.numY;
+            weight = leafData.weight;
             originPosition = leafData.originPosition;
         }
 
@@ -57,54 +55,48 @@ namespace NullFramework.Runtime
         {
             if(mesh == null) return emptyAction;
             int vertCount = numX * numY;
-            Vector3 a = Vector3.zero;
             float dt = root.FrameDeltaTime;
-            //先备份一下顶点坐标
-            g = 9.8f * Vector3.down;
+
             //1.更新v和x
             for (int i = 0; i < vertCount; i++)
             {
                 if(!IsFixedPoint(i))
                 {
-                    velocity[i] = (velocity[i]) * damping;
+                    velocity[i] = (velocity[i] + g * dt) * damping;
                     vertices[i] = vertices[i] + velocity[i] * dt;
-                    originVertices[i] = vertices[i];
                 }
             }
-            //2.牛顿法迭代求得弹性势能最小的位置 更新v和x
+            //2.pbd 迭代
             var springCount = springs.Length;
             for (int n = 0; n < iterate; n++)
             {
                 for (int i = 0; i < vertCount; i++)
                 {
-                    var dx = vertices[i] - originVertices[i];
-                    gradient[i] = mass[i] * (dx) / dt / dt - mass[i] * g; 
+                    sumN[i] = 0;
+                    sumX[i] = Vector3.zero;
                 }
                 for (int i = 0; i < springCount; i++)
                 {
                     var spring = springs[i];
                     var pi = vertices[spring.i];
                     var pj = vertices[spring.j];
+                    var mi = mass[spring.i];
+                    var mj = mass[spring.j];
                     var currentLength = Mathf.Max(Vector3.Distance(pi, pj), 0.01f);
-                    var gi = k * ( 1 - spring.length / currentLength) * (pi - pj);
-                    var gj = k * ( 1 - spring.length / currentLength) * (pj - pi);
-                    gradient[spring.i] += gi;
-                    gradient[spring.j] += gj;
+                    sumN[spring.i] += 1;
+                    sumN[spring.j] += 1;
+                    sumX[spring.i] += pi + mj / (mi + mj) * (spring.length - currentLength) * (pi - pj);  
+                    sumX[spring.j] += pj + mi / (mi + mj) * (spring.length - currentLength) * (pj - pi);  
                 }
-                
                 for (int i = 0; i < vertCount; i++)
                 {
                     if(!IsFixedPoint(i))
                     {
-                        vertices[i] -= 1 / (1 / dt / dt * mass[i] + 4 * k) * gradient[i];
+                        var x = (sumX[i] + vertices[i]) / (sumN[i] + 1); 
+                        velocity[i] += (x - vertices[i]) / dt;
+                        vertices[i] = x;
                     }
                 }
-            }
-
-            //更新速度
-            for (int i = 0; i < vertCount; i++)
-            {
-                velocity[i] += (vertices[i] - originVertices[i]) / dt;
             }
 
             //3.处理碰撞 更新 v和x
@@ -113,6 +105,7 @@ namespace NullFramework.Runtime
 
             for (int i = 0; i < vertCount; i++)
             {
+                
                 var vert = vertices[i];
                 vert = center + (vert - center).normalized * Mathf.Max((vert - center).magnitude, radius);
                 velocity[i] += (vert - vertices[i]) / dt;
@@ -134,7 +127,8 @@ namespace NullFramework.Runtime
             var indiceCount = 3 * 2 * (numX - 1) * (numY - 1);
             var springCount = ((numX - 2) * (numY - 2) * 8 + 4 * 3 + (2 * numX - 4 + 2 * numY - 4) * 5) / 2;
             vertices = new Vector3[vertexCount];
-            originVertices = new Vector3[vertexCount];
+            sumX = new Vector3[vertexCount];
+            sumN = new int[vertexCount];
             gradient = new Vector3[vertexCount];
             velocity = new Vector3[vertexCount];
             var uv = new Vector2[vertexCount];
@@ -203,7 +197,7 @@ namespace NullFramework.Runtime
             mesh.RecalculateTangents();
             mesh.RecalculateNormals();
             
-            var go = new GameObject("ImplicitImpCloth");
+            var go = new GameObject("PBDCloth");
             go.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
             go.AddComponent<MeshFilter>().sharedMesh = mesh;
             go.AddComponent<MeshRenderer>().sharedMaterial = clothMaterial;        

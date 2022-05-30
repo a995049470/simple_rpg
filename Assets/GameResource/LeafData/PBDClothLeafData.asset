@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01800c4401d54004aa9a3c69954b58d6, type: 3}
-  m_Name: ImplicitImpClothLeafData
+  m_Script: {fileID: 11500000, guid: 407b3314f5b87a64cb62b5b00bc27d88, type: 3}
+  m_Name: PBDClothLeafData
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: bbc199857caad4ab2b63e5d4ad0054d4, type: 2}
   sphereName: SphereModel
-  iterate: 8
-  k: 2000
+  iterate: 16
   numX: 11
   numY: 11
-  originPosition: {x: 0, y: 0, z: 0}
+  weight: 0.2
+  originPosition: {x: -5, y: 0, z: 0}
