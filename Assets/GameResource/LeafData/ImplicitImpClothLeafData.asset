@@ -13,3 +13,8 @@ MonoBehaviour:
   m_Name: ImplicitImpClothLeafData
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: bbc199857caad4ab2b63e5d4ad0054d4, type: 2}
+  sphereName: SphereModel
+  iterate: 16
+  k: 2000
+  numX: 15
+  numY: 15
