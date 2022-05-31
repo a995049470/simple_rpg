@@ -23,8 +23,8 @@ struct CubeGBuffer
 {
     float4x4 localToWorldMatrix;
     float3 albedo;
-    float3 normalTS;
     float metallic;
+    float3 normalTS;
     float roughness;
     float ao;
 };

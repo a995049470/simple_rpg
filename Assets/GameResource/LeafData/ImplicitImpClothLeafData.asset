@@ -16,6 +16,6 @@ MonoBehaviour:
   sphereName: SphereModel
   iterate: 8
   k: 2000
-  numX: 11
-  numY: 11
+  numX: 17
+  numY: 17
   originPosition: {x: 0, y: 0, z: 0}

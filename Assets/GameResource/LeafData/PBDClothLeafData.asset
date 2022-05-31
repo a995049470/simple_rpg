@@ -15,7 +15,7 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: bbc199857caad4ab2b63e5d4ad0054d4, type: 2}
   sphereName: SphereModel
   iterate: 16
-  numX: 11
-  numY: 11
+  numX: 17
+  numY: 17
   weight: 0.2
   originPosition: {x: -5, y: 0, z: 0}
