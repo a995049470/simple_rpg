@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enable: 0
   targetCameraType: 31
-  shadowMapResolution: {x: 2048, y: 2048}
-  width: 128
-  height: 128
+  shadowMapResolution: {x: 1024, y: 1024}
+  width: 16
+  height: 16
   near: 0
-  far: 128
+  far: 32

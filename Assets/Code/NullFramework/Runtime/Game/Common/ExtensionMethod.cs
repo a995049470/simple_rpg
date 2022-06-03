@@ -69,6 +69,16 @@ namespace NullFramework.Runtime
             return res;
         }
 
+        public static float Trace(this Matrix4x4 m)
+        {
+            var t = 0.0f;
+            for (int i = 0; i < 4; i++)
+            {
+                t += m[i, i];
+            }
+            return t;
+        }
+
         
     }
 }

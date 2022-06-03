@@ -7,7 +7,6 @@ namespace NullFramework.Runtime
 
     public class RigidLeaf : Leaf<RigidLeafData>
     {
-        
         //private const float zero = 0.5f;
         private float mass;
         //惯性矩阵
