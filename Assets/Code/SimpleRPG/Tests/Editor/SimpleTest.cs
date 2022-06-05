@@ -239,6 +239,28 @@ namespace Tests
             }
             Assert.AreEqual(rank, 0);
         }
+        [Test]
+        public void MatrixTest()
+        {
+            var v1 = Vector3.one * 1;
+            var v2 = Vector3.one * 2;
+            var v3 = Vector3.one * 3;
+            var m1 = new Matrix4x4(v1, v2, v3, Vector3.zero);
+            Debug.Log(m1);
+            var m2 = Matrix4x4.zero;
+            m2[0, 0] = v1[0];
+            m2[0, 1] = v1[1];
+            m2[0, 2] = v1[2];
+
+            m2[1, 0] = v2[0];
+            m2[1, 1] = v2[1];
+            m2[1, 2] = v2[2];
+
+            m2[2, 0] = v3[0];
+            m2[2, 1] = v3[1];
+            m2[2, 2] = v3[2];
+            Debug.Log(m2);
+        }
        
     }
 }

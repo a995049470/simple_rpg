@@ -16,8 +16,8 @@ namespace NullFramework.Runtime
         private Mesh mesh;
         private Material material;
         //能量密度相关参数
-        private float stiffness_0 = 20000.0f;
-        private float stiffness_1 = 5000.0f;
+        private float stiffness_0 = 5000.0f;
+        private float stiffness_1 = 2000.0f;
 
         private float damp = 0.999f;
         private Vector3 gravity = 9.8f * Vector3.down;
@@ -41,18 +41,15 @@ namespace NullFramework.Runtime
             origin = leafData.position;
             Init();
         }
-
-        
+    
         private System.Action RigidUpdate(Msg msg)
         {
             if(mesh == null) return emptyAction;
-            var dt = root.FrameDeltaTime;
-            //初始化
+            var dt = 0.003f;
             for (int i = 0; i < num_vert; i++)
             {
                 //清理
-                sum_f[i] = Vector3.zero;
-                sum_n[i] = 0;
+                sum_f[i] = gravity * mass;
             }
             
             //更新形变力
@@ -64,31 +61,28 @@ namespace NullFramework.Runtime
                 var tr = g.Trace();
                 var s = g.Mulit(2 * stiffness_0).Add(Matrix4x4.identity.Mulit(stiffness_1 * tr));
                 var p = f * s;
-                var force =  (p * t.dm_ti).Mulit(-1.0f / 6.0f / t.det_dm_i);
+                var force =  (p.Mulit(t.Vref_Dm) * t.dm_ti);
                 var arr_f = new Vector3[4];
                 arr_f[1] = new Vector3(force[0, 0], force[1, 0], force[2, 0]);
                 arr_f[2] = new Vector3(force[0, 1], force[1, 1], force[2, 1]);
                 arr_f[3] = new Vector3(force[0, 2], force[1, 2], force[2, 2]);
 
-                arr_f[0] = -(arr_f[1] + arr_f[2] + arr_f[3]);
+                arr_f[0] = -arr_f[1] - arr_f[2] - arr_f[3];
 
-                for (int j = 0; j < 4; j++)
-                {
-                    var id = t.id[j];
-                    sum_f[id] += arr_f[j];
-                    sum_n[id] ++;
-
-                }
+                sum_f[t.id[0]] += arr_f[0];
+                sum_f[t.id[1]] += arr_f[1];
+                sum_f[t.id[2]] += arr_f[2];
+                sum_f[t.id[3]] += arr_f[3];
             }
             //更新 v x 处理碰撞
             for (int i = 0; i < num_vert; i++)
             {
-                var f = gravity * mass + sum_f[i];
-                var a = f / mass;
+                var a = sum_f[i] / mass;
                 velocity[i] = (velocity[i] + a * dt) * damp;
                 vertices[i] += velocity[i] * dt;
+                
                 //处理碰撞
-                PointCollisionPlane(i, dt, Vector3.zero, Vector3.up);
+                // PointCollisionPlane(i, dt, Vector3.zero, Vector3.up);
             }
             
             //update mesh
@@ -104,8 +98,16 @@ namespace NullFramework.Runtime
             if(dis >= 0) return;
             var dx = -dis * n;
             vertices[i] += dx;
-            velocity[i] += dx / dt;
+            if(velocity[i].y < 0)
+            {
+                float a = Mathf.Max(1 - 0.5f * (1 + 0.5f) * (-vertices[i].y) / velocity[i].magnitude, 0);
+                velocity[i].y *= -0.5f;
+                velocity[i].x *= a;
+                velocity[i].z *= a;
+            }
+            //velocity[i] += dx / dt;
         }
+
 
         public void Init()
         {
@@ -134,7 +136,7 @@ namespace NullFramework.Runtime
                 velocity = new Vector3[num_vert];
                 sum_f = new Vector3[num_vert];
                 sum_n = new int[num_vert];
-                float scale = 0.1f;
+                float scale = 0.4f;
                 for (int i = 0; i < num_vert; i++)
                 {
                     vertices[i].x = float.Parse(res[i * 5 + 5]) * scale;
@@ -180,8 +182,6 @@ namespace NullFramework.Runtime
                 var go = new GameObject("FVM");
                 go.AddComponent<MeshFilter>().sharedMesh = mesh;
                 go.AddComponent<MeshRenderer>().sharedMaterial = material;
-
-                
             }
         }    
 
