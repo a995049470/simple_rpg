@@ -25,4 +25,5 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 33d5adc6e87ad5244a3df4eccd125c61, type: 2}
     - {fileID: 11400000, guid: 44b57b010e03e6448838637886b8f110, type: 2}
     - {fileID: 11400000, guid: 33f888a04dede084087660b9581b01f8, type: 2}
+    - {fileID: 11400000, guid: 955e90b954ac330429fd852423232782, type: 2}
     enableDynamicBatching: 0

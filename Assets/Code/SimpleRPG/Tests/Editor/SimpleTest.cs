@@ -261,6 +261,13 @@ namespace Tests
             m2[2, 2] = v3[2];
             Debug.Log(m2);
         }
+
+        [Test]
+        public void DebugLocalToWorldMatrix()
+        {
+            var go = GameObject.Find("DebugLocalToWorldMatrix");
+            Debug.Log(go.transform.localToWorldMatrix);
+        }
        
     }
 }

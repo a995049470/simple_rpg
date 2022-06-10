@@ -1,0 +1,39 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel CSMain
+
+struct TriangleBarrier
+{
+    uint i0id;
+    uint matrixId;
+};
+
+RWStructuredBuffer<float3> _BarrierBuffer;
+uint3 _BlockNum;
+float3 _BlockSize;
+float3 _XYZMin;
+float3 _XYZMax;
+
+RWStructuredBuffer<float3> _VerticesBuffer;
+RWStructuredBuffer<uint> _IndicesBuffer;
+RWStructuredBuffer<float4x4> _MatrixBuffer;
+RWStructuredBuffer<TriangleBarrier> _TriangleBarrierBuffer;
+uint _TriangleCount;
+
+[numthreads(8,8,1)]
+void CSMain (uint3 id : SV_GROUPID)
+{
+    uint triangleId = id.z * 64 + id.y * 8 + id.x;
+    if(triangleId >= _TriangleCount) return;
+    TriangleBarrier t = _TriangleBarrierBuffer[triangleId];
+    uint i0 = _IndicesBuffer[t.i0id + 0];
+    uint i1 = _IndicesBuffer[t.i0id + 1];
+    uint i2 = _IndicesBuffer[t.i0id + 2];
+    float3 posOS0 = _VerticesBuffer[i0];
+    float3 posOS1 = _VerticesBuffer[i1];
+    float3 posOS2 = _VerticesBuffer[i2];
+    float4x4 localToWorldMatrix = _MatrixBuffer[t.matrixId];
+    float4 posWS0 = mul(localToWorldMatrix, float4(posOS0, 1)).xyz;
+    float4 posWS1 = mul(localToWorldMatrix, float4(posOS1, 1)).xyz;
+    float4 posWS2 = mul(localToWorldMatrix, float4(posOS2, 1)).xyz;
+    
+}
