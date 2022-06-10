@@ -63,6 +63,7 @@ namespace LPipeline.Runtime
             barrierBuffer?.Release();
             indicesBuffer?.Release();
             verticesBuffer?.Release();
+            
         }
 
         public override void Execute(ScriptableRenderContext context, RenderData data)
