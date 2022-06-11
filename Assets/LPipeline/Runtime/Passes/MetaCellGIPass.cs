@@ -7,8 +7,8 @@ namespace LPipeline.Runtime
 {
     public struct TriangleBarrier
     {
-        public int i0Id;
-        public int matrixId;
+        public uint indexId;
+        public uint matrixId;
 
         public const int Size = 2 * sizeof(uint);
     }
@@ -16,16 +16,19 @@ namespace LPipeline.Runtime
     [CreateAssetMenu(fileName = "MetaCellGIPass", menuName = "LPipeline/Passes/MetaCellGIPass")]
     public class MetaCellGIPass : RenderPass
     {
+        private bool isDity = true;
         //范围
         [SerializeField]
-        private Vector3 xyzMin = new Vector3(-16, -16, -16);
+        private Vector3 origin = new Vector3(-32, -32, -32);
         [SerializeField]
-        private Vector3 xyzMax = new Vector3(16, 16, 16);
+        private Vector3Int blockNum = new Vector3Int(128, 128, 128);
+        [SerializeField]
+        private Vector3 blockSize = new Vector3(0.5f, 0.5f, 0.5f);
 
         //障碍相关
         private ComputeBuffer barrierBuffer;
-        private Vector3Int barrierBufferSize = new Vector3Int(128, 128, 128);
-        private int barrierBufferCount { get => barrierBufferSize.x * barrierBufferSize.y * barrierBufferSize.z; }
+        private Vector3Int barrierBufferSize { get => blockNum; }
+        private int barrierBufferCount { get => blockNum.x * blockNum.y * blockNum.z; }
         private const int barrierStride = 3 * sizeof(float);
 
         //把所有障碍物分解成三角形
@@ -34,28 +37,53 @@ namespace LPipeline.Runtime
         private ComputeBuffer indicesBuffer;
         private const int vertStride = 3 * sizeof(float);
         private const int matrixStride = 16 * sizeof(float);
-
         //灯光亮度相关
-        
+        private RenderTexture lightColorBuffer;
+        private RenderTexture currentGlobalLightColorBuffer;
+        private RenderTexture[] globalLightColorBuffer;
+        private int currentGlobalLightColorBufferIndex;
+
         //计算着色器相关
-        private ComputeShader computeShader;
+        [SerializeField]
+        private ComputeShader cs;
         private int kernel_computeBarrier;
-        private string name_computeBarrier;
+        private const string name_computeBarrier = "ComputeBarrier";
         private int kernel_clearBarrier;
-        private string name_clearBarrier;
+        private const string name_clearBarrier = "ClearBarrier";
+        private const int NumThreadX = 8;
+        private const int NumThreadY = 8;
+        private const int NumThreadZ = 1;
+        private static int nameId_BarrierBuffer = Shader.PropertyToID("_BarrierBuffer");
+        private static int nameId_BlockNum = Shader.PropertyToID("_BlockNum");
+        private static int nameId_BlockSize = Shader.PropertyToID("_BlockSize");
+        private static int nameId_Origin = Shader.PropertyToID("_Origin");
+        private static int nameId_VerticesBuffer = Shader.PropertyToID("_VerticesBuffer");
+        private static int nameId_IndicesBuffer = Shader.PropertyToID("_IndicesBuffer");
+        private static int nameId_MatrixBuffer = Shader.PropertyToID("_MatrixBuffer");
+        private static int nameId_TriangleBarrierBuffer = Shader.PropertyToID("_TriangleBarrierBuffer");
+        private static int nameId_TriangleCount = Shader.PropertyToID("_TriangleCount");
 
-
-
-
-        private void OnEnable()
+        private void Init()
         {
+            if(!isDity) return;
+            isDity = false;
             meshStartIdDic = new Dictionary<Mesh, Vector2Int>();
             barrierBuffer = new ComputeBuffer(barrierBufferCount, barrierStride, ComputeBufferType.Structured, ComputeBufferMode.Immutable);
             verticesBuffer = new ComputeBuffer(1, vertStride, ComputeBufferType.Structured, ComputeBufferMode.Immutable);
             indicesBuffer = new ComputeBuffer(1, vertStride, ComputeBufferType.Structured, ComputeBufferMode.Immutable);
-            // kernel_computeBarrier = computeShader.FindKernel(name_computeBarrier);
-            // kernel_clearBarrier = computeShader.FindKernel(name_clearBarrier);
-    
+            kernel_computeBarrier = cs?.FindKernel(name_computeBarrier) ?? 0;
+            kernel_clearBarrier = cs?.FindKernel(name_clearBarrier) ?? 0;
+        }
+
+        private void OnEnable()
+        {
+           
+        }
+
+
+
+        private void OnValidate() {
+           isDity = true;
         }
 
         private void OnDisable()
@@ -66,8 +94,19 @@ namespace LPipeline.Runtime
             
         }
 
+        private Vector3Int GetGroup(int count)
+        {
+            float g = (float)count / NumThreadX
+             / NumThreadY;
+            int gx = Mathf.CeilToInt(Mathf.Sqrt(g));
+            int gy = gx;
+            int gz = 1;
+            return new Vector3Int(gx, gy, gz);
+        }
+
         public override void Execute(ScriptableRenderContext context, RenderData data)
         {
+            Init();
             //准备computeBuffer使用的数据
             var barrierDic = MetaCellGIBarrierManager.Instance.GetBarrierDic();
             UpdateVerticesBuffer(barrierDic.Keys);
@@ -77,6 +116,14 @@ namespace LPipeline.Runtime
                 triangleTotalCount += (int)kvp.Key.GetIndexCount(0) / 3 * kvp.Value.Count;
             }
 
+            //清理屏障值
+            {
+                cs.SetBuffer(kernel_clearBarrier, nameId_BarrierBuffer, barrierBuffer);
+                var group1 = GetGroup(barrierBufferCount);
+                cs.Dispatch(kernel_clearBarrier, group1.x, group1.y, group1.z);
+            }
+
+            //设置屏障值
             if(triangleTotalCount > 0)
             {
                 var triangles = new TriangleBarrier[triangleTotalCount];
@@ -95,8 +142,8 @@ namespace LPipeline.Runtime
                         for (int j = 0; j < triangleCount; j++)
                         {
                             var triangleId = sum_triangleCount + j;
-                            triangles[triangleId].i0Id = indexStartId + j * 3;
-                            triangles[triangleId].matrixId = sum_matrixCount;
+                            triangles[triangleId].indexId = (uint)(indexStartId + j * 3);
+                            triangles[triangleId].matrixId = ((uint)sum_matrixCount);
                         }      
                         sum_triangleCount += triangleCount;
                         sum_matrixCount += 1;              
@@ -108,9 +155,29 @@ namespace LPipeline.Runtime
                 
                 var matrixBuffer = new ComputeBuffer(matrixList.Count, matrixStride, ComputeBufferType.Structured, ComputeBufferMode.Immutable);
                 matrixBuffer.SetData(matrixList);
+
+                //开始进行biarrierBuffer的更新
+               
+                cs.SetBuffer(kernel_computeBarrier, nameId_BarrierBuffer, barrierBuffer);
+                cs.SetInts(nameId_BlockNum, new int[]
+                {
+                    blockNum.x, blockNum.y, blockNum.z
+                });
+                cs.SetVector(nameId_BlockSize, blockSize);
+                cs.SetVector(nameId_Origin, origin);
+                cs.SetBuffer(kernel_computeBarrier, nameId_VerticesBuffer, verticesBuffer);
+                cs.SetBuffer(kernel_computeBarrier, nameId_IndicesBuffer, indicesBuffer);
+                cs.SetBuffer(kernel_computeBarrier, nameId_MatrixBuffer, matrixBuffer);
+                cs.SetBuffer(kernel_computeBarrier, nameId_TriangleBarrierBuffer, triangleBarriarBuffer);
+                cs.SetInt(nameId_TriangleCount, triangleTotalCount);
+               
+                var group2 = GetGroup(triangleTotalCount);
+                cs.Dispatch(kernel_computeBarrier, group2.x, group2.y, group2.z);
+                
                 matrixBuffer.Release();
                 triangleBarriarBuffer.Release();
             }
+            //设置灯光值
 
         }
 
@@ -165,6 +232,7 @@ namespace LPipeline.Runtime
             if(indicesBuffer != null) indicesBuffer.Release();
             indicesBuffer = new ComputeBuffer(totalIndexCount, vertStride, ComputeBufferType.Structured, ComputeBufferMode.Immutable);
             indicesBuffer.SetData(totalIndices);
+
         }
     }
 

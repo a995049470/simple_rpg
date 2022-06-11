@@ -1,17 +1,21 @@
 ﻿// Each #kernel tells which function to compile; you can have many kernels
-#pragma kernel CSMain
+#pragma kernel ClearBarrier
+#pragma kernel ComputeBarrier
 
+#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+#include "Common.hlsl"
 struct TriangleBarrier
 {
-    uint i0id;
+    uint indexId;
     uint matrixId;
 };
 
-RWStructuredBuffer<float3> _BarrierBuffer;
+RWStructuredBuffer<uint3> _BarrierBuffer;
+//每个维度上块的数量
 uint3 _BlockNum;
+//每个块的尺度
 float3 _BlockSize;
-float3 _XYZMin;
-float3 _XYZMax;
+float3 _Origin;
 
 StructuredBuffer<float3> _VerticesBuffer;
 StructuredBuffer<uint> _IndicesBuffer;
@@ -19,21 +23,137 @@ StructuredBuffer<float4x4> _MatrixBuffer;
 StructuredBuffer<TriangleBarrier> _TriangleBarrierBuffer;
 uint _TriangleCount;
 
-[numthreads(8,8,1)]
-void CSMain (uint3 id : SV_GROUPID)
+RWTexture3D<float4> _LightColorBuffer;
+RWTexture3D<float4> _GlobalLightColorBuffer;
+
+#define NumThreadX 8
+#define NumThreadY 8
+#define NumThreadZ 1
+
+[numthreads(NumThreadX ,NumThreadY, NumThreadZ)]
+void ClearBarrier (uint3 id : SV_GROUPID)
 {
-    uint triangleId = id.z * 64 + id.y * 8 + id.x;
+    uint barrierId = id.z * NumThreadX * NumThreadY + id.y * NumThreadX + id.x;
+    _BarrierBuffer[barrierId] = 0;
+}
+
+[numthreads(NumThreadX ,NumThreadY, NumThreadZ)]
+void ComputeBarrier (uint3 id : SV_GROUPID)
+{
+    
+    uint triangleId = id.z * NumThreadX * NumThreadY + id.y * NumThreadX + id.x;
     if(triangleId >= _TriangleCount) return;
     TriangleBarrier t = _TriangleBarrierBuffer[triangleId];
-    uint i0 = _IndicesBuffer[t.i0id + 0];
-    uint i1 = _IndicesBuffer[t.i0id + 1];
-    uint i2 = _IndicesBuffer[t.i0id + 2];
-    float3 posOS1 = _VerticesBuffer[i1];
-    float3 posOS0 = _VerticesBuffer[i0];
-    float3 posOS2 = _VerticesBuffer[i2];
+    uint index[3];
+    for (int i = 0; i < 3; i++) {
+        index[i] = _IndicesBuffer[t.indexId + i];   
+    }
+
+    float3 posOS[3];
+    for (int i = 0; i < 3; i++) {
+        posOS[i] = _VerticesBuffer[index[i]];
+    }
+
     float4x4 localToWorldMatrix = _MatrixBuffer[t.matrixId];
-    float3 posWS0 = mul(localToWorldMatrix, float4(posOS0, 1)).xyz;
-    float3 posWS1 = mul(localToWorldMatrix, float4(posOS1, 1)).xyz;
-    float3 posWS2 = mul(localToWorldMatrix, float4(posOS2, 1)).xyz;
+    float3 posWS[3];
+    for (int i = 0; i < 3; i++) {
+        posWS[i] = mul(localToWorldMatrix, float4(posOS[i], 1)).xyz;
+    }
+    //AABB
+    float box[6];
+    float num[3];
+    
+    for (uint i = 0; i < 3; i++) { 
+        uint bid0 = i * 2 + 0;
+        uint bid1 = i * 2 + 1;
+        box[bid0] = min(min(posWS[0][i], posWS[1][i]), posWS[2][i]);
+        box[bid1] = max(max(posWS[0][i], posWS[1][i]), posWS[2][i]);
+        uint num0 = floor((box[bid0] - _Origin) / _BlockSize[i]);
+        uint num1 = ceil((box[bid1] - _Origin) / _BlockSize[i]);
+        num0 = clamp(num0, 0, _BlockNum[i]);
+        num1 = clamp(num1, 0, _BlockNum[i]);
+        box[bid0] = num0 * _BlockSize[i] + _Origin;
+        box[bid1] = num1 * _BlockSize[i] + _Origin;
+        num[i] = num1 - num0;
+    }
+
+    uint sampleCount = 16;
+    float step = 1.0 / 16.0;
+    //yz
+    uint dontCare;
+    uint loopCount_yz = num[1] * num[2];
+    for (uint i = 0; i < loopCount_yz; i++) {
+        float startY = i % num[1] * _BlockSize[1] + box[2];
+        float startZ = i / num[1] * _BlockSize[2] + box[4];
+        for (uint j = 0; j < sampleCount; j++) {
+            float2 t = Hammersley(j, sampleCount);
+            float y = startY + t.x * _BlockSize[1];
+            float z = startZ + t.y * _BlockSize[2];
+            float3 linePoint[2] =
+            {
+                float3(box[0], y, z),
+                float3(box[1], y, z)
+            };
+            float3 intersectPoint;
+            //无交点
+            if(!IntersectPoint_Line_Triangle(linePoint, posWS, intersectPoint))
+            {
+                continue;
+            }
+            uint3 localPos = uint3((intersectPoint - _Origin) / _BlockSize);
+            uint barrierId = localPos.x + localPos.y * _BlockNum[0] + localPos.z * _BlockNum[0] * _BlockNum[1];
+            InterlockedAdd(_BarrierBuffer[barrierId][0], 1, dontCare);
+        }
+    }
+    //xz
+    uint loopCount_xz = num[0] * num[2];
+    for (uint i = 0; i < loopCount_yz; i++) {
+        float startX = i % num[0] * _BlockSize[0] + box[0];
+        float startZ = i / num[0] * _BlockSize[2] + box[4];
+        for (uint j = 0; j < sampleCount; j++) {
+            float2 t = Hammersley(j, sampleCount);
+            float x = startX + t.x * _BlockSize[0];
+            float z = startZ + t.y * _BlockSize[2];
+            float3 linePoint[2] =
+            {
+                float3(x, box[2], z),
+                float3(x, box[3], z)
+            };
+            float3 intersectPoint;
+            //无交点
+            if(!IntersectPoint_Line_Triangle(linePoint, posWS, intersectPoint))
+            {
+                continue;
+            }
+            uint3 localPos = uint3((intersectPoint - _Origin) / _BlockSize);
+            uint barrierId = localPos.x + localPos.y * _BlockNum[0] + localPos.z * _BlockNum[0] * _BlockNum[1];
+            InterlockedAdd(_BarrierBuffer[barrierId][1], 1, dontCare);
+        }
+    }
+    //xy
+    uint loopCount_xy = num[0] * num[1];
+    for (uint i = 0; i < loopCount_yz; i++) {
+        float startX = i % num[0] * _BlockSize[0] + box[0];
+        float startY = i / num[0] * _BlockSize[1] + box[2];
+        for (uint j = 0; j < sampleCount; j++) {
+            float2 t = Hammersley(j, sampleCount);
+            float x = startX + t.x * _BlockSize[0];
+            float y = startY + t.y * _BlockSize[1];
+            float3 linePoint[2] =
+            {
+                float3(x, y, box[4]),
+                float3(x, y, box[5])
+            };
+            float3 intersectPoint;
+            //无交点
+            if(!IntersectPoint_Line_Triangle(linePoint, posWS, intersectPoint))
+            {
+                continue;
+            }
+            uint3 localPos = uint3((intersectPoint - _Origin) / _BlockSize);
+            uint barrierId = localPos.x + localPos.y * _BlockNum[0] + localPos.z * _BlockNum[0] * _BlockNum[1];
+            InterlockedAdd(_BarrierBuffer[barrierId][2], 1, dontCare);
+        }
+    }
     
 }

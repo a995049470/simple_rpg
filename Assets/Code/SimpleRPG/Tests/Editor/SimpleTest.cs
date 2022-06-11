@@ -36,7 +36,7 @@ namespace Tests
         [Test]
         public void HammersleyTest()
         {
-            int count = 4096;
+            int count = 16;
             string str = "";
             for (int i = 0; i < count; i++)
             {
