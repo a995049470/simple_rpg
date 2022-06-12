@@ -5,10 +5,9 @@ using UnityEngine;
 namespace LPipeline.Runtime
 {
 
-
     [RequireComponent(typeof(MeshFilter))]
     [ExecuteAlways]
-    public class MetaCellGIBarrier : MonoBehaviour
+    public class MetaCellBarrier : MonoBehaviour
     {
         [SerializeField]
         private Mesh barrierMesh;

@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enable: 1
   targetCameraType: 31
-  xyzMin: {x: -16, y: -16, z: -16}
-  xyzMax: {x: 16, y: 16, z: 16}
+  origin: {x: -16, y: -16, z: -16}
+  blockSize: {x: 0.5, y: 0.5, z: 0.5}
+  blockNum_3d: {x: 64, y: 64, z: 64}
+  cs: {fileID: 7200000, guid: 53528634698f8ad4993b1a3b94a83dbe, type: 3}

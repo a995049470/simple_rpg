@@ -3,28 +3,17 @@ using UnityEngine;
 
 namespace LPipeline.Runtime
 {
-    public class MetaCellGIBarrierManager 
+    public class MetaCellGIBarrierManager : Single<MetaCellGIBarrierManager>
     {
-        private static MetaCellGIBarrierManager instance;
-        public static MetaCellGIBarrierManager Instance
-        {
-            get
-            {
-                if(instance == null)
-                {
-                    instance = new MetaCellGIBarrierManager();
-                }
-                return instance;
-            }
-        }
-        private List<MetaCellGIBarrier> barriers = new List<MetaCellGIBarrier>();
+        
+        private List<MetaCellBarrier> barriers = new List<MetaCellBarrier>();
 
-        public void Add(MetaCellGIBarrier barrier)
+        public void Add(MetaCellBarrier barrier)
         {
             barriers.Add(barrier);
         }
 
-        public void Remove(MetaCellGIBarrier barrier)
+        public void Remove(MetaCellBarrier barrier)
         {
             barriers.Remove(barrier);
         }

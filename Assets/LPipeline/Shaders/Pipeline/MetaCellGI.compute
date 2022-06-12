@@ -1,14 +1,25 @@
-﻿// Each #kernel tells which function to compile; you can have many kernels
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel ClearLightColor
+#pragma kernel FillLight
+#pragma kernel UpdateGlobalLightColor
 #pragma kernel ClearBarrier
 #pragma kernel ComputeBarrier
 
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
 #include "Common.hlsl"
+
+struct CellLight
+{
+    float4 position;
+    float4 color;
+};
+
 struct TriangleBarrier
 {
     uint indexId;
     uint matrixId;
 };
+
 
 RWStructuredBuffer<uint3> _BarrierBuffer;
 //每个维度上块的数量
@@ -23,66 +34,132 @@ StructuredBuffer<float4x4> _MatrixBuffer;
 StructuredBuffer<TriangleBarrier> _TriangleBarrierBuffer;
 uint _TriangleCount;
 
-RWTexture3D<float4> _LightColorBuffer;
-RWTexture3D<float4> _GlobalLightColorBuffer;
+StructuredBuffer<CellLight> _LightBuffer;
+uint _LightCount;
+RWTexture3D<float3> _LightColorTexture;
+RWTexture3D<float3> _GlobalLightColorFrontTexture;
+RWTexture3D<float3> _GlobalLightColorBackTexture;
 
-#define NumThreadX 8
-#define NumThreadY 8
-#define NumThreadZ 1
+#define NUMTHREAD_X_1D 64
+#define NUMTHREAD_Y_1D 1
+#define NUMTHREAD_Z_1D 1
+#define NUMTHREAD_X_3D 4
+#define NUMTHREAD_Y_3D 4
+#define NUMTHREAD_Z_3D 4
+#define SAMPLE_COUNT 16
 
-[numthreads(NumThreadX ,NumThreadY, NumThreadZ)]
-void ClearBarrier (uint3 id : SV_GROUPID)
-{
-    uint barrierId = id.z * NumThreadX * NumThreadY + id.y * NumThreadX + id.x;
-    _BarrierBuffer[barrierId] = 0;
-}
-
-[numthreads(NumThreadX ,NumThreadY, NumThreadZ)]
-void ComputeBarrier (uint3 id : SV_GROUPID)
+[numthreads(NUMTHREAD_X_3D ,NUMTHREAD_Y_3D, NUMTHREAD_Z_3D)]
+void ClearLightColor(uint3 id : SV_DISPATCHTHREADID)
 {
     
-    uint triangleId = id.z * NumThreadX * NumThreadY + id.y * NumThreadX + id.x;
+    _LightColorTexture[id] = 0;
+}
+
+//填充灯光
+[numthreads(NUMTHREAD_X_1D ,NUMTHREAD_Y_1D, NUMTHREAD_Z_1D)]
+void FillLight(uint3 id : SV_DISPATCHTHREADID)
+{
+    uint lightId = id.x;
+    if(lightId >= _LightCount) return;
+    CellLight cellLight = _LightBuffer[lightId];
+
+    uint3 blockId = uint3((cellLight.position.xyz - _Origin) / _BlockSize);
+    bool3 isLegal = blockId >= 0 && blockId < _BlockNum;
+    //if(!isLegal.x || !isLegal.y || !isLegal.z) return;
+    //灯光暂时不重叠 简单的max一下
+    _GlobalLightColorFrontTexture[blockId] = max(_GlobalLightColorFrontTexture[blockId], cellLight.color);
+
+    
+}
+
+[numthreads(NUMTHREAD_X_3D ,NUMTHREAD_Y_3D, NUMTHREAD_Z_3D)]
+void UpdateGlobalLightColor(uint3 id : SV_DISPATCHTHREADID)
+{    
+    uint i;
+    //uint3 roudId[6];
+    float weight = 1.0 / 8.0;
+    float3 finalColor = _GlobalLightColorFrontTexture[id];
+    float sampleCount = float(SAMPLE_COUNT);
+    [unroll(3)]
+    for (i = 0; i < 3; i++) {
+        uint3 id1 = id;
+        id1[i] = max(id[i] - 1, 0);
+        uint3 id2 = id;
+        id2[i] = min(id[i] + 1, _BlockNum[i] - 1);
+        uint barrierId1 = id1.x + id1.y * _BlockNum.x + id1.z * _BlockNum.x * _BlockNum.y;
+        uint barrierId2 = id2.x + id2.y * _BlockNum.x + id2.z * _BlockNum.x * _BlockNum.y;
+        float barrier1 = 1 - saturate(_BarrierBuffer[barrierId1][i] / sampleCount);
+        float barrier2 = 1 - saturate(_BarrierBuffer[barrierId2][i] / sampleCount);
+        finalColor += _GlobalLightColorFrontTexture[id1] * barrier1;
+        finalColor += _GlobalLightColorFrontTexture[id2] * barrier2;
+    }
+    
+    finalColor *= weight;
+    _GlobalLightColorBackTexture[id] = finalColor;
+
+} 
+
+[numthreads(NUMTHREAD_X_1D ,NUMTHREAD_Y_1D, NUMTHREAD_Z_1D)]
+void ClearBarrier (uint3 id : SV_DISPATCHTHREADID)
+{
+    uint barrierId = id.x;
+    uint y = barrierId % (_BlockNum.x * _BlockNum.y) / _BlockNum.x;
+    if(abs(y - _BlockNum.y / 2) < 2)
+    {
+        _BarrierBuffer[barrierId] = SAMPLE_COUNT;
+    }
+    else
+    {
+        _BarrierBuffer[barrierId] = 0;
+    }
+}
+
+[numthreads(NUMTHREAD_X_1D ,NUMTHREAD_Y_1D, NUMTHREAD_Z_1D)]
+void ComputeBarrier (uint3 id : SV_DISPATCHTHREADID)
+{
+    uint i;
+    uint triangleId = id.x;
     if(triangleId >= _TriangleCount) return;
     TriangleBarrier t = _TriangleBarrierBuffer[triangleId];
     uint index[3];
-    for (int i = 0; i < 3; i++) {
+    for (i = 0; i < 3; i++) {
         index[i] = _IndicesBuffer[t.indexId + i];   
     }
 
     float3 posOS[3];
-    for (int i = 0; i < 3; i++) {
+    for (i = 0; i < 3; i++) {
         posOS[i] = _VerticesBuffer[index[i]];
     }
 
     float4x4 localToWorldMatrix = _MatrixBuffer[t.matrixId];
     float3 posWS[3];
-    for (int i = 0; i < 3; i++) {
+    for (i = 0; i < 3; i++) {
         posWS[i] = mul(localToWorldMatrix, float4(posOS[i], 1)).xyz;
     }
     //AABB
     float box[6];
     float num[3];
     
-    for (uint i = 0; i < 3; i++) { 
+    for (i = 0; i < 3; i++) { 
         uint bid0 = i * 2 + 0;
         uint bid1 = i * 2 + 1;
         box[bid0] = min(min(posWS[0][i], posWS[1][i]), posWS[2][i]);
         box[bid1] = max(max(posWS[0][i], posWS[1][i]), posWS[2][i]);
-        uint num0 = floor((box[bid0] - _Origin) / _BlockSize[i]);
-        uint num1 = ceil((box[bid1] - _Origin) / _BlockSize[i]);
+        uint num0 = floor((box[bid0] - _Origin[i]) / _BlockSize[i]);
+        uint num1 = ceil((box[bid1] - _Origin[i]) / _BlockSize[i]);
         num0 = clamp(num0, 0, _BlockNum[i]);
         num1 = clamp(num1, 0, _BlockNum[i]);
-        box[bid0] = num0 * _BlockSize[i] + _Origin;
-        box[bid1] = num1 * _BlockSize[i] + _Origin;
+        box[bid0] = num0 * _BlockSize[i] + _Origin[i];
+        box[bid1] = num1 * _BlockSize[i] + _Origin[i];
         num[i] = num1 - num0;
     }
 
-    uint sampleCount = 16;
+    uint sampleCount = SAMPLE_COUNT;
     float step = 1.0 / 16.0;
     //yz
     uint dontCare;
     uint loopCount_yz = num[1] * num[2];
-    for (uint i = 0; i < loopCount_yz; i++) {
+    for (i = 0; i < loopCount_yz; i++) {
         float startY = i % num[1] * _BlockSize[1] + box[2];
         float startZ = i / num[1] * _BlockSize[2] + box[4];
         for (uint j = 0; j < sampleCount; j++) {
@@ -102,12 +179,14 @@ void ComputeBarrier (uint3 id : SV_GROUPID)
             }
             uint3 localPos = uint3((intersectPoint - _Origin) / _BlockSize);
             uint barrierId = localPos.x + localPos.y * _BlockNum[0] + localPos.z * _BlockNum[0] * _BlockNum[1];
-            InterlockedAdd(_BarrierBuffer[barrierId][0], 1, dontCare);
+            // InterlockedAdd(_BarrierBuffer[barrierId][0], 1, dontCare);
+
+            _BarrierBuffer[barrierId][0] += 1;
         }
     }
     //xz
     uint loopCount_xz = num[0] * num[2];
-    for (uint i = 0; i < loopCount_yz; i++) {
+    for (i = 0; i < loopCount_yz; i++) {
         float startX = i % num[0] * _BlockSize[0] + box[0];
         float startZ = i / num[0] * _BlockSize[2] + box[4];
         for (uint j = 0; j < sampleCount; j++) {
@@ -127,12 +206,14 @@ void ComputeBarrier (uint3 id : SV_GROUPID)
             }
             uint3 localPos = uint3((intersectPoint - _Origin) / _BlockSize);
             uint barrierId = localPos.x + localPos.y * _BlockNum[0] + localPos.z * _BlockNum[0] * _BlockNum[1];
-            InterlockedAdd(_BarrierBuffer[barrierId][1], 1, dontCare);
+            // InterlockedAdd(_BarrierBuffer[barrierId][1], 1, dontCare);
+
+             _BarrierBuffer[barrierId][1] += 1;
         }
     }
     //xy
     uint loopCount_xy = num[0] * num[1];
-    for (uint i = 0; i < loopCount_yz; i++) {
+    for (i = 0; i < loopCount_yz; i++) {
         float startX = i % num[0] * _BlockSize[0] + box[0];
         float startY = i / num[0] * _BlockSize[1] + box[2];
         for (uint j = 0; j < sampleCount; j++) {
@@ -148,11 +229,13 @@ void ComputeBarrier (uint3 id : SV_GROUPID)
             //无交点
             if(!IntersectPoint_Line_Triangle(linePoint, posWS, intersectPoint))
             {
-                continue;
+                //continue;
             }
             uint3 localPos = uint3((intersectPoint - _Origin) / _BlockSize);
             uint barrierId = localPos.x + localPos.y * _BlockNum[0] + localPos.z * _BlockNum[0] * _BlockNum[1];
-            InterlockedAdd(_BarrierBuffer[barrierId][2], 1, dontCare);
+            // InterlockedAdd(_BarrierBuffer[barrierId][2], 1, dontCare);
+
+            _BarrierBuffer[barrierId][2] += 1;
         }
     }
     

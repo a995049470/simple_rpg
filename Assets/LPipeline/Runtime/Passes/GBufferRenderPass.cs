@@ -66,7 +66,9 @@ namespace LPipeline.Runtime
                 gbuffer1.Identifier(),
                 gbuffer2.Identifier(),
             };
-
+             //把depthTexture当作激活的深度缓冲
+            data.activeCameraDepthAttachment = depthTexture.Identifier();
+            
             cmd.SetRenderTarget(colorRTs, depthTexture.Identifier());
             cmd.ClearRenderTarget(true, true, Color.black, 1.0f);
             context.ExecuteCommandBuffer(cmd);

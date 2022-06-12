@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: DrawOpaqueObjectPass
   m_EditorClassIdentifier: 
   enable: 1
-  cameraType: 15
+  targetCameraType: 31
   shaderTags:
   - Universal2D
   - UniversalForward
   - LightweightForward
   - SRPDefaultUnlit
+  - MetaCellLit
   profilerTag: DrawQpaqueObjectPass
   isOpaque: 1
