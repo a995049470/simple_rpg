@@ -115,7 +115,7 @@ namespace LPipeline.Runtime
             globalLightColorBackTexture.filterMode = FilterMode.Trilinear;
             globalLightColorFrontTexture.filterMode = FilterMode.Trilinear;
             globalLightColorBackTexture.Create();
-            globalLightColorFrontTexture.Create();
+            globalLightColorFrontTexture.Create();lightColorTexture.Create();
         }
 
         private void OnEnable()
@@ -171,9 +171,9 @@ namespace LPipeline.Runtime
                 FindKernels();
             }
 
-            var colorBufferNumX = lightColorTexture.width;
-            var colorBufferNumY = lightColorTexture.height;
-            var colorBufferNumZ = lightColorTexture.volumeDepth;
+            var colorBufferNumX = globalLightColorBackTexture.width;
+            var colorBufferNumY = globalLightColorBackTexture.height;
+            var colorBufferNumZ = globalLightColorBackTexture.volumeDepth;
             if (colorBufferNumX != blockNum_3d.x ||
                 colorBufferNumY != blockNum_3d.y ||
                 colorBufferNumZ != blockNum_3d.z)
@@ -220,7 +220,7 @@ namespace LPipeline.Runtime
         private void Dispatch_ClearBarrier(CommandBuffer cmd)
         {
             cmd.SetComputeBufferParam(cs, kernel_ClearBarrier, nameId_BarrierBuffer, barrierBuffer);
-            var group1 = GetGroup(blockNum_3d);
+            var group1 = GetGroup(blockCount);
             cmd.DispatchCompute(cs, kernel_ClearBarrier, group1.x, group1.y, group1.z);
         }
 

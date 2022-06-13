@@ -103,15 +103,7 @@ void UpdateGlobalLightColor(uint3 id : SV_DISPATCHTHREADID)
 void ClearBarrier (uint3 id : SV_DISPATCHTHREADID)
 {
     uint barrierId = id.x;
-    uint y = barrierId % (_BlockNum.x * _BlockNum.y) / _BlockNum.x;
-    if(abs(y - _BlockNum.y / 2) < 2)
-    {
-        _BarrierBuffer[barrierId] = SAMPLE_COUNT;
-    }
-    else
-    {
-        _BarrierBuffer[barrierId] = 0;
-    }
+    _BarrierBuffer[barrierId] = 0;
 }
 
 [numthreads(NUMTHREAD_X_1D ,NUMTHREAD_Y_1D, NUMTHREAD_Z_1D)]
@@ -229,7 +221,7 @@ void ComputeBarrier (uint3 id : SV_DISPATCHTHREADID)
             //无交点
             if(!IntersectPoint_Line_Triangle(linePoint, posWS, intersectPoint))
             {
-                //continue;
+                continue;
             }
             uint3 localPos = uint3((intersectPoint - _Origin) / _BlockSize);
             uint barrierId = localPos.x + localPos.y * _BlockNum[0] + localPos.z * _BlockNum[0] * _BlockNum[1];
