@@ -53,6 +53,8 @@ namespace LPipeline.Runtime
         private RenderTexture globalLightColorFrontTexture;
         private RenderTexture globalLightColorBackTexture;
         
+        [SerializeField][Range(1, 16)]
+        private int iteratCount;
 
 
         //计算着色器相关
@@ -112,15 +114,17 @@ namespace LPipeline.Runtime
             lightColorTexture = new RenderTexture(des);
             globalLightColorBackTexture = new RenderTexture(des);
             globalLightColorFrontTexture = new RenderTexture(des);
+            globalLightColorBackTexture.Create();
+            globalLightColorFrontTexture.Create();
+            lightColorTexture.Create();
             globalLightColorBackTexture.filterMode = FilterMode.Trilinear;
             globalLightColorFrontTexture.filterMode = FilterMode.Trilinear;
-            globalLightColorBackTexture.Create();
-            globalLightColorFrontTexture.Create();lightColorTexture.Create();
+
         }
 
         private void OnEnable()
         {
-           
+            
             {
                 meshStartIdDic = new Dictionary<Mesh, Vector2Int>();
 
@@ -140,6 +144,7 @@ namespace LPipeline.Runtime
             {
                 FindKernels();
             }
+
 
             {
                 
@@ -165,7 +170,6 @@ namespace LPipeline.Runtime
                 barrierBuffer.Release();
                 barrierBuffer = new ComputeBuffer(blockCount, barrierStride);
             }
-
             if (cs != null)
             {
                 FindKernels();
@@ -181,7 +185,6 @@ namespace LPipeline.Runtime
                 lightColorTexture.Release();
                 globalLightColorBackTexture.Release();
                 globalLightColorFrontTexture.Release();
-
                 CreateLightTexture();
             }
         }
@@ -260,10 +263,11 @@ namespace LPipeline.Runtime
                         sum_matrixCount += 1;
                     }
                 }
+
                 if(triangleTotalCount != triangleBarriarBuffer.count)
                 {
                     triangleBarriarBuffer.Release();
-                    triangleBarriarBuffer = new ComputeBuffer((int)triangleTotalCount, TriangleBarrier.Size, ComputeBufferType.Structured, ComputeBufferMode.Dynamic);
+                    triangleBarriarBuffer = new ComputeBuffer((int)triangleTotalCount, TriangleBarrier.Size);
 
                 }
                 triangleBarriarBuffer.SetData(triangles);
@@ -271,7 +275,7 @@ namespace LPipeline.Runtime
                 if(sum_matrixCount != matrixBuffer.count)
                 {
                     matrixBuffer.Release();
-                    matrixBuffer = new ComputeBuffer(sum_matrixCount, matrixStride, ComputeBufferType.Structured, ComputeBufferMode.Dynamic);
+                    matrixBuffer = new ComputeBuffer(sum_matrixCount, matrixStride);
                 }
                 matrixBuffer.SetData(matrixList);
 
@@ -289,11 +293,9 @@ namespace LPipeline.Runtime
                 cmd.SetComputeBufferParam(cs, kernel_ComputeBarrier, nameId_MatrixBuffer, matrixBuffer);
                 cmd.SetComputeBufferParam(cs, kernel_ComputeBarrier, nameId_TriangleBarrierBuffer, triangleBarriarBuffer);
                 cmd.SetComputeIntParam(cs, nameId_TriangleCount, triangleTotalCount);
-
                 var group2 = GetGroup(triangleTotalCount);
                 cmd.DispatchCompute(cs, kernel_ComputeBarrier, group2.x, group2.y, group2.z);
 
-                
             }
         }
 
@@ -314,6 +316,7 @@ namespace LPipeline.Runtime
                     lightBuffer.Release();
                     lightBuffer = new ComputeBuffer(lightCount, CellLight.Size);
                 }
+
                 lightBuffer.SetData(cellLights);
                 cmd.SetComputeIntParams(cs, nameId_BlockNum, new int[]
                 {
@@ -361,11 +364,15 @@ namespace LPipeline.Runtime
             //清理障碍值
             Dispatch_ClearBarrier(cmd);
             // //计算障碍
-            Dispatch_ComputeBarrier(cmd);            
-            // //填充灯光
-            Dispatch_FillLight(cmd);
+            Dispatch_ComputeBarrier(cmd);    
+            
+            //填充灯光
             //更新全局灯光
-            Dispatch_UpdateGlobalLightColor(cmd);
+            for (int i = 0; i < iteratCount; i++)
+            {
+                Dispatch_FillLight(cmd);
+                Dispatch_UpdateGlobalLightColor(cmd);
+            }
             
             //更新光照贴图
             cmd.SetGlobalTexture(nameId_GlobalLightColorTexture, globalLightColorFrontTexture);

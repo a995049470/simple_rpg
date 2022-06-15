@@ -32,7 +32,8 @@ namespace LPipeline.Runtime
                     list = new List<Matrix4x4>();
                     dic[mesh] = list;
                 }
-                var matrix = barrier.transform.localToWorldMatrix;
+                var matrix = Matrix4x4.TRS(barrier.transform.position, barrier.transform.rotation, barrier.transform.lossyScale);
+                // var matrix = barrier.transform.localToWorldMatrix;
                 list.Add(matrix);
             }
             return dic;
