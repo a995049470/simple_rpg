@@ -29,10 +29,31 @@ namespace LPipeline.Runtime
         public CameraType TargetCameraType { get => targetCameraType; }
 
         public abstract void Execute(ScriptableRenderContext context, RenderData data);
+        protected bool isDity = true;
 
         public virtual void FrameCleanup(CommandBuffer cmd)
         {
 
+        }
+
+        /// <summary>
+        /// 第一次调用
+        /// </summary>
+        public virtual void FirstCall()
+        {
+
+        }
+
+        /// <summary>
+        /// 结束调用
+        /// </summary>
+        public virtual void EndCall()
+        {
+
+        }
+
+        private void OnValidate() {
+            isDity = true;
         }
 
 

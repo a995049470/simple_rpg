@@ -34,11 +34,11 @@ namespace LPipeline.Runtime
         public float Far { get => Mathf.Max(Near + 1, far); }
 
         private RenderTargetHandle shadowMap;
-        private List<ShaderTagId> shaderTagIdList;
         private int id_shadowVP = Shader.PropertyToID("_ShadowVP");
+        private List<ShaderTagId> shaderTagIdList;
 
 
-        private void OnEnable() {
+        public override void FirstCall() {
             shadowMap.Init("_ShadowMap");
             shaderTagIdList = new List<ShaderTagId>()
             {

@@ -12,7 +12,7 @@ namespace LPipeline.Runtime
         private Material volumLightMaterial;
         private RenderTargetHandle volumeLightBackDepthTexture;
 
-        private void OnEnable() {
+        public override void FirstCall() {
             volumeLightBackDepthTexture.Init("_VolumeLightBackDepthTexture");
         }
 

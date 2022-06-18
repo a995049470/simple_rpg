@@ -2,7 +2,8 @@
 {
     Properties
     {
-        
+        _MainTex("MainTex", 2D) = "white"
+
     }
     SubShader
     {
@@ -17,6 +18,7 @@
             }
             ZWrite On
             ZTest Less
+            Cull Off
             HLSLPROGRAM
             #pragma prefer_hlslcc gles
             #pragma exclude_renderers d3d11_9x
@@ -31,7 +33,7 @@
             struct Attributes
             {
                 float4 positionOS : POSITION;
-                
+                float2 texcoord : TEXCOORD;
             };
 
             struct Varyings
@@ -39,6 +41,7 @@
                 float4 positionCS : POSITION;
                 float3 cellLightUV : TEXCOORD0;
                 float3 positionWS : TEXCOORD1;
+                float2 uv : TEXCOORD2;
             };
 
             float3 _Origin;
@@ -46,6 +49,8 @@
             float3 _BlockSize;
             Texture3D _GlobalLightColorTexture;
             SamplerState sampler_GlobalLightColorTexture;
+            Texture2D _MainTex;
+            SamplerState sampler_MainTex;
             
             Varyings Vertex(Attributes i)
             {
@@ -55,6 +60,7 @@
                 o.positionWS = positionWS;
                 o.cellLightUV = cellLightUV;
                 o.positionCS = TransformObjectToHClip(i.positionOS);
+                o.uv = i.texcoord;
                 return o;
             }
 
@@ -64,7 +70,10 @@
                 //return float4(uv, 1);
                 float3 lightColor = _GlobalLightColorTexture.Sample(sampler_GlobalLightColorTexture, i.cellLightUV).xyz;
                 //lightColor = step(0, i.cellLightUV - .5);
-                return float4(lightColor, 1);
+                float3 color = _MainTex.Sample(sampler_MainTex, i.uv);
+                lightColor /= (1 + lightColor);
+                color *= lightColor;
+                return float4(color, 1);
             }
             ENDHLSL
         }

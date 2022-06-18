@@ -30,7 +30,7 @@ namespace LPipeline.Runtime
         private int id_cubeGBuffer = Shader.PropertyToID("_CubeGBuffer");
         private ComputeBuffer cubeGbuffers;
 
-        private void OnEnable()
+        public override void FirstCall() 
         {
             gbuffer0.Init("_GBuffer0");
             gbuffer1.Init("_GBuffer1");

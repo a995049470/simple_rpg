@@ -21,12 +21,17 @@ namespace LPipeline.Runtime
         private List<ShaderTagId> shaderTagIdList;
         private FilteringSettings filteringSettings;
 
-        public void OnEnable()
+        public override void FirstCall() 
         {
             Init();
         }
 
-   
+        private void Refresh()
+        {
+            if(!isDity)return;
+            isDity = false;
+            Init();
+        }
 
         private void Init()
         {
@@ -41,7 +46,7 @@ namespace LPipeline.Runtime
 
         public override void Execute(ScriptableRenderContext context, RenderData data)
         {
-            
+            Refresh();
             var cmd = CommandBufferPool.Get(profilerTag);
             SetDefaultRenderTarget(cmd, context, data);
             var sortFlags = isOpaque ? SortingCriteria.CommonOpaque : SortingCriteria.CommonTransparent;
@@ -60,9 +65,6 @@ namespace LPipeline.Runtime
             base.FrameCleanup(cmd);
         }
         
-        private void OnValidate() {
-            Init();
-        }
        
 
     }

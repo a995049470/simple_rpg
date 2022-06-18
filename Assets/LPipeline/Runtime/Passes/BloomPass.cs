@@ -24,7 +24,7 @@ namespace LPipeline.Runtime
         private const int applyBloomPass = 3;
 
 
-        private void OnEnable() {
+        public override void FirstCall() {
             for (int i = 0; i < maxLevel; i++)
             {
                 mipmaps[i].Init($"_BlurMipMap{i}");

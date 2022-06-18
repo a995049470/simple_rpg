@@ -31,12 +31,15 @@ namespace LPipeline.Runtime
         RenderTargetHandle cameraColorAttachment;
         //RenderTargetHandle cameraDepthAttachment;
         LPipelineRenderSetting pipelineRenderSetting;
+        List<RenderPass> runingPasses ;
+        
 
         public LRenderPipeline(LPipelineRenderSetting setting)
         {
             cameraColorAttachment.Init("_CameraColorTexture");
             //cameraDepthAttachment.Init("_CameraDepthAttachment");
             this.pipelineRenderSetting = setting;
+            runingPasses = new List<RenderPass>();
         }
 
         protected override void Render(ScriptableRenderContext context, Camera[] cameras)
@@ -55,6 +58,32 @@ namespace LPipeline.Runtime
             }
 
             EndFrameRendering(context, cameras);
+        }
+
+        private bool IsPassActive(RenderPass pass, Camera camera)
+        {
+            if (pass == null || !pass.Enable || ((int)pass.TargetCameraType & (int)camera.cameraType) == 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private bool IsRuningPass(RenderPass pass)
+        {
+            return runingPasses.Contains(pass);
+        }
+
+        private void AddRuningPass(RenderPass pass)
+        {
+            runingPasses.Add(pass);
+            pass.FirstCall();
+        }
+
+        private void RemoveRuningPass(RenderPass pass)
+        {
+            runingPasses.Remove(pass);
+            pass.EndCall();
         }
         
         //渲染顺序
@@ -108,11 +137,22 @@ namespace LPipeline.Runtime
             for (int i = 0; i < passCount; i++)
             {
                 var pass = passes[i];
-                if(pass == null || !pass.Enable || ((int)pass.TargetCameraType & (int)camera.cameraType) == 0)
+                bool isActive = IsPassActive(pass, camera);
+                if(isActive)
                 {
-                    continue;
+                    if(!IsRuningPass(pass)) 
+                    {
+                        AddRuningPass(pass);
+                    }
+                    pass.Execute(context, data);
                 }
-                pass.Execute(context, data);
+                else
+                {
+                    if(IsRuningPass(pass))
+                    {
+                        RemoveRuningPass(pass);
+                    }
+                }
             }
             
             //将颜色blit到camera的RT上
@@ -134,10 +174,8 @@ namespace LPipeline.Runtime
             
             //给场景绘制Gizmos
             DrawGizmos(context, camera);
-
             //提交上下文
             context.Submit();
-            
         }
 
         

@@ -20,14 +20,16 @@ namespace LPipeline.Runtime
         private int id_lightDirection = Shader.PropertyToID("_LightDirection");
         private int id_lgihtMask = Shader.PropertyToID("_LightMask");
         private int id_intensityBias = Shader.PropertyToID("_IntensityBias");
-        private List<ShaderTagId> pointLightTags;
+        private static List<ShaderTagId> pointLightTags;
 
-        private void OnEnable() {
-            pointLightTags = new List<ShaderTagId>()
+        public override void FirstCall()
+        {
+             pointLightTags = new List<ShaderTagId>()
             {
-                new ShaderTagId("PointLight"),
+                new ShaderTagId("PointLight")
             };
         }
+
 
         public override void Execute(ScriptableRenderContext context, RenderData data)
         {

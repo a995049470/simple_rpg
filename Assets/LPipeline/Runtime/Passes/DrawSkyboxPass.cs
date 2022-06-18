@@ -13,10 +13,7 @@ namespace LPipeline.Runtime
         private Mesh cube;
         //private RenderTargetHandle depthTexture;
 
-        private void OnEnable() 
-        {
-            //depthTexture.Init("_DepthTexture");
-        }
+        
 
         public override void Execute(ScriptableRenderContext context, RenderData data)
         {

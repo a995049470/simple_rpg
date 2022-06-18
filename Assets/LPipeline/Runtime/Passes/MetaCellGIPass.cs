@@ -122,7 +122,7 @@ namespace LPipeline.Runtime
 
         }
 
-        private void OnEnable()
+        public override void FirstCall()
         {
             
             {
@@ -155,10 +155,7 @@ namespace LPipeline.Runtime
         }
 
 
-        private void OnValidate()
-        {
-            isDity = true;
-        }
+       
 
         private void Refresh()
         {
@@ -190,7 +187,7 @@ namespace LPipeline.Runtime
         }
 
 
-        private void OnDisable()
+        public override void EndCall()
         {
             barrierBuffer.Release();
             indicesBuffer.Release();

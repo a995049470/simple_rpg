@@ -24,7 +24,7 @@ namespace LPipeline.Runtime
         
 
 
-        private void OnEnable() {
+        public override void FirstCall(){
             gbuffer0.Init("_GBuffer0");
             gbuffer1.Init("_GBuffer1");
             gbuffer2.Init("_GBuffer2");
