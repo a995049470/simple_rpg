@@ -23,7 +23,6 @@ namespace LPipeline.Runtime
     [CreateAssetMenu(fileName = "MetaCellGIPass", menuName = "LPipeline/Passes/MetaCellGIPass")]
     public class MetaCellGIPass : RenderPass
     {
-        private bool isDity = true;
         private bool isInit = false;
         //范围
         [SerializeField]
@@ -37,6 +36,10 @@ namespace LPipeline.Runtime
         private Vector3Int blockNum_3d = new Vector3Int(128, 128, 128);
         private int blockCount { get => blockNum_3d.x * blockNum_3d.y * blockNum_3d.z; }
         private const int barrierStride = 3 * sizeof(uint);
+
+        //渲染场景的diffuse
+        [SerializeField]
+        private Material diffuseMaterial;
 
         //把所有障碍物分解成三角形
         private Dictionary<Mesh, Vector2Int> meshStartIdDic;
@@ -214,7 +217,7 @@ namespace LPipeline.Runtime
         }
 
         private bool Executable(){
-            return cs != null;
+            return cs != null && diffuseMaterial != null;
         }
 
         private void Dispatch_ClearBarrier(CommandBuffer cmd)
@@ -357,7 +360,9 @@ namespace LPipeline.Runtime
         { 
             if(!Executable()) return;
             Refresh();
+            
             var cmd = CommandBufferPool.Get(nameof(MetaCellGIPass));
+            SetDefaultRenderTarget(cmd, context, data);
             //清理障碍值
             Dispatch_ClearBarrier(cmd);
             // //计算障碍
@@ -371,11 +376,13 @@ namespace LPipeline.Runtime
                 Dispatch_UpdateGlobalLightColor(cmd);
             }
             
+            
             //更新光照贴图
             cmd.SetGlobalTexture(nameId_GlobalLightColorTexture, globalLightColorFrontTexture);
             cmd.SetGlobalVector(nameId_Origin, origin);
             cmd.SetGlobalVector(nameId_BlockNum, (Vector3)blockNum_3d);
             cmd.SetGlobalVector(nameId_BlockSize, blockSize);
+            cmd.DrawMesh(GetFullScreenQuad(), Matrix4x4.identity, diffuseMaterial);
 
             context.ExecuteCommandBuffer(cmd);
             cmd.Clear();

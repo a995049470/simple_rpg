@@ -66,10 +66,11 @@
 
             float4 Fragment(Varyings i) : SV_TARGET
             {
-                float3 uv = (i.positionWS - _Origin) / (_BlockNum * _BlockSize);
                 //return float4(uv, 1);
                 float3 lightColor = _GlobalLightColorTexture.Sample(sampler_GlobalLightColorTexture, i.cellLightUV).xyz;
+                //return i.cellLightUV.xyzx;
                 //lightColor = step(0, i.cellLightUV - .5);
+                //return i.positionWS.xyzx;
                 float3 color = _MainTex.Sample(sampler_MainTex, i.uv);
                 lightColor /= (1 + lightColor);
                 color *= lightColor;

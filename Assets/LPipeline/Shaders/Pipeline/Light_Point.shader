@@ -2,8 +2,9 @@
 {
     Properties
     {
-        [HideInInspector]_LightColor("_LightColor", color) = (0, 0, 0, 0)
-        [HideInInspector]_LightParameter("_LightParameter", vector) = (0, 0, 0, 0)
+        _LightColor("_LightColor", color) = (0, 0, 0, 0)
+        _LightParameter("_LightParameter", vector) = (0, 0, 0, 0)
+        [Toggle]_Diffuse("Diffuse", float) = 1
         //_LightMask("LightMask", Cube) = "white" {}
     }
     SubShader
@@ -21,7 +22,7 @@
             //Cull back
             ZTest Less
             Blend One One
-            Cull Front
+            Cull front
             HLSLPROGRAM
             #pragma prefer_hlslcc gles
             #pragma exclude_renderers d3d11_9x

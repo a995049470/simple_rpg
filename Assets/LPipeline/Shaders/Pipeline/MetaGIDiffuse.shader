@@ -1,23 +1,23 @@
-﻿Shader "LPipeline/Light_Directional"
+﻿Shader "LPipeline/MetaGIDiffuse"
 {
     Properties
     {
-        [Toggle]_Diffuse("Diffuse", float) = 1
+        
     }
     SubShader
     {
-        //Gbuffer 
         pass
         {
-            Name "Light_Directional"
+            Name "MetaCellGIDiffuse"
             Tags
             {
                 "RenderType"="Opaque"
+                "LightMode"="MetaCellGIDiffuse"
             }
             ZWrite Off
             ZTest Always
             Blend One One
-            Cull Back
+            Cull Off
             HLSLPROGRAM
             #pragma prefer_hlslcc gles
             #pragma exclude_renderers d3d11_9x
@@ -25,12 +25,14 @@
 
             #pragma vertex Vertex
             #pragma fragment Fragment
+            #pragma multi_compile_instancing
 
-            #include "Light_Directional.hlsl"
+            #include "MetaGIDiffuse.hlsl"
 
             ENDHLSL
         }
 
+        
         
         
     }

@@ -29,12 +29,14 @@ Texture2D _GBuffer2; SamplerState sampler_GBuffer2;
 UNITY_INSTANCING_BUFFER_START(UnityPerMaterial)
     UNITY_DEFINE_INSTANCED_PROP(float4, _LightParameter)
     UNITY_DEFINE_INSTANCED_PROP(float3, _LightColor)
+    UNITY_DEFINE_INSTANCED_PROP(float, _Diffuse)
 UNITY_INSTANCING_BUFFER_END(UnityPerMaterial)
 
 float4x4 _InvVP;
 float _IntensityBias;
 
 #include "BRDF.hlsl"
+#include "MetaCellGI.hlsl"
 
 Varyings Vertex(Attributes i)
 {
@@ -90,14 +92,17 @@ float4 Fragment(Varyings i) : SV_TARGET
     float ao = gbuffer2.z;
 
     float3 uv_mask = normalize(TransformWorldToObject(positionWS));
-    //float3 mask = _LightMask.Sample(sampler_LightMask, uv_mask).rgb;
+
     float3 mask = 1;
     float3 lightColor = UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, _LightColor);
     float3 finalLightColor = lightColor * intensity * mask;
+    float diffuse = UNITY_ACCESS_INSTANCED_PROP(UnityPerMaterial, _Diffuse);
+    float2 strength = float2(diffuse, 1);
+    float3 brdf = BDRF(lightDir, viewDir, normalWS, albedo, finalLightColor, roughness, metallic, ao, strength);
+    float3 visiable_gi = GetMetaCellGIVisiable(positionWS, normalWS);
     
-    float3 brdf = BDRF(lightDir, viewDir, normalWS, albedo, finalLightColor, roughness, metallic, ao);
+    float3 color = brdf * visiable_gi;
     
-    float3 color = brdf;
     return float4(color, 1);
 }
 

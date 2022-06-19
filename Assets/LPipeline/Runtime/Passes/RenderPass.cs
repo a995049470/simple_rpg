@@ -65,6 +65,17 @@ namespace LPipeline.Runtime
             cmd.Clear();
         }
 
+        protected void SetRenderTarget(CommandBuffer cmd, ScriptableRenderContext context, RenderData data, int colorId = -1, int depthId = -1)
+        {
+            var isColortRTActive = data.activeRT.Contains(colorId);
+            var colorAttachment = isColortRTActive ? new RenderTargetIdentifier(colorId) : data.activeCameraColorAttachment;
+            var isDepthRTActive = data.activeRT.Contains(depthId);
+            var depthAttachment = isDepthRTActive ? new RenderTargetIdentifier(depthId) : data.activeCameraDepthAttachment;
+            cmd.SetRenderTarget(colorAttachment, depthAttachment);
+            context.ExecuteCommandBuffer(cmd);
+            cmd.Clear();
+        }
+
         protected DrawingSettings CreateDrawingSettings(List<ShaderTagId> shaderTagIdList, RenderData data, SortingCriteria sortingCriteria)
         {
             if(shaderTagIdList == null || shaderTagIdList.Count == 0)

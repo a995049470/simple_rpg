@@ -21,6 +21,12 @@ namespace LPipeline.Runtime
         public Matrix4x4 viewMatrix;
         public Matrix4x4 projectionMatrix;
         public Matrix4x4 gpuProjectionMatrix;
+        public HashSet<int> activeRT = new HashSet<int>();
+        
+        public void AddActiveRTId(int id)
+        {
+            activeRT.Add(id);
+        }
     }
 
     

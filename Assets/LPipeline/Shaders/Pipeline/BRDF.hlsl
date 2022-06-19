@@ -78,7 +78,7 @@ float3 FresnelSchlickRoughness(float cosTheta, float3 F0, float roughness)
 float3 BDRF(float3 lightDir, float3 viewDir,
             float3 normal, float3 albedo,
             float3 lightColor, float roughness,
-            float metallic, float ao)
+            float metallic, float ao, float2 strength)
 {
     // float3 lightDir, viewDir, normal, albedo, lightColor;
     // float roughness, metallic, ao;
@@ -99,11 +99,28 @@ float3 BDRF(float3 lightDir, float3 viewDir,
     float NDotL = max(dot(normal, lightDir), 0);
     float denominator = 4.0 * NDotV * NDotL + 0.001;
     float3 specular = nominator / denominator;
-    float3 a = (kd * albedo / PI + specular);
+    float3 a = (kd * albedo / PI * strength.x + specular * strength.y);
     float3 lo = a * lightColor * NDotL;
     //??? 好像有负数...
     return lo;
 }
+
+float3 Diffuse(float3 albedo, float metallic, float3 normal, float3 viewDir)
+{
+    float3 f0 = 0.04f;
+    f0 = lerp(f0, albedo, metallic); 
+    float3 halfDir = normal;
+    float HDotV = max(dot(halfDir, viewDir), 0);
+    float3 F = FresnelSchlick(HDotV, f0);
+    float3 ks = F;
+    float3 kd = 1.0 - ks;
+    float NDotL = 1;
+    float3 a = kd * albedo / PI;
+    float3 diffuse = a * NDotL;
+    //??? 好像有负数...
+    return diffuse;
+}
+
 
 
 // float RadicalInverse_VdC(uint bits) 

@@ -28,6 +28,7 @@ namespace LPipeline.Runtime
             {
                 new ShaderTagId("PointLight")
             };
+            
         }
 
 

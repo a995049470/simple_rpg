@@ -7,9 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Light_Directional
-  m_Shader: {fileID: 4800000, guid: 4440ada449ba50445b7296ef37a96b19, type: 3}
-  m_ShaderKeywords: _DIFFUSE_ON
+  m_Name: LPipeline_MetaGIDiffuse
+  m_Shader: {fileID: 4800000, guid: 0f04087ed5afac04ca4523d4196cb3a8, type: 3}
+  m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -19,6 +19,5 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs: []
-    m_Floats:
-    - _Diffuse: 1
+    m_Floats: []
     m_Colors: []

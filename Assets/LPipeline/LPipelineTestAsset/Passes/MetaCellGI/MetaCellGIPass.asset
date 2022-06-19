@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: MetaCellGIPass
   m_EditorClassIdentifier: 
   enable: 1
-  targetCameraType: 31
+  targetCameraType: 7
   origin: {x: -16, y: -16, z: -16}
   blockSize: {x: 0.5, y: 0.5, z: 0.5}
   blockNum_3d: {x: 64, y: 64, z: 64}
-  iteratCount: 13
+  diffuseMaterial: {fileID: 2100000, guid: aa20c1b3cc1c16940b88817c0abfd0cc, type: 2}
+  iteratCount: 9
   cs: {fileID: 7200000, guid: 53528634698f8ad4993b1a3b94a83dbe, type: 3}

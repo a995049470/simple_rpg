@@ -11,8 +11,9 @@ namespace LPipeline.Runtime
         private Material skyboxMaterial;
         [SerializeField]
         private Mesh cube;
-        //private RenderTargetHandle depthTexture;
+        private static int id_depthTexture = Shader.PropertyToID("_DepthTexture");
 
+        
         
 
         public override void Execute(ScriptableRenderContext context, RenderData data)
@@ -21,8 +22,8 @@ namespace LPipeline.Runtime
             var cmd = CommandBufferPool.Get(nameof(DrawSkyboxPass));
            
             //要那gbuffer里的depthTexture当作深度目标
-            // cmd.SetRenderTarget(data.activeCameraColorAttachment, depthTexture.Identifier());
-            SetDefaultRenderTarget(cmd, context, data);
+           // cmd.SetRenderTarget(data.activeCameraColorAttachment, Shader.PropertyToID("_DepthTexture"));
+            SetRenderTarget(cmd, context, data, -1, id_depthTexture);
             context.ExecuteCommandBuffer(cmd);
             cmd.Clear();
 
