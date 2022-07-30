@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 namespace LPipeline.Runtime
 {
@@ -22,14 +23,14 @@ namespace LPipeline.Runtime
         public Matrix4x4 projectionMatrix;
         public Matrix4x4 gpuProjectionMatrix;
         public HashSet<int> activeRT = new HashSet<int>();
-        
+
         public void AddActiveRTId(int id)
         {
             activeRT.Add(id);
         }
     }
 
-    
+
 
     public class LRenderPipeline : RenderPipeline
     {
@@ -37,23 +38,26 @@ namespace LPipeline.Runtime
         RenderTargetHandle cameraColorAttachment;
         //RenderTargetHandle cameraDepthAttachment;
         LPipelineRenderSetting pipelineRenderSetting;
-        List<RenderPass> runingPasses ;
-        
+        List<RenderPass> runingPasses;
+        private static LRenderPipeline lastPipline;
+
+
 
         public LRenderPipeline(LPipelineRenderSetting setting)
         {
             cameraColorAttachment.Init("_CameraColorTexture");
             //cameraDepthAttachment.Init("_CameraDepthAttachment");
-            this.pipelineRenderSetting = setting;
+            pipelineRenderSetting = setting;
             runingPasses = new List<RenderPass>();
         }
 
+
         protected override void Render(ScriptableRenderContext context, Camera[] cameras)
         {
+            //SetScene(SceneManager.GetActiveScene());
             BeginFrameRendering(context, cameras);
 
             //摄像机排序的必要性??
-            
             //渲染每个摄像机
             for (int i = 0; i < cameras.Length; i++)
             {
@@ -91,18 +95,18 @@ namespace LPipeline.Runtime
             runingPasses.Remove(pass);
             pass.EndCall();
         }
-        
+
+
         //渲染顺序
         //1.创建一个颜色缓存和深度模板缓存
         private void RenderSingleCamera(ScriptableRenderContext context, Camera camera)
         {
             //将相机的属性提交
             context.SetupCameraProperties(camera);
-
             //给renderData赋值
             RenderData data = new RenderData();
             data.camera = camera;
-            if(camera.TryGetCullingParameters(out var cullingParameters))
+            if (camera.TryGetCullingParameters(out var cullingParameters))
             {
                 var cullingResults = context.Cull(ref cullingParameters);
                 data.cullingResults = cullingResults;
@@ -113,7 +117,7 @@ namespace LPipeline.Runtime
             data.viewMatrix = camera.worldToCameraMatrix;
             data.projectionMatrix = camera.projectionMatrix;
             data.gpuProjectionMatrix = GL.GetGPUProjectionMatrix(camera.projectionMatrix, true);
-            
+
             //生成颜色缓冲和深度模板缓冲并清理
             var cmd = CommandBufferPool.Get("Render Camera");
             var colorDes = new RenderTextureDescriptor(data.renderWidth, data.renderHeight, RenderTextureFormat.ARGBHalf);
@@ -127,7 +131,7 @@ namespace LPipeline.Runtime
             //清理
             cmd.SetRenderTarget(cameraColorAttachment.Identifier());
             cmd.ClearRenderTarget(true, true, Color.black);
-            
+
 
             context.ExecuteCommandBuffer(cmd);
             cmd.Clear();
@@ -144,9 +148,9 @@ namespace LPipeline.Runtime
             {
                 var pass = passes[i];
                 bool isActive = IsPassActive(pass, camera);
-                if(isActive)
+                if (isActive)
                 {
-                    if(!IsRuningPass(pass)) 
+                    if (!IsRuningPass(pass))
                     {
                         AddRuningPass(pass);
                     }
@@ -154,17 +158,16 @@ namespace LPipeline.Runtime
                 }
                 else
                 {
-                    if(IsRuningPass(pass))
+                    if (IsRuningPass(pass))
                     {
                         RemoveRuningPass(pass);
                     }
                 }
             }
-            
+
             //将颜色blit到camera的RT上
             var targetRT = camera.targetTexture;
             cmd.Blit(cameraColorAttachment.Identifier(), targetRT);
-            
 
             //开始清理
             cmd.ReleaseTemporaryRT(cameraColorAttachment.id);
@@ -177,30 +180,32 @@ namespace LPipeline.Runtime
             context.ExecuteCommandBuffer(cmd);
             cmd.Clear();
             CommandBufferPool.Release(cmd);
-            
+
             //给场景绘制Gizmos
             DrawGizmos(context, camera);
             //提交上下文
             context.Submit();
         }
 
-        
 
-        private void DrawGizmos(ScriptableRenderContext context, Camera camera) {
-    #if UNITY_EDITOR
-        if(camera.cameraType != CameraType.SceneView)
+
+        private void DrawGizmos(ScriptableRenderContext context, Camera camera)
         {
-            return;
+#if UNITY_EDITOR
+            if (camera.cameraType != CameraType.SceneView)
+            {
+                return;
+            }
+            if (UnityEditor.Handles.ShouldRenderGizmos())
+            {
+                context.DrawGizmos(camera, GizmoSubset.PreImageEffects);
+                context.DrawGizmos(camera, GizmoSubset.PostImageEffects);
+            }
+#endif
         }
-		if (UnityEditor.Handles.ShouldRenderGizmos()) {
-			context.DrawGizmos(camera, GizmoSubset.PreImageEffects);
-			context.DrawGizmos(camera, GizmoSubset.PostImageEffects);
-		}
-    #endif
-	}
-        
-        
-        
+
+
+
 
     }
 

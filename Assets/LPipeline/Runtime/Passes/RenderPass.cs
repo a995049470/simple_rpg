@@ -23,7 +23,7 @@ namespace LPipeline.Runtime
 
         [SerializeField]
         private bool enable = true;
-        public bool Enable { get => enable; }
+        public bool Enable { get => enable; set => enable = value;}
         [SerializeField]
         private CameraType targetCameraType = (CameraType)31;
         public CameraType TargetCameraType { get => targetCameraType; }
@@ -41,6 +41,7 @@ namespace LPipeline.Runtime
         /// </summary>
         public virtual void FirstCall()
         {
+
 
         }
 

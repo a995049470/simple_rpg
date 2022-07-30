@@ -114,9 +114,9 @@ namespace LPipeline.Runtime
             des.dimension = TextureDimension.Tex3D;
             des.enableRandomWrite = true;
             des.volumeDepth = blockNum_3d.z;
-            lightColorTexture = new RenderTexture(des);
-            globalLightColorBackTexture = new RenderTexture(des);
-            globalLightColorFrontTexture = new RenderTexture(des);
+            lightColorTexture = RenderTexture.GetTemporary(des);
+            globalLightColorBackTexture = RenderTexture.GetTemporary(des);
+            globalLightColorFrontTexture = RenderTexture.GetTemporary(des);
             globalLightColorBackTexture.Create();
             globalLightColorFrontTexture.Create();
             lightColorTexture.Create();
@@ -182,9 +182,9 @@ namespace LPipeline.Runtime
                 colorBufferNumY != blockNum_3d.y ||
                 colorBufferNumZ != blockNum_3d.z)
             {
-                lightColorTexture.Release();
-                globalLightColorBackTexture.Release();
-                globalLightColorFrontTexture.Release();
+                RenderTexture.ReleaseTemporary(lightColorTexture);
+                RenderTexture.ReleaseTemporary(globalLightColorBackTexture);
+                RenderTexture.ReleaseTemporary(globalLightColorFrontTexture);
                 CreateLightTexture();
             }
         }
@@ -192,12 +192,12 @@ namespace LPipeline.Runtime
 
         public override void EndCall()
         {
+            RenderTexture.ReleaseTemporary(lightColorTexture);
+            RenderTexture.ReleaseTemporary(globalLightColorBackTexture);
+            RenderTexture.ReleaseTemporary(globalLightColorFrontTexture);
             barrierBuffer.Release();
             indicesBuffer.Release();
             verticesBuffer.Release();
-            lightColorTexture.Release();
-            globalLightColorBackTexture.Release();
-            globalLightColorFrontTexture.Release();
             matrixBuffer.Release();
             triangleBarriarBuffer.Release();
         }

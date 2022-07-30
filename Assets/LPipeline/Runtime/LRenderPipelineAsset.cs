@@ -18,6 +18,7 @@ namespace LPipeline.Runtime
     {
         [SerializeField]
         LPipelineRenderSetting setting;
+        public LPipelineRenderSetting Setting { get => setting;}
         protected override RenderPipeline CreatePipeline()
         {
             return new LRenderPipeline(setting);
