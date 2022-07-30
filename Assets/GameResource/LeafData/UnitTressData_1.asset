@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9b09707e0976854b9a599416ab4e286, type: 3}
   m_Name: UnitTressData_1
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 8961817646013703112, guid: 4b49c0cf8ab2d5a41a3796f41cd68cad,
+  playerPrefab: {fileID: 1546927844982933137, guid: 5a3c3a0947bd5184e9c17180a6dfe1ba,
     type: 3}
   position: {x: 0, y: 0, z: 1}
   unitKind: 1

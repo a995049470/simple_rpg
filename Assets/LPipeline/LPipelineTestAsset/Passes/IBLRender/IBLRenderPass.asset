@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c37ac4aa6ad1ab54cae17c3661bd952c, type: 3}
   m_Name: IBLRenderPass
   m_EditorClassIdentifier: 
-  enable: 0
+  enable: 1
   targetCameraType: 31
   ambientMateril: {fileID: 2100000, guid: 5768f0c93614f454ea71bf535339d5c7, type: 2}
