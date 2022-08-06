@@ -130,7 +130,8 @@ namespace LPipeline.Runtime
             //cmd.GetTemporaryRT(cameraDepthAttachment.id, depthDes, FilterMode.Point);
             //清理
             cmd.SetRenderTarget(cameraColorAttachment.Identifier());
-            cmd.ClearRenderTarget(true, true, Color.black);
+            var backgroundColor = camera.cameraType == CameraType.Game ? camera.backgroundColor : Color.black;
+            cmd.ClearRenderTarget(true, true, backgroundColor);
 
 
             context.ExecuteCommandBuffer(cmd);

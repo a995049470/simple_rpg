@@ -27,7 +27,7 @@ namespace LPipeline.Runtime
 
         private RenderTargetHandle shadowMap;
 
-        private int id_cubeGBuffer = Shader.PropertyToID("_CubeGBuffer");
+       
         private ComputeBuffer cubeGbuffers;
 
         public override void FirstCall() 
@@ -62,7 +62,7 @@ namespace LPipeline.Runtime
             };
             cmd.SetRenderTarget(colorRTs, depthTexture.Identifier());
             
-            material.SetBuffer(id_cubeGBuffer, cubeGbuffers);
+            material.SetBuffer(ShaderUtils._CubeGBuffer, cubeGbuffers);
             int subMeshIndex = 0;
             cmd.DrawMeshInstancedProcedural(cubeMesh, subMeshIndex, material, 0, instanceCount);
             

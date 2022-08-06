@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using LPipeline.Runtime;
 using UnityEngine;
 
 namespace LPipeline
@@ -35,11 +36,7 @@ namespace LPipeline
 
         private MaterialPropertyBlock materialPropertyBlock;
         private Renderer cacheRenderer;
-        private static int id_lightParameter = Shader.PropertyToID("_LightParameter");
-        private static int id_lightColor = Shader.PropertyToID("_LightColor");
-        private static int id_lightPosition = Shader.PropertyToID("_LightPosition");
-        private static int id_lightDirection = Shader.PropertyToID("_LightDirection");
-        private static int id_lightMask = Shader.PropertyToID("_LightMask");
+        
 
         //微小的数
         public const float IntensityBias = 0.1f;
@@ -72,8 +69,8 @@ namespace LPipeline
             var lightParameter = this.GetLightParameter();
             var lightPosition = this.transform.position;
             materialPropertyBlock = materialPropertyBlock ?? new MaterialPropertyBlock();
-            materialPropertyBlock.SetColor(id_lightColor, lightColor);
-            materialPropertyBlock.SetVector(id_lightParameter, lightParameter);
+            materialPropertyBlock.SetColor(ShaderUtils._LightColor, lightColor);
+            materialPropertyBlock.SetVector(ShaderUtils._LightParameter, lightParameter);
             //materialPropertyBlock.SetTexture(id_lightMask, GetLightMask());
             cacheRenderer.SetPropertyBlock(materialPropertyBlock);
             

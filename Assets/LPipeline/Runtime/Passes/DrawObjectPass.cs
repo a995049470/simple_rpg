@@ -20,7 +20,7 @@ namespace LPipeline.Runtime
 
         private List<ShaderTagId> shaderTagIdList;
         private FilteringSettings filteringSettings;
-        private static int id_depthTexture = Shader.PropertyToID("_DepthTexture");
+        
 
         public override void FirstCall() 
         {
@@ -49,7 +49,7 @@ namespace LPipeline.Runtime
         {
             Refresh();
             var cmd = CommandBufferPool.Get(profilerTag);
-            SetRenderTarget(cmd, context, data, -1, id_depthTexture);
+            SetRenderTarget(cmd, context, data, -1, ShaderUtils.id_depthTexture);
             var sortFlags = isOpaque ? SortingCriteria.CommonOpaque : SortingCriteria.CommonTransparent;
             var drawSetting  = CreateDrawingSettings(shaderTagIdList, data, sortFlags);
             context.DrawRenderers(data.cullingResults, ref drawSetting, ref filteringSettings);

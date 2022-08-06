@@ -34,7 +34,7 @@ namespace LPipeline.Runtime
         public float Far { get => Mathf.Max(Near + 1, far); }
 
         private RenderTargetHandle shadowMap;
-        private int id_shadowVP = Shader.PropertyToID("_ShadowVP");
+        
         private List<ShaderTagId> shaderTagIdList;
 
 
@@ -75,7 +75,7 @@ namespace LPipeline.Runtime
             var projection = Matrix4x4.Ortho(-width * 0.5f, width * 0.5f, -height * 0.5f, height * 0.5f, near, far);
             projection = GL.GetGPUProjectionMatrix(projection, true);
             var vp = projection * view;
-            cmd.SetGlobalMatrix(id_shadowVP, vp);
+            cmd.SetGlobalMatrix(ShaderUtils._ShadowVP, vp);
             context.ExecuteCommandBuffer(cmd);
             cmd.Clear();
             

@@ -13,13 +13,7 @@ namespace LPipeline.Runtime
         [SerializeField]
         private Material pointLightMaterial;
         //v4 x:亮度i y:二次项系数a z:一次项系数b w:常数项c  y = i / (ax^2 + bx + c)
-        private int id_lightParameter = Shader.PropertyToID("_LightParameter");
-        private int id_lightColor = Shader.PropertyToID("_LightColor");
-        private int id_lightPosition = Shader.PropertyToID("_LightPosition");
-       
-        private int id_lightDirection = Shader.PropertyToID("_LightDirection");
-        private int id_lgihtMask = Shader.PropertyToID("_LightMask");
-        private int id_intensityBias = Shader.PropertyToID("_IntensityBias");
+        
         private static List<ShaderTagId> pointLightTags;
 
         public override void FirstCall()
@@ -53,14 +47,14 @@ namespace LPipeline.Runtime
                 var lightColor = directionalLight.LightColor;
                 var lightDirection = directionalLight.GetLightDirection();
 
-                cmd.SetGlobalColor(id_lightColor, lightColor);
-                cmd.SetGlobalVector(id_lightDirection, lightDirection);
+                cmd.SetGlobalColor(ShaderUtils._LightColor, lightColor);
+                cmd.SetGlobalVector(ShaderUtils._lightDirection, lightDirection);
                 cmd.DrawMesh(fullScreenMesh, Matrix4x4.identity, directionalLightMaterial);
             }
 
             //开始点光渲染
             float intensityBias = Light_Point.IntensityBias;
-            cmd.SetGlobalFloat(id_intensityBias, intensityBias);
+            cmd.SetGlobalFloat(ShaderUtils._IntensityBias, intensityBias);
             var filterSettings = FilteringSettings.defaultValue;
             var drawSetting = CreateDrawingSettings(pointLightTags, data, SortingCriteria.CommonTransparent);
             context.ExecuteCommandBuffer(cmd);

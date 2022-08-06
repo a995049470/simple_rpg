@@ -81,22 +81,7 @@ namespace LPipeline.Runtime
         private const int NumThreadX_3D = 4;
         private const int NumThreadY_3D = 4;
         private const int NumThreadZ_3D = 4;
-        private static int nameId_BarrierBuffer = Shader.PropertyToID("_BarrierBuffer");
-        private static int nameId_BlockNum = Shader.PropertyToID("_BlockNum");
-        private static int nameId_BlockSize = Shader.PropertyToID("_BlockSize");
-        private static int nameId_Origin = Shader.PropertyToID("_Origin");
-        private static int nameId_VerticesBuffer = Shader.PropertyToID("_VerticesBuffer");
-        private static int nameId_IndicesBuffer = Shader.PropertyToID("_IndicesBuffer");
-        private static int nameId_MatrixBuffer = Shader.PropertyToID("_MatrixBuffer");
-        private static int nameId_TriangleBarrierBuffer = Shader.PropertyToID("_TriangleBarrierBuffer");
-        private static int nameId_TriangleCount = Shader.PropertyToID("_TriangleCount");
-        private static int nameId_LightBuffer = Shader.PropertyToID("_LightBuffer");
-        private static int nameId_LightCount = Shader.PropertyToID("_LightCount");
-        private static int nameId_LightColorTexture = Shader.PropertyToID("_LightColorTexture");
-        private static int nameId_GlobalLightColorFrontTexture = Shader.PropertyToID("_GlobalLightColorFrontTexture");
-        private static int nameId_GlobalLightColorBackTexture = Shader.PropertyToID("_GlobalLightColorBackTexture");
-        
-        private static int nameId_GlobalLightColorTexture = Shader.PropertyToID("_GlobalLightColorTexture");
+      
 
 
         private void FindKernels()
@@ -222,7 +207,7 @@ namespace LPipeline.Runtime
 
         private void Dispatch_ClearBarrier(CommandBuffer cmd)
         {
-            cmd.SetComputeBufferParam(cs, kernel_ClearBarrier, nameId_BarrierBuffer, barrierBuffer);
+            cmd.SetComputeBufferParam(cs, kernel_ClearBarrier, ShaderUtils._BarrierBuffer, barrierBuffer);
             var group1 = GetGroup(blockCount);
             cmd.DispatchCompute(cs, kernel_ClearBarrier, group1.x, group1.y, group1.z);
         }
@@ -281,18 +266,18 @@ namespace LPipeline.Runtime
 
                 //开始进行biarrierBuffer的更新
 
-                cmd.SetComputeBufferParam(cs, kernel_ComputeBarrier, nameId_BarrierBuffer, barrierBuffer);
-                cmd.SetComputeIntParams(cs, nameId_BlockNum, new int[]
+                cmd.SetComputeBufferParam(cs, kernel_ComputeBarrier, ShaderUtils._BarrierBuffer, barrierBuffer);
+                cmd.SetComputeIntParams(cs, ShaderUtils._BlockNum, new int[]
                 {
                     blockNum_3d.x, blockNum_3d.y, blockNum_3d.z
                 });
-                cmd.SetComputeVectorParam(cs, nameId_BlockSize, blockSize);
-                cmd.SetComputeVectorParam(cs, nameId_Origin, origin);
-                cmd.SetComputeBufferParam(cs, kernel_ComputeBarrier, nameId_VerticesBuffer, verticesBuffer);
-                cmd.SetComputeBufferParam(cs, kernel_ComputeBarrier, nameId_IndicesBuffer, indicesBuffer);
-                cmd.SetComputeBufferParam(cs, kernel_ComputeBarrier, nameId_MatrixBuffer, matrixBuffer);
-                cmd.SetComputeBufferParam(cs, kernel_ComputeBarrier, nameId_TriangleBarrierBuffer, triangleBarriarBuffer);
-                cmd.SetComputeIntParam(cs, nameId_TriangleCount, triangleTotalCount);
+                cmd.SetComputeVectorParam(cs, ShaderUtils._BlockSize, blockSize);
+                cmd.SetComputeVectorParam(cs, ShaderUtils._Origin, origin);
+                cmd.SetComputeBufferParam(cs, kernel_ComputeBarrier, ShaderUtils._VerticesBuffer, verticesBuffer);
+                cmd.SetComputeBufferParam(cs, kernel_ComputeBarrier, ShaderUtils._IndicesBuffer, indicesBuffer);
+                cmd.SetComputeBufferParam(cs, kernel_ComputeBarrier, ShaderUtils._MatrixBuffer, matrixBuffer);
+                cmd.SetComputeBufferParam(cs, kernel_ComputeBarrier, ShaderUtils._TriangleBarrierBuffer, triangleBarriarBuffer);
+                cmd.SetComputeIntParam(cs, ShaderUtils._TriangleCount, triangleTotalCount);
                 var group2 = GetGroup(triangleTotalCount);
                 cmd.DispatchCompute(cs, kernel_ComputeBarrier, group2.x, group2.y, group2.z);
 
@@ -318,15 +303,15 @@ namespace LPipeline.Runtime
                 }
 
                 lightBuffer.SetData(cellLights);
-                cmd.SetComputeIntParams(cs, nameId_BlockNum, new int[]
+                cmd.SetComputeIntParams(cs, ShaderUtils._BlockNum, new int[]
                 {
                     blockNum_3d.x, blockNum_3d.y, blockNum_3d.z
                 });
-                cmd.SetComputeVectorParam(cs, nameId_Origin, origin);
-                cmd.SetComputeVectorParam(cs, nameId_BlockSize, blockSize);
-                cmd.SetComputeBufferParam(cs, kernel_FillLight, nameId_LightBuffer, lightBuffer);
-                cmd.SetComputeIntParam(cs, nameId_LightCount, lightCount);
-                cmd.SetComputeTextureParam(cs, kernel_FillLight, nameId_GlobalLightColorFrontTexture, globalLightColorFrontTexture);
+                cmd.SetComputeVectorParam(cs, ShaderUtils._Origin, origin);
+                cmd.SetComputeVectorParam(cs, ShaderUtils._BlockSize, blockSize);
+                cmd.SetComputeBufferParam(cs, kernel_FillLight, ShaderUtils._LightBuffer, lightBuffer);
+                cmd.SetComputeIntParam(cs, ShaderUtils._LightCount, lightCount);
+                cmd.SetComputeTextureParam(cs, kernel_FillLight, ShaderUtils._GlobalLightColorFrontTexture, globalLightColorFrontTexture);
 
                 var group = GetGroup(lightCount);
                 cmd.DispatchCompute(cs, kernel_FillLight, group.x, group.y, group.z);
@@ -335,10 +320,10 @@ namespace LPipeline.Runtime
 
         private void Dispatch_UpdateGlobalLightColor(CommandBuffer cmd)
         {
-            cmd.SetComputeTextureParam(cs, kernel_UpdateGlobalLightColor, nameId_GlobalLightColorBackTexture, globalLightColorBackTexture);
-            cmd.SetComputeTextureParam(cs, kernel_UpdateGlobalLightColor, nameId_GlobalLightColorFrontTexture, globalLightColorFrontTexture);
-            cmd.SetComputeBufferParam(cs, kernel_UpdateGlobalLightColor, nameId_BarrierBuffer, barrierBuffer);
-            cmd.SetComputeIntParams(cs, nameId_BlockNum, new int[]
+            cmd.SetComputeTextureParam(cs, kernel_UpdateGlobalLightColor, ShaderUtils._GlobalLightColorBackTexture, globalLightColorBackTexture);
+            cmd.SetComputeTextureParam(cs, kernel_UpdateGlobalLightColor, ShaderUtils._GlobalLightColorFrontTexture, globalLightColorFrontTexture);
+            cmd.SetComputeBufferParam(cs, kernel_UpdateGlobalLightColor, ShaderUtils._BarrierBuffer, barrierBuffer);
+            cmd.SetComputeIntParams(cs, ShaderUtils._BlockNum, new int[]
                 {
                     blockNum_3d.x, blockNum_3d.y, blockNum_3d.z
                 });
@@ -378,10 +363,10 @@ namespace LPipeline.Runtime
             
             
             //更新光照贴图
-            cmd.SetGlobalTexture(nameId_GlobalLightColorTexture, globalLightColorFrontTexture);
-            cmd.SetGlobalVector(nameId_Origin, origin);
-            cmd.SetGlobalVector(nameId_BlockNum, (Vector3)blockNum_3d);
-            cmd.SetGlobalVector(nameId_BlockSize, blockSize);
+            cmd.SetGlobalTexture(ShaderUtils._GlobalLightColorTexture, globalLightColorFrontTexture);
+            cmd.SetGlobalVector(ShaderUtils._Origin, origin);
+            cmd.SetGlobalVector(ShaderUtils._BlockNum, (Vector3)blockNum_3d);
+            cmd.SetGlobalVector(ShaderUtils._BlockSize, blockSize);
             cmd.DrawMesh(GetFullScreenQuad(), Matrix4x4.identity, diffuseMaterial);
 
             context.ExecuteCommandBuffer(cmd);

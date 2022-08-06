@@ -10,19 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a046c49aef773244fa9f45238292cfc9, type: 3}
-  m_Name: CustomRenderPipline
+  m_Name: RenderPipline2D
   m_EditorClassIdentifier: 
   setting:
     passes:
     - {fileID: 11400000, guid: e056e284f8e29ff41a84ae67a735f2e7, type: 2}
-    - {fileID: 11400000, guid: e3f371ec1f944ed41a9f671de6b72af0, type: 2}
     - {fileID: 11400000, guid: e57bf469b21418543ab1ce271f465baf, type: 2}
-    - {fileID: 11400000, guid: 1c1ac2a97057f654a8663a309cb7e919, type: 2}
-    - {fileID: 11400000, guid: a7b6d6d227432534ba673d9e11c15029, type: 2}
-    - {fileID: 11400000, guid: 07d773a3a93418748a437d47cffe916d, type: 2}
     - {fileID: 11400000, guid: 221271bd79d4de942bfd3113f80ac2b1, type: 2}
-    - {fileID: 11400000, guid: 33d5adc6e87ad5244a3df4eccd125c61, type: 2}
-    - {fileID: 11400000, guid: 44b57b010e03e6448838637886b8f110, type: 2}
     - {fileID: 11400000, guid: 33f888a04dede084087660b9581b01f8, type: 2}
-    - {fileID: 11400000, guid: 955e90b954ac330429fd852423232782, type: 2}
     enableDynamicBatching: 0

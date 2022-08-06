@@ -5,6 +5,7 @@ using UnityEngine.Rendering.Universal;
 
 namespace LPipeline.Runtime
 {
+
     [CreateAssetMenu(fileName = "BloomPass", menuName = "LPipeline/Passes/BloomPass")]
     public class BloomPass : RenderPass
     {
