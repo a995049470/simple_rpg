@@ -28,7 +28,7 @@ namespace LPipeline.Runtime
         // [SerializeField]
         // private Material lightDrawMaterial;
         [SerializeField]
-        [Range(1, 64)]
+        [Range(1, 512)]
         private int lightUpdateCount = 1;
         private List<ShaderTagId> lightTags;
 
