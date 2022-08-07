@@ -10,7 +10,20 @@ namespace LPipeline.Runtime
     {
         [SerializeField]
         public List<RenderPass> passes;
-        public bool enableDynamicBatching;
+        public bool enableDynamicBatching = false;
+        [SerializeField]
+        private Color editorBackgroundColor = Color.black;
+        public Color EditorBackgroundColor
+        {
+            get
+            {
+                var r = editorBackgroundColor.r;
+                var g = editorBackgroundColor.g;
+                var b = editorBackgroundColor.b;
+                return new Color(r * r, g * g, b * b);
+                
+            }
+        }
     }
 
     [CreateAssetMenu(fileName = "CustomRenderPipline", menuName = "LPipeline/PipelineAsset")]

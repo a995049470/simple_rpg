@@ -96,7 +96,6 @@ namespace LPipeline.Runtime
             pass.EndCall();
         }
 
-
         //渲染顺序
         //1.创建一个颜色缓存和深度模板缓存
         private void RenderSingleCamera(ScriptableRenderContext context, Camera camera)
@@ -130,7 +129,7 @@ namespace LPipeline.Runtime
             //cmd.GetTemporaryRT(cameraDepthAttachment.id, depthDes, FilterMode.Point);
             //清理
             cmd.SetRenderTarget(cameraColorAttachment.Identifier());
-            var backgroundColor = camera.cameraType == CameraType.Game ? camera.backgroundColor : Color.black;
+            var backgroundColor = camera.cameraType == CameraType.Game ? camera.backgroundColor : pipelineRenderSetting.EditorBackgroundColor;
             cmd.ClearRenderTarget(true, true, backgroundColor);
 
 

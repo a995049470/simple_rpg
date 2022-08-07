@@ -27,8 +27,8 @@ Shader "LPipeline/ToneMappint"
             #pragma vertex Vertex
             #pragma fragment Fragment
 
-            #include "ToneMapping.hlsl"
             
+            #include "ToneMapping.hlsl"
 
             ENDHLSL
         }

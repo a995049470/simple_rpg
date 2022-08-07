@@ -27,6 +27,7 @@ namespace LPipeline.Runtime
         [SerializeField]
         private CameraType targetCameraType = (CameraType)31;
         public CameraType TargetCameraType { get => targetCameraType; }
+        protected static FilteringSettings defaultFilteringSettings = FilteringSettings.defaultValue;
 
         public abstract void Execute(ScriptableRenderContext context, RenderData data);
         protected bool isDity = true;

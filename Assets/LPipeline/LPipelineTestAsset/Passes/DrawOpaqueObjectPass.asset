@@ -20,5 +20,6 @@ MonoBehaviour:
   - LightweightForward
   - SRPDefaultUnlit
   - MetaCellLit
+  - LPipeline
   profilerTag: DrawQpaqueObjectPass
   isOpaque: 1
