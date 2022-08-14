@@ -68,9 +68,11 @@ namespace LPipeline.Runtime
                         cmd.Blit(rt, temp, copyMaterial);
                     }
                     context.ExecuteCommandBuffer(cmd);
+                    cmd.Clear();
                     if(rt != null) RenderTexture.ReleaseTemporary(rt);
                     rt = temp;
                 }   
+
             }
 
         }
@@ -81,6 +83,9 @@ namespace LPipeline.Runtime
         private Material copyMaterial;
         private Dictionary<CameraType, CellLightTexture> cellLightTextureDic = new Dictionary<CameraType, CellLightTexture>();
         private List<ShaderTagId> cellTags;
+        private RenderTargetHandle cellTexture;
+
+
 
         public override void FirstCall()
         {
@@ -89,6 +94,7 @@ namespace LPipeline.Runtime
             {
                 new ShaderTagId("Cell"),
             };
+            cellTexture.Init("_CellTexture");
         }
 
         private bool TryGetCurrentCellLightTexture(ScriptableRenderContext context, CommandBuffer cmd, RenderData data, out CellLightTexture cellLightTex)
@@ -132,6 +138,13 @@ namespace LPipeline.Runtime
             if(TryGetCurrentCellLightTexture(context, cmd, data, out var cellLightTex))
             {
                 //开始渲染cell
+                var area = cellLightTex.Area;
+                cmd.SetGlobalVector(ShaderUtils._CellLightWorldArea, new Vector4(area.xMin, area.xMax, area.yMin, area.yMax));
+                context.ExecuteCommandBuffer(cmd);
+                cmd.Clear();
+                
+                var drawSetting = CreateDrawingSettings(cellTags, data, SortingCriteria.None);
+                
                 
             }
             CommandBufferPool.Release(cmd);
