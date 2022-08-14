@@ -185,8 +185,14 @@ namespace LPipeline.Runtime
             DrawGizmos(context, camera);
             //提交上下文
             context.Submit();
+            CameraLog(camera);
         }
 
+        private void CameraLog(Camera camera)
+        {
+            var log = $"cameraType:{camera.cameraType}  orthographic:{camera.orthographic} orthographicSize:{camera.orthographicSize}";
+            //Debug.Log(log);
+        }
 
 
         private void DrawGizmos(ScriptableRenderContext context, Camera camera)

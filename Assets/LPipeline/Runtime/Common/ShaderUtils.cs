@@ -31,6 +31,8 @@ namespace LPipeline.Runtime
         public static int _GlobalLightColorTexture = Shader.PropertyToID("_GlobalLightColorTexture");
         public static int _ShadowVP = Shader.PropertyToID("_ShadowVP");
         public static int _2DLightTex = Shader.PropertyToID("_2DLightTex");
+        public static int _LastCellLightWorldArea = Shader.PropertyToID("_LastCellLightWorldRect");
+        public static int _CellLightWorldArea = Shader.PropertyToID("_CellLightWorldRect");
 
     }
 }
