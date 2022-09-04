@@ -25,5 +25,6 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 44b57b010e03e6448838637886b8f110, type: 2}
     - {fileID: 11400000, guid: 33f888a04dede084087660b9581b01f8, type: 2}
     - {fileID: 11400000, guid: 955e90b954ac330429fd852423232782, type: 2}
+    - {fileID: 11400000, guid: 4880997416582e2489c8d6bd243c7466, type: 2}
     enableDynamicBatching: 0
     editorBackgroundColor: {r: 0, g: 0, b: 0, a: 1}

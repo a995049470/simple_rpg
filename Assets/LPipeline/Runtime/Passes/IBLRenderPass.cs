@@ -24,6 +24,7 @@ namespace LPipeline.Runtime
             var fullScreenMesh = GetFullScreenQuad();
             cmd.DrawMesh(fullScreenMesh, Matrix4x4.identity, ambientMateril, 0);
             context.ExecuteCommandBuffer(cmd);
+            
             cmd.Clear();
             CommandBufferPool.Release(cmd);
         }

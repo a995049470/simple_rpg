@@ -19,8 +19,10 @@ namespace LPipeline.Runtime
         public override void Execute(ScriptableRenderContext context, RenderData data)
         {
             
+            var isOrtho = data.camera.orthographic;
+            if(isOrtho) return;
             var cmd = CommandBufferPool.Get(nameof(DrawSkyboxPass));
-           
+
             //要那gbuffer里的depthTexture当作深度目标
             SetRenderTarget(cmd, context, data, -1, ShaderUtils.id_depthTexture);
             context.ExecuteCommandBuffer(cmd);

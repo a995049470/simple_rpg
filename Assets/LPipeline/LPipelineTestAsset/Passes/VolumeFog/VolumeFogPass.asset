@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af2a5d4e37d857740b9893ecf492757b, type: 3}
-  m_Name: DrawSkyboxPass
+  m_Script: {fileID: 11500000, guid: dfce3ced1cc79ac4aa73c65e8c21fce0, type: 3}
+  m_Name: VolumeFogPass
   m_EditorClassIdentifier: 
   enable: 1
-  targetCameraType: 29
-  skyboxMaterial: {fileID: 2100000, guid: 408d431b5ad694247be16115029e75d2, type: 2}
-  cube: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  targetCameraType: 31
+  volumeFogMaterial: {fileID: 2100000, guid: 61f8476f04235774db786f59aba14d12, type: 2}
+  scnenViewPass: 0

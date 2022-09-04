@@ -3,6 +3,7 @@ using UnityEngine.Rendering;
 
 namespace LPipeline.Runtime
 {
+
     [CreateAssetMenu(fileName = "ToneMappingPass", menuName = "LPipeline/Passes/ToneMappingPass")]
     public class ToneMappingPass : RenderPass
     {

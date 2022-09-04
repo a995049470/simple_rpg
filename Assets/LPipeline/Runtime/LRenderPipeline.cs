@@ -129,7 +129,7 @@ namespace LPipeline.Runtime
             //cmd.GetTemporaryRT(cameraDepthAttachment.id, depthDes, FilterMode.Point);
             //清理
             cmd.SetRenderTarget(cameraColorAttachment.Identifier());
-            var backgroundColor = camera.cameraType == CameraType.Game ? camera.backgroundColor : pipelineRenderSetting.EditorBackgroundColor;
+            var backgroundColor = camera.cameraType == CameraType.Game ? camera.backgroundColor * camera.backgroundColor : pipelineRenderSetting.EditorBackgroundColor;
             cmd.ClearRenderTarget(true, true, backgroundColor);
 
 
