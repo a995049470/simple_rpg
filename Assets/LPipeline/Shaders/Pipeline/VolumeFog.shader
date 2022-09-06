@@ -2,7 +2,6 @@
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
         _Color("Color", color) = (1, 1, 1, 1)
     }
     HLSLINCLUDE
@@ -22,6 +21,22 @@
         float3 positionWS :TEXCOORD0;
         float3 normalOS : TEXCOORD1;    
     };
+
+    struct v2f_back
+    {
+        float4 positionCS : SV_POSITION;
+    };
+
+    struct v2f_front
+    {
+        float4 positionCS : SV_POSITION;
+    };
+
+    struct v2f_fog
+    {
+        float4 positionCS : SV_POSITION;
+        float4 uvSS : TEXCOORD0;
+    };
     
     v2f_scene_view vert_scene_view(appdata i)
     {
@@ -31,6 +46,11 @@
         o.normalOS = i.normalOS;
         return o;
     }
+
+    // v2f_back vert_back(appdata i)
+    // {
+
+    // }
 
     float4 frag_scene_view(v2f_scene_view i) : SV_TARGET
     {
