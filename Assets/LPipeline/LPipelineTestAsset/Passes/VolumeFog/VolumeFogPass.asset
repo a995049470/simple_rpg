@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfce3ced1cc79ac4aa73c65e8c21fce0, type: 3}
   m_Name: VolumeFogPass
   m_EditorClassIdentifier: 
-  enable: 1
+  enable: 0
   targetCameraType: 31
   volumeFogMaterial: {fileID: 2100000, guid: 61f8476f04235774db786f59aba14d12, type: 2}
   scnenViewPass: 0
+  frontDepthPass: 1
+  backDepthPass: 2
+  fogRenderPass: 3

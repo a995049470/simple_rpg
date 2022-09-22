@@ -73,8 +73,8 @@ float4 Fragment(Varyings i) : SV_TARGET
     float3 ks = f;
     float3 kd = 1 - f;
     kd *= 1 - metallic;
-    float3 ambient = kd * diffuse + specular;
-    //return step(roughness, 0.9999).xxxx;
+    float3 ambient = kd * diffuse + specular * (step(dot(normal, normal), 0));
+    
     return float4(ambient, 1);
 }
 

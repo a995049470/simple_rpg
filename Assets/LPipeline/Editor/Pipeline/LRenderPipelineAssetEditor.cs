@@ -23,7 +23,12 @@ namespace LPipeline.Editor
                 foreach (var pass in passes)
                 {
                     if (pass == null) continue;
-                    pass.Enable = EditorGUILayout.Toggle(pass.name, pass.Enable);
+                    var current = EditorGUILayout.Toggle(pass.name, pass.Enable);
+                    if(current != pass.Enable)
+                    {
+                        EditorUtility.SetDirty(pass);
+                        pass.Enable = current;
+                    }
                 }
             }
         }   
